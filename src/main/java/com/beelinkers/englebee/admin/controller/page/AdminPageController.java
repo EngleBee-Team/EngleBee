@@ -12,6 +12,6 @@ public class AdminPageController {
 
   @GetMapping("/dashboard")
   public String goToDashBoardPage() {
-    return "admin/admin-dashboard";
+    return "common-login";
   }
 }
