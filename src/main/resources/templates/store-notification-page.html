@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style-h.css}"/>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Users / Profile - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="#" rel="icon">
+  <link href="#" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+
+  <style>
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .profile-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .card-body-y {
+      padding: 20px 20px;
+    }
+
+    .card-title-y > p {
+      cursor: pointer;
+    }
+
+    .pb-4 input[type="radio"] {
+      margin: 0 5px 0 10px;
+    }
+
+    .card-title-y {
+      padding: 10px 0px 5px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #012970;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .p-last {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 12px;
+      color: #696969;
+    }
+
+    .card-title span {
+      color: #899bbd;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .card-body-y {
+      padding: 20px 20px;
+    }
+
+    .card-title-y {
+      padding: 10px 0px 5px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #012970;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .text-header-y {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .text-body-y {
+      font-size: 14px;
+    }
+
+    .p-last {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 12px;
+      color: #696969;
+    }
+
+    .card-title span {
+      color: #899bbd;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<div th:replace="header :: header"></div>
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-grid"></i>
+        <span>브랜딩</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>체험</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-bell"></i>
+        <span>활동</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>알림</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-person"></i>
+        <span>개인정보수정</span>
+      </a>
+    </li>
+
+  </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-bordered pt-4" id="borderedTab"
+                role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="like-tab" data-bs-toggle="tab"
+                        data-bs-target="#received-like" type="button" role="tab"
+                        aria-controls="like" aria-selected="true">좋아요
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="zzim-tab" data-bs-toggle="tab"
+                        data-bs-target="#received-zzim" type="button" role="tab"
+                        aria-controls="zzim" aria-selected="false">찜
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="experience-tab" data-bs-toggle="tab"
+                        data-bs-target="#experience-list" type="button" role="tab"
+                        aria-controls="post" aria-selected="false">체험
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content pt-4" id="borderedTabContent">
+
+              <!-- 내가 좋아요 한 글 -->
+              <div class="tab-pane fade show active" id="received-like"
+                   role="tabpanel" aria-labelledby="like-tab">
+                <div id="likeListHtml"></div>
+                <!-- 페이지네이션 버튼 -->
+                <div class="pagination-container" id="like-pagination"></div>
+              </div>
+
+              <!-- 나를 찜한 다른 유저 리스트 -->
+              <div class="tab-pane fade" id="received-zzim" role="tabpanel"
+                   aria-labelledby="zzim-tab">
+                <div>
+                  <div class="pb-4">
+                    <input type="radio" id="customerZzim" name="code" value="CUSTOMER" checked/> 체험단
+                    <input type="radio" id="storeZzim" name="code" value="STORE"/> 스토어
+                  </div>
+                  <div id="receivedZzimListHtml" class="row"></div>
+                  <!-- 페이지네이션 버튼 -->
+                  <div class="pagination-container" id="zzim-pagination"></div>
+                </div>
+              </div>
+
+              <!-- 체험 관련 알림 -->
+              <div class="tab-pane fade" id="experience-list" role="tabpanel"
+                   aria-labelledby="experience-tab">
+                <div>
+                  <div class="pb-4">
+                    <input type="radio" name="exp" value="apply" checked/> 지원자
+                    <input type="radio" name="exp" value="proposal"/> 제안자
+                  </div>
+                  <div id="experienceListHtml"></div>
+                  <!-- 페이지네이션 버튼 -->
+                  <div class="pagination-container" id="experience-pagination"></div>
+                </div>
+              </div>
+            </div><!-- End Bordered Tabs -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/assets/vendor/quill/quill.js}"></script>
+<script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+<!-- ======= Footer ======= -->
+<div th:replace="footer :: footer"></div>
+
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    .selected-option {
+      background-color: lightgreen; /* 연초록색으로 선택된 옵션 표시 */
+    }
+
+    #food-type-select-message {
+      margin-bottom: 5px;
+    }
+
+    #review-log-table {
+      border-collapse: collapse;
+    }
+
+    #review-log-table th,
+    #review-log-table td {
+      border: 2px solid #dee2e6; /* 선 두께를 2px로 설정 */
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #review-log-table th {
+      font-weight: bold;
+    }
+
+    #page-buttons .btn {
+      margin: 0 2px;
+    }
+
+    .d-flex.justify-content-center {
+      gap: 0.5rem;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+  </style>
+
+  <style>
+    .alert-custom {
+      background-color: transparent;
+      color: orange;
+      border: none;
+      text-align: right;
+      font-size: 1rem;
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .table-container {
+      position: relative;
+    }
+
+    .alert-custom-bottom {
+      position: absolute;
+      bottom: -30px;
+      right: 0;
+    }
+  </style>
+
+  <style>
+    .form-control {
+      width: 100%;
+      height: 38px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    .form-control-readonly {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+    .profile-container {
+      width: 150px; /* 원하는 고정 가로 길이 */
+      height: 150px; /* 원하는 고정 세로 길이 */
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%; /* 원형으로 만들기 위한 설정 */
+    }
+
+    .profile-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 이미지의 중앙을 맞추고, 자르기 */
+      object-position: center; /* 중앙 위치 */
+    }
+  </style>
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>브랜딩 페이지</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link th:href="@{/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+  <link th:href="@{/assets/css/style-h.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link " href="#">
+        <i class="bi bi-grid"></i>
+        <span>브랜딩</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>체험</span>
+      </a>
+    </li>
+    <!-- End Profile Page Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed " href="#">
+        <i class="bi bi-bell"></i>
+        <span>활동</span>
+      </a>
+    </li>
+    <!-- End Profile Page Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>알림</span>
+      </a>
+    </li>
+    <!-- End Profile Page Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-person"></i>
+        <span>개인정보수정</span>
+      </a>
+    </li><!-- End Register Page Nav -->
+  </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>나의 브랜딩</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section profile">
+    <div class="row">
+      <div class="card">
+        <!-- profile  -->
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+          <h2 id="nickname-holder-section" th:text="'임시 닉네임'">
+          </h2>
+          <div class="social-links mt-2 ri-heart-3-fill" th:text="'0'">
+          </div>
+        </div>
+
+        <div class="card-body pt-3">
+          <!-- Bordered Tabs -->
+          <div class="tab-content pt-2">
+
+            <div class="tab-pane fade show active profile-overview"
+                 id="profile-overview">
+
+              <!-- 소개 -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">소개</div>
+                <div class="col-lg-8 col-md-6">
+                  <input id="introduce-input" type="text" name="to_nickname"
+                         th:value="'임시 소개'"
+                         class="form-control" readonly>
+                </div>
+                <div class="col-lg-1 col-md-2">
+                  <button id="introduce-update-btn" type="button"
+                          class="btn btn-primary edit-btn">수정
+                  </button>
+                  <button id="introduce-submit-btn" type="button"
+                          class="btn btn-success send-btn"
+                          style="display: none;">전송
+                  </button>
+                  <button id="introduce-cancel-btn" type="button"
+                          class="btn btn-secondary cancel-btn"
+                          style="display: none;">취소
+                  </button>
+                </div>
+              </div>
+
+              <!-- 닉네임 보여주기/등록하기 -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">닉네임</div>
+                <div class="col-lg-8 col-md-6">
+                  <input id="nickname-input" type="text" name="to_nickname"
+                         th:value="'임시 닉네임'"
+                         class="form-control" readonly>
+                </div>
+                <div class="col-lg-1 col-md-2">
+                  <button type="button" class="btn btn-primary edit-btn"
+                          id="nickname-update-btn">수정
+                  </button>
+                  <button type="button" class="btn btn-success send-btn"
+                          style="display: none;" id="nickname-submit-btn">전송
+                  </button>
+                  <button type="button" class="btn btn-secondary cancel-btn"
+                          style="display: none;" id="nickname-cancel-btn">취소
+                  </button>
+                </div>
+              </div>
+
+              <!-- 연령대 보여주기/등록하기 -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">연령대</div>
+                <div class="col-lg-8 col-md-6">
+                  <select id="age-group-input"
+                          class="form-control form-control-readonly" disabled>
+                    <option th:value="'임시 연령대'" th:text="'임시 연령대'"></option>
+                  </select>
+                </div>
+
+                <div class="col-lg-1 col-md-2">
+                  <button id="age-group-update-btn" type="button"
+                          class="btn btn-primary edit-btn">수정
+                  </button>
+                  <button id="age-group-submit-btn"
+                          type="button" class="btn btn-success send-btn"
+                          style="display: none;">전송
+                  </button>
+                  <button id="age-group-cancel-btn"
+                          type="button" class="btn btn-secondary cancel-btn"
+                          style="display: none;">취소
+                  </button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">활동 분야</div>
+                <div class="col-lg-8 col-md-6">
+                  <select id="food-type-select" class="form-select" multiple
+                          size="5" disabled>
+                    <option th:value="'임시 값'" th:text="'국밥'" data-custom-color="orange"></option>
+                    <option th:value="'임시 값'" th:text="'돈까스'" data-custom-color="orange"></option>
+                    <!-- 추가 옵션 필요 시 추가 -->
+                  </select>
+                  <p id="food-type-select-message" class="text-primary"
+                     style="font-size: 14px;"></p>
+                </div>
+                <div class="col-lg-1 col-md-2">
+                  <button id="food-type-update-btn" type="button"
+                          class="btn btn-primary edit-btn">수정
+                  </button>
+                  <button id="food-type-submit-btn" type="button"
+                          class="btn btn-success send-btn" style="display: none;">
+                    전송
+                  </button>
+                  <button id="food-type-cancel-btn" type="button"
+                          class="btn btn-secondary cancel-btn"
+                          style="display: none;">취소
+                  </button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">태그</div>
+                <div class="col-lg-8 col-md-6">
+                  <select id="tag-select" class="form-select" multiple size="2"
+                          disabled>
+                    <option th:value="'임시 태그'" th:text="'초식'" data-custom-color="green"></option>
+                    <option th:value="'임시 태그'" th:text="'육식'" data-custom-color="indianred"></option>
+                    <!-- 추가 옵션 필요 시 추가 -->
+                  </select>
+                  <p id="tag-select-message" class="text-primary"
+                     style="font-size: 14px;"></p>
+                </div>
+                <div class="col-lg-1 col-md-2">
+                  <button id="tag-update-btn" type="button"
+                          class="btn btn-primary edit-btn">수정
+                  </button>
+                  <button id="tag-submit-btn" type="button"
+                          class="btn btn-success send-btn" style="display: none;">
+                    전송
+                  </button>
+                  <button id="tag-cancel-btn" type="button"
+                          class="btn btn-secondary cancel-btn"
+                          style="display: none;">취소
+                  </button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">리뷰 로그</div>
+                <div class="col-lg-8 col-md-6">
+                  <div class="table-container">
+                    <!-- 리뷰가 있는 경우 테이블 표시 -->
+
+
+                    <!-- 리뷰가 없는 경우 메시지 표시 -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- 리뷰 등록 모달 -->
+              <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog"
+                   aria-labelledby="reviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="reviewModalLabel">리뷰 등록</h5>
+                      <button type="button" class="close" data-dismiss="modal"
+                              aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="reviewForm">
+                        <div class="form-group">
+                          <label for="reviewUrl">리뷰 URL</label>
+                          <input type="url" class="form-control"
+                                 id="reviewUrl" name="reviewUrl" required>
+                          <small style="color: indianred;">한번 등록한 리뷰의 URL은 수정 불가능합니다.</small>
+                        </div>
+                        <input type="hidden" id="reviewSeq"
+                               name="reviewSeq">
+                        <input type="hidden" id="userSeq" name="userSeq"
+                               th:value="'임시 유저 시퀀스'">
+                        <button id="reviewInsert"
+                                class="btn btn-primary">등록
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span><a href="#">nugunaTeam</a></span></strong>. All Rights Reserved
+  </div>
+  <div class="credits">
+    Designed by <a href="#">BootstrapMade</a>
+  </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+</body>
+
+</html>

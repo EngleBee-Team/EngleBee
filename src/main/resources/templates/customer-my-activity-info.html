@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link th:href="@{/assets/css/style-h.css}" rel="stylesheet" type="text/css"/>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>FReview</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link th:href="@{/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+  <style>
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+    }
+
+    .card-body p {
+      margin: 5px 0;
+    }
+
+    .date-like-info {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+    }
+
+    .date-like-info p {
+      margin: 0 5px;
+    }
+
+    .date-like-info i {
+      margin-left: 5px;
+    }
+
+    .profile-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .card-title-y > p {
+      cursor: pointer;
+    }
+
+    .pb-4 input[type="radio"] {
+      margin: 0 5px 0 10px;
+    }
+
+    .card-title span {
+      color: #899bbd;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header th:replace="layout/header :: header"></header>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-grid"></i>
+        <span>브랜딩</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>체험</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <i class="bi bi-bell"></i>
+        <span>활동</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-card-checklist"></i>
+        <span>알림</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#">
+        <i class="bi bi-person"></i>
+        <span>개인정보수정</span>
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<main id="main" class="main">
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered pt-4" id="borderedTab"
+                role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="like-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#like" type="button" role="tab"
+                        aria-controls="like" aria-selected="true">좋아요
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="zzim-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#zzim" type="button"
+                        role="tab"
+                        aria-controls="zzim" aria-selected="false">찜
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content pt-4" id="borderedTabContent">
+              <div class="tab-pane fade show active" id="like" role="tabpanel"
+                   aria-labelledby="like-tab">
+                <div id="likePostsList" class="row"></div>
+                <div class="pagination-container" id="like-posts-pagination"></div>
+              </div>
+
+              <div class="tab-pane fade" id="zzim" role="tabpanel"
+                   aria-labelledby="zzim-tab">
+                <div>
+                  <div class="pb-4">
+                    <input type="radio" id="zzimed-store-radio" name="zzimed"
+                           checked/> 스토어
+                    <input type="radio" id="zzimed-customer-radio"
+                           name="zzimed"/> 체험단
+                  </div>
+                </div>
+                <div id="zzimedUserList" class="row"></div>
+                <div class="pagination-container"
+                     id="zzimed-users-pagination"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span><a href="#"> nugunaTeam </a></span></strong>.
+    All Rights Reserved
+  </div>
+  <div class="credits">
+    Designed by <a href="#">BootstrapMade</a>
+  </div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/assets/vendor/quill/quill.js}"></script>
+<script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+</html>

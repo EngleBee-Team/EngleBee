@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <style>
+    .selected-option {
+      background-color: lightgreen;
+    }
+
+    #food-type-select-message {
+      margin-bottom: 5px;
+    }
+
+    #review-log-table {
+      border-collapse: collapse;
+    }
+
+    #review-log-table th,
+    #review-log-table td {
+      border: 2px solid #dee2e6;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #review-log-table th {
+      font-weight: bold;
+    }
+
+    #page-buttons .btn {
+      margin: 0 2px;
+    }
+
+    .d-flex.justify-content-center {
+      gap: 0.5rem;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    .alert-custom {
+      background-color: transparent;
+      color: orange;
+      border: none;
+      text-align: right;
+      font-size: 1rem;
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .table-container {
+      position: relative;
+    }
+
+    .alert-custom-bottom {
+      position: absolute;
+      bottom: -30px;
+      right: 0;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 38px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    .form-control-readonly {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+    .profile-container {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+
+    .profile-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  </style>
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>FReview</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="#" rel="icon">
+  <link href="#" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+  <link th:href="@{/assets/css/style-h.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<div th:replace="header :: header"></div>
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>스토어 브랜딩</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section profile">
+    <div class="row">
+      <div class="card">
+        <!-- profile  -->
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+          <input type="file" id="profile-img-upload" style="display: none;">
+          <h2 id="nickname-holder-section" th:text="'임시 스토어명'">스토어명</h2>
+          <div class="social-links mt-2"
+               style="display: flex; align-items: center; justify-content: center;">
+            <!-- 찜 버튼 -->
+            <button id="zzimButton"
+                    style="background-color: #ffe6e6; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem 1rem; border-radius: 5px; display: flex; align-items: center; outline: none; height: 40px;">
+              <i id="heartIcon" class="ri-heart-3-fill"
+                 style="margin-right: 0.7rem; color: pink;"></i>
+              <span id="zzimCount" th:text="'0'">0</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body pt-3">
+          <!-- Bordered Tabs -->
+          <div class="tab-content pt-2">
+
+            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+              <!-- 소개 -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">소개</div>
+                <div class="col-lg-8 col-md-6">
+                  <input id="introduce-input" type="text" name="to_nickname"
+                         value="임시 소개"
+                         class="form-control" readonly>
+                </div>
+              </div>
+
+              <!-- 스토어명 보여주기/등록하기 -->
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">스토어명</div>
+                <div class="col-lg-8 col-md-6">
+                  <input id="nickname-input" type="text" name="to_nickname"
+                         value="임시 스토어명"
+                         class="form-control" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color:blue">위치</div>
+                <div class="col-lg-8 col-md-6">
+                  <input id="location-holder" type="text" name="location"
+                         value="임시 위치"
+                         class="form-control" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color: blue">활동 분야</div>
+                <div class="col-lg-8 col-md-6">
+                  <div id="food-type-buttons">
+                  </div>
+                  <p id="food-type-buttons-message" class="text-primary"
+                     style="font-size: 18px;"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label" style="color : blue">태그</div>
+                <div class="col-lg-8 col-md-6">
+                  <div id="tag-buttons"></div>
+                  <p id="tag-select-message" class="text-primary"
+                     style="font-size: 18px;"></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/assets/vendor/quill/quill.js}"></script>
+<script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+
+<!-- ======= Footer ======= -->
+<div th:replace="footer :: footer"></div>
+
+</html>
