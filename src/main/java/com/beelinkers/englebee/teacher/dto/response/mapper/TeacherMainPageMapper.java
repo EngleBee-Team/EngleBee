@@ -1,8 +1,10 @@
 package com.beelinkers.englebee.teacher.dto.response.mapper;
 
+import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,18 @@ public class TeacherMainPageMapper {
                 question.getMember().getNickname(),
                 question.getTitle(),
                 question.getCreatedAt()
+        );
+    }
+
+    // main > new-exam
+    public TeacherMainPageNewExamDTO teacherMainPageNewExamDto(Exam exam) {
+        String studentNickname = exam.getLecture().getStudent().getNickname();
+        return new TeacherMainPageNewExamDTO(
+                exam.getSeq(),
+                exam.getLecture().getSeq(),
+                studentNickname,
+                exam.getTitle(),
+                exam.getStatus().name()
         );
     }
 

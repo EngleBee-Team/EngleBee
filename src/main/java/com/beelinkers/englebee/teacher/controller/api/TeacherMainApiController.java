@@ -3,6 +3,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,21 @@ public class TeacherMainApiController {
     return ResponseEntity.ok(pagedPagination);
   }
 
+  @GetMapping("/new-exam")
+  public ResponseEntity<GeneralPagedResponseDTO<TeacherMainPageNewExamDTO>> getNewExamList(
+          @RequestParam("memberSeq") Long memberSeq, @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<TeacherMainPageNewExamDTO> newExamList = teacherMainService.getNewExamList(memberSeq, pageable);
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+      newExamList.getNumber()+1, newExamList.getSize(), newExamList.getTotalPages(),
+            newExamList.getTotalElements(), newExamList.hasPrevious(), newExamList.hasNext()
+    );
+    GeneralPagedResponseDTO<TeacherMainPageNewExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+      newExamList.getContent(),
+      pagination
+    );
+    return ResponseEntity.ok(pagedPagination);
+  }
 
 
 }
