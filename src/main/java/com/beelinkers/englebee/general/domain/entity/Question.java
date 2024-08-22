@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,5 +48,12 @@ public class Question extends BaseEntity {
 
   @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
   private List<Reply> replies = new ArrayList<>();
+
+  @Builder
+  public Question(Member author, String title, String content) {
+    this.member = author;
+    this.title = title;
+    this.content = content;
+  }
 
 }

@@ -109,7 +109,7 @@ public class Member extends BaseEntity {
     return status.isActive();
   }
 
-  public boolean isDeactived() {
+  public boolean isDeactivated() {
     return status.isDeActivated();
   }
 

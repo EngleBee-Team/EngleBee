@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -54,4 +55,17 @@ public class Lecture extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
   private LectureStatus status;
+
+  @Builder
+  public Lecture(Member teacher, Member student, String title) {
+    this.teacher = teacher;
+    this.student = student;
+    this.title = title;
+    this.status = LectureStatus.CREATED;
+  }
+
+  public void finish() {
+    this.status = LectureStatus.FINISHED;
+  }
+
 }

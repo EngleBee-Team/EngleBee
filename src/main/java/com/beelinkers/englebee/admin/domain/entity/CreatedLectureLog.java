@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,5 +34,11 @@ public class CreatedLectureLog extends BaseEntity {
 
   @Column(name = "student_seq", nullable = false)
   private Long studentSeq;
+
+  @Builder
+  public CreatedLectureLog(Long teacherSeq, Long studentSeq) {
+    this.teacherSeq = teacherSeq;
+    this.studentSeq = studentSeq;
+  }
 
 }

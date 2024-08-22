@@ -1,5 +1,6 @@
 package com.beelinkers.englebee.general.domain.entity;
 
+import com.beelinkers.englebee.general.exception.InvalidLevelCodeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,5 +15,14 @@ public enum LevelCode {
   HIGH("상");
 
   private final String koreanCode;
-  
+
+  public static LevelCode fromKoreanCode(String koreanCode) {
+    for (LevelCode level : values()) {
+      if (level.getKoreanCode().equals(koreanCode)) {
+        return level;
+      }
+    }
+    throw new InvalidLevelCodeException("유효하지 않은 레벨 입력입니다: " + koreanCode);
+  }
+
 }

@@ -71,7 +71,7 @@ public class MemberTest {
 
     // when, then
     assertThat(member.isActive()).isTrue();
-    assertThat(member.isDeactived()).isFalse();
+    assertThat(member.isDeactivated()).isFalse();
   }
 
   @Test
@@ -90,7 +90,7 @@ public class MemberTest {
 
     // then
     assertThat(member.isActive()).isFalse();
-    assertThat(member.isDeactived()).isTrue();
+    assertThat(member.isDeactivated()).isTrue();
   }
 
   @Test
