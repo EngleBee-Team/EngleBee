@@ -5,6 +5,7 @@ import com.beelinkers.englebee.general.domain.entity.LectureStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
 import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
@@ -45,6 +46,13 @@ public class TeacherMainServiceImpl implements TeacherMainService {
     public Page<TeacherMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
         return examRepository.findByLectureTeacherSeqAndStatus(memberSeq, ExamStatus.CREATED, pageable)
                 .map(teacherMainPageMapper::teacherMainPageNewExamDto);
+    }
+
+    // authored-exam
+    @Override
+    public Page<TeacherMainPageAuthoredExamDTO> getAuthoredExamList(Long memberSeq, Pageable pageable) {
+        return examRepository.findByLectureTeacherSeqAndStatusNot(memberSeq, ExamStatus.CREATED, pageable)
+                .map(teacherMainPageMapper::teacherMainPageAuthoredExamDTO);
     }
 
 }

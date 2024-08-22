@@ -2,6 +2,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
@@ -73,5 +74,19 @@ public class TeacherMainApiController {
     return ResponseEntity.ok(pagedPagination);
   }
 
-
+  @GetMapping("/authored-exam")
+  public ResponseEntity<GeneralPagedResponseDTO<TeacherMainPageAuthoredExamDTO>> getAuthoredExamList(
+          @RequestParam("memberSeq") Long memberSeq, @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<TeacherMainPageAuthoredExamDTO> authoredExamList = teacherMainService.getAuthoredExamList(memberSeq, pageable);
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+      authoredExamList.getNumber()+1, authoredExamList.getSize(), authoredExamList.getTotalPages(),
+      authoredExamList.getTotalElements(), authoredExamList.hasPrevious(), authoredExamList.hasNext()
+    );
+    GeneralPagedResponseDTO<TeacherMainPageAuthoredExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+      authoredExamList.getContent(),
+      pagination
+    );
+    return ResponseEntity.ok(pagedPagination);
+  }
 }

@@ -3,6 +3,7 @@ package com.beelinkers.englebee.teacher.dto.response.mapper;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.Question;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
@@ -53,7 +54,16 @@ public class TeacherMainPageMapper {
         );
     }
 
-
-
+    // main > authored-exam
+    public TeacherMainPageAuthoredExamDTO teacherMainPageAuthoredExamDTO(Exam exam) {
+        String studentNickname = exam.getLecture().getStudent().getNickname();
+        return new TeacherMainPageAuthoredExamDTO(
+                exam.getSeq(),
+                exam.getLecture().getSeq(),
+                studentNickname,
+                exam.getTitle(),
+                exam.getStatus().name()
+        );
+    }
 
 }

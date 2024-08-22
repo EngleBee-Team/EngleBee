@@ -13,6 +13,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     Page<Exam> findByLectureStudentSeqAndStatus(Long memberSeq, ExamStatus status, Pageable pageable);
     Page<Exam> findByLectureStudentSeqAndStatusIn(Long memberSeq, List<ExamStatus> status, Pageable pageable);
 
-    Page<Exam> findByLectureTeacherSeqAndStatus(Long lecture_teacher_seq, ExamStatus status, Pageable pageable);
-
+    Page<Exam> findByLectureTeacherSeqAndStatus(Long memberSeq, ExamStatus status, Pageable pageable);
+    Page<Exam> findByLectureTeacherSeqAndStatusNot(Long memberSeq, ExamStatus status, Pageable pageable);
 }
