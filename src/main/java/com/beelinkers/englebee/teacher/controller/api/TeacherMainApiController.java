@@ -3,6 +3,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,21 @@ public class TeacherMainApiController {
     return ResponseEntity.ok(pagedPagination);
   }
 
+  @GetMapping("/question")
+  public ResponseEntity<GeneralPagedResponseDTO<TeacherMainPageQuestionDTO>> getQuestionList(
+          @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<TeacherMainPageQuestionDTO> questionList = teacherMainService.getQuestionList(pageable);
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+            questionList.getNumber() + 1, questionList.getSize(), questionList.getTotalPages(),
+            questionList.getTotalElements(), questionList.hasPrevious(), questionList.hasNext()
+    );
+    GeneralPagedResponseDTO<TeacherMainPageQuestionDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+            questionList.getContent(),
+            pagination
+    );
+    return ResponseEntity.ok(pagedPagination);
+  }
 
 
 

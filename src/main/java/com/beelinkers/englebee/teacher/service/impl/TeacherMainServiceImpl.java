@@ -2,7 +2,9 @@ package com.beelinkers.englebee.teacher.service.impl;
 
 import com.beelinkers.englebee.general.domain.entity.LectureStatus;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
+import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMainPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TeacherMainServiceImpl implements TeacherMainService {
 
-    private final LectureRepository lectureRepository;
     private final TeacherMainPageMapper teacherMainPageMapper;
+    private final LectureRepository lectureRepository;
+    private final QuestionRepository questionRepository;
 
     // lecture
     @Override
@@ -26,6 +29,11 @@ public class TeacherMainServiceImpl implements TeacherMainService {
                 .map(teacherMainPageMapper::teacherMainPageLectureDto);
     }
 
-
+    // question
+    @Override
+    public Page<TeacherMainPageQuestionDTO> getQuestionList(Pageable pageable) {
+        return questionRepository.findAll(pageable)
+                .map(teacherMainPageMapper::teacherMainPageQuestionDto);
+    }
 
 }

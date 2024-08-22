@@ -1,7 +1,9 @@
 package com.beelinkers.englebee.teacher.dto.response.mapper;
 
 import com.beelinkers.englebee.general.domain.entity.Lecture;
+import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +28,17 @@ public class TeacherMainPageMapper {
             subjectLevelCode
         );
     }
+
+    // main > Q&A
+    public TeacherMainPageQuestionDTO teacherMainPageQuestionDto(Question question) {
+        return new TeacherMainPageQuestionDTO(
+                question.getSeq(),
+                question.getMember().getNickname(),
+                question.getTitle(),
+                question.getCreatedAt()
+        );
+    }
+
 
 
 
