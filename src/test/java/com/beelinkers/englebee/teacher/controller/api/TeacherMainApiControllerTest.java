@@ -40,6 +40,7 @@ public class TeacherMainApiControllerTest {
 
     @BeforeEach
     void setUp() {
+        // given
         Page<TeacherMainPageLectureDTO> lecturePage = new PageImpl<>(List.of(new TeacherMainPageLectureDTO(
             1L, "user3", "기초문법강의", "CREATED",
             LocalDateTime.now(), List.of(List.of("어법", "중"), List.of("문장", "중"))
@@ -67,11 +68,13 @@ public class TeacherMainApiControllerTest {
     @Test
     @DisplayName("강의 목록 조회 API 테스트")
     void 강의_목록_조회_API_테스트() throws Exception {
+        //when
         mockMvc.perform(get("/api/teacher/main/lecture")
             .param("memberSeq", "3")
             .param("page", "0")
             .param("size", "10")
             .contentType(MediaType.APPLICATION_JSON))
+            //then
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content").isArray())
             .andExpect(jsonPath("$.content[0].title").value("기초문법강의"))
@@ -87,54 +90,59 @@ public class TeacherMainApiControllerTest {
     @Test
     @DisplayName("질문 목록 조회 API 테스트")
     void 질문_목록_조회_API_테스트() throws Exception {
+        //when
         mockMvc.perform(get("/api/teacher/main/question")
-        .param("page", "0")
-        .param("size", "10")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.content").isArray())
-        .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
-        .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
-        .andExpect(jsonPath("$.content[0].createdAt").exists())
-        .andExpect(jsonPath("$.pagination.totalPages").value(1))
-        .andExpect(jsonPath("$.pagination.totalElements").value(1))
-        .andExpect(jsonPath("$.pagination.currentPage").value(1));
-        ;
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            //then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
+            .andExpect(jsonPath("$.content[0].createdAt").exists())
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(1))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 
     @Test
     @DisplayName("출제 할 문제 목록 API 테스트")
     void 출제_할_문제_목록_API_테스트() throws Exception {
+        //when
         mockMvc.perform(get("/api/teacher/main/new-exam")
-        .param("memberSeq", "3")
-        .param("page", "0")
-        .param("size", "10")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.content").isArray())
-        .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
-        .andExpect(jsonPath("$.content[0].title").value("new 시험"))
-        .andExpect(jsonPath("$.content[0].status").value("PREPARED"))
-        .andExpect(jsonPath("$.pagination.totalPages").value(1))
-        .andExpect(jsonPath("$.pagination.totalElements").value(1))
-        .andExpect(jsonPath("$.pagination.currentPage").value(1));
+            .param("memberSeq", "3")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            //then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("new 시험"))
+            .andExpect(jsonPath("$.content[0].status").value("PREPARED"))
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(1))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 
     @Test
     @DisplayName("출제 한 목록 조회 API 테스트")
     void 출제_한_목록_조회_API_테스트() throws Exception {
+        //when
         mockMvc.perform(get("/api/teacher/main/authored-exam")
-        .param("memberSeq", "3")
-        .param("page", "0")
-        .param("size", "10")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.content").isArray())
-        .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
-        .andExpect(jsonPath("$.content[0].title").value("new 시험"))
-        .andExpect(jsonPath("$.content[0].status").value("FEEDBACK_COMPLETED"))
-        .andExpect(jsonPath("$.pagination.totalPages").value(1))
-        .andExpect(jsonPath("$.pagination.totalElements").value(1))
-        .andExpect(jsonPath("$.pagination.currentPage").value(1));
+            .param("memberSeq", "3")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            //then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("new 시험"))
+            .andExpect(jsonPath("$.content[0].status").value("FEEDBACK_COMPLETED"))
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(1))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 }

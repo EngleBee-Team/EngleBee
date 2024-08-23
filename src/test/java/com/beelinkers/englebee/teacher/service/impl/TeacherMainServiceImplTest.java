@@ -12,6 +12,7 @@ import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMainPageMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,7 +49,8 @@ public class TeacherMainServiceImplTest {
     private TeacherMainServiceImpl teacherMainService;
 
     @Test
-    void testGetLectureList() {
+    @DisplayName("수업 목록을 조회할 수 있다")
+    void 수업_목록을_조회할_수_있다() {
         // Given
         Long memberSeq = 3L;
         PageRequest pageable = PageRequest.of(0, 10);
@@ -80,7 +82,8 @@ public class TeacherMainServiceImplTest {
     }
 
     @Test
-    void testGetQuestionList() {
+    @DisplayName("질문 목록을 조회할 수 있다.")
+    void 질문_목록을_조회할_수_있다() {
         // Given
         PageRequest pageable = PageRequest.of(0, 10);
         Member member = new Member("user3", "user3@example.com", Role.TEACHER, null, LoginType.GOOGLE, true);
@@ -104,7 +107,8 @@ public class TeacherMainServiceImplTest {
     }
 
     @Test
-    void testGetNewExamList() {
+    @DisplayName("출제할 시험 목록을 조회할 수 있다. ")
+    void 출제할_시험_목록을_조회할_수_있다() {
         // Given
         Long memberSeq = 1L;
         PageRequest pageable = PageRequest.of(0, 10);
@@ -142,7 +146,8 @@ public class TeacherMainServiceImplTest {
     }
 
     @Test
-    void testGetAuthoredExamList() {
+    @DisplayName("출제한 시험을 조회할 수 있다.")
+    void 출제한_시험을_조회할_수_있다() {
         // Given
         Long memberSeq = 1L;
         PageRequest pageable = PageRequest.of(0, 10);
