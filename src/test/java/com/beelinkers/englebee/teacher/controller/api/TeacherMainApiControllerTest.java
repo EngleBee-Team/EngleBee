@@ -1,10 +1,12 @@
 package com.beelinkers.englebee.teacher.controller.api;
 
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -49,7 +50,9 @@ public class TeacherMainApiControllerTest {
         Page<TeacherMainPageNewExamDTO> newExamPage = new PageImpl<>(List.of(new TeacherMainPageNewExamDTO(
             1L, 1L, "user2", "new 시험", "PREPARED"
         )));
-
+        Page<TeacherMainPageAuthoredExamDTO> quthoredExamPage = new PageImpl<>(List.of(new TeacherMainPageAuthoredExamDTO(
+            1L, 1L, "user2", "new 시험", "FEEDBACK_COMPLETED"
+        )));
 
         Mockito.when(teacherMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
@@ -57,10 +60,13 @@ public class TeacherMainApiControllerTest {
                 .thenReturn(questionPage);
         Mockito.when(teacherMainService.getNewExamList(anyLong(), any(Pageable.class)))
                 .thenReturn(newExamPage);
+        Mockito.when(teacherMainService.getAuthoredExamList(anyLong(), any(Pageable.class)))
+                .thenReturn(quthoredExamPage);
     }
 
     @Test
-    void testGetLectureList() throws Exception {
+    @DisplayName("강의 목록 조회 API 테스트")
+    void 강의_목록_조회_API_테스트() throws Exception {
         mockMvc.perform(get("/api/teacher/main/lecture")
             .param("memberSeq", "3")
             .param("page", "0")
@@ -73,40 +79,62 @@ public class TeacherMainApiControllerTest {
             .andExpect(jsonPath("$.content[0].createdAt").exists())
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][0]").value("어법"))
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][1]").value("중"))
-            .andExpect(jsonPath("$.pagination").exists())
             .andExpect(jsonPath("$.pagination.totalPages").value(1))
             .andExpect(jsonPath("$.pagination.totalElements").value(1))
-            .andExpect(jsonPath("$.pagination.currentPage").value(1)
-        );
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 
     @Test
-    void testGetQuestionList() throws Exception {
+    @DisplayName("질문 목록 조회 API 테스트")
+    void 질문_목록_조회_API_테스트() throws Exception {
         mockMvc.perform(get("/api/teacher/main/question")
-            .param("page", "0")
-            .param("size", "10")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content").isArray())
-            .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
-            .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
-            .andExpect(jsonPath("$.content[0].createdAt").exists())
-            .andExpect(jsonPath("$.pagination.currentPage").value(1)
-        );
+        .param("page", "0")
+        .param("size", "10")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").isArray())
+        .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
+        .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
+        .andExpect(jsonPath("$.content[0].createdAt").exists())
+        .andExpect(jsonPath("$.pagination.totalPages").value(1))
+        .andExpect(jsonPath("$.pagination.totalElements").value(1))
+        .andExpect(jsonPath("$.pagination.currentPage").value(1));
+        ;
     }
 
     @Test
-    void testGetNewExamList() throws Exception {
+    @DisplayName("출제 할 문제 목록 API 테스트")
+    void 출제_할_문제_목록_API_테스트() throws Exception {
         mockMvc.perform(get("/api/teacher/main/new-exam")
-            .param("memberSeq", "3")
-            .param("page", "0")
-            .param("size", "10")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content").isArray())
-            .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
-            .andExpect(jsonPath("$.content[0].title").value("new 시험"))
-            .andExpect(jsonPath("$.content[0].status").value("PREPARED")
-        );
+        .param("memberSeq", "3")
+        .param("page", "0")
+        .param("size", "10")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").isArray())
+        .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
+        .andExpect(jsonPath("$.content[0].title").value("new 시험"))
+        .andExpect(jsonPath("$.content[0].status").value("PREPARED"))
+        .andExpect(jsonPath("$.pagination.totalPages").value(1))
+        .andExpect(jsonPath("$.pagination.totalElements").value(1))
+        .andExpect(jsonPath("$.pagination.currentPage").value(1));
+    }
+
+    @Test
+    @DisplayName("출제 한 목록 조회 API 테스트")
+    void 출제_한_목록_조회_API_테스트() throws Exception {
+        mockMvc.perform(get("/api/teacher/main/authored-exam")
+        .param("memberSeq", "3")
+        .param("page", "0")
+        .param("size", "10")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").isArray())
+        .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
+        .andExpect(jsonPath("$.content[0].title").value("new 시험"))
+        .andExpect(jsonPath("$.content[0].status").value("FEEDBACK_COMPLETED"))
+        .andExpect(jsonPath("$.pagination.totalPages").value(1))
+        .andExpect(jsonPath("$.pagination.totalElements").value(1))
+        .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 }
