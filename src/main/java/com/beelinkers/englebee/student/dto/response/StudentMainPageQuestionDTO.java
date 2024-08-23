@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class StudentMainPageQuestionDTO {
     private Long seq;
-    private Long memberSeq;
+    private String memberNickname;
     private String title;
     private LocalDateTime createdAt;
 }
