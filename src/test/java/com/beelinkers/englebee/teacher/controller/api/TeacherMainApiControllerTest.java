@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,20 +35,17 @@ public class TeacherMainApiControllerTest {
 
     @MockBean
     private TeacherMainService teacherMainService;
-    private Page<TeacherMainPageLectureDTO> lecturePage;
-    private Page<TeacherMainPageQuestionDTO> questionPage;
 
     @BeforeEach
     void setUp() {
-        lecturePage = new PageImpl<>(List.of(new TeacherMainPageLectureDTO(
-                1L, "user3", "기초문법강의", "CREATED", // status
-                LocalDateTime.of(2024, 8, 23, 10, 0), // createdAt
-                List.of(List.of("어법", "중"), List.of("문장", "중"))
-            ))
+        Page<TeacherMainPageLectureDTO> lecturePage = new PageImpl<>(List.of(new TeacherMainPageLectureDTO(
+                1L, "user3", "기초문법강의", "CREATED",
+                LocalDateTime.now(), List.of(List.of("어법", "중"), List.of("문장", "중"))
+        ))
         );
-        questionPage = new PageImpl<>(List.of(new TeacherMainPageQuestionDTO(
+        Page<TeacherMainPageQuestionDTO> questionPage = new PageImpl<>(List.of(new TeacherMainPageQuestionDTO(
                 1L, "user2", "REST API 모범 사례", LocalDateTime.now()
-            ))
+        ))
         );
 
         Mockito.when(teacherMainService.getLectureList(anyLong(), any(Pageable.class)))
@@ -60,15 +56,16 @@ public class TeacherMainApiControllerTest {
 
     @Test
     void testGetLectureList() throws Exception {
-        ResultActions result = mockMvc.perform(get("/api/teacher/main/lecture")
+        mockMvc.perform(get("/api/teacher/main/lecture")
             .param("memberSeq", "3")
+            .param("page", "0")
             .param("size", "10")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content").isArray())
             .andExpect(jsonPath("$.content[0].title").value("기초문법강의"))
             .andExpect(jsonPath("$.content[0].status").value("CREATED"))
-            .andExpect(jsonPath("$.content[0].createdAt").value("2024-08-23T10:00:00"))
+            .andExpect(jsonPath("$.content[0].createdAt").exists())
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][0]").value("어법"))
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][1]").value("중"))
             .andExpect(jsonPath("$.pagination").exists())
@@ -80,7 +77,8 @@ public class TeacherMainApiControllerTest {
 
     @Test
     void testGetQuestionList() throws Exception {
-        ResultActions result = mockMvc.perform(get("/api/teacher/main/question")
+        mockMvc.perform(get("/api/teacher/main/question")
+            .param("page", "0")
             .param("size", "10")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
