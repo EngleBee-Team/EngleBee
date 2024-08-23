@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.teacher.controller.api;
 
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,19 +40,23 @@ public class TeacherMainApiControllerTest {
     @BeforeEach
     void setUp() {
         Page<TeacherMainPageLectureDTO> lecturePage = new PageImpl<>(List.of(new TeacherMainPageLectureDTO(
-                1L, "user3", "기초문법강의", "CREATED",
-                LocalDateTime.now(), List.of(List.of("어법", "중"), List.of("문장", "중"))
-        ))
-        );
+            1L, "user3", "기초문법강의", "CREATED",
+            LocalDateTime.now(), List.of(List.of("어법", "중"), List.of("문장", "중"))
+        )));
         Page<TeacherMainPageQuestionDTO> questionPage = new PageImpl<>(List.of(new TeacherMainPageQuestionDTO(
-                1L, "user2", "REST API 모범 사례", LocalDateTime.now()
-        ))
-        );
+            1L, "user2", "REST API 모범 사례", LocalDateTime.now()
+        )));
+        Page<TeacherMainPageNewExamDTO> newExamPage = new PageImpl<>(List.of(new TeacherMainPageNewExamDTO(
+            1L, 1L, "user2", "new 시험", "PREPARED"
+        )));
+
 
         Mockito.when(teacherMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
         Mockito.when(teacherMainService.getQuestionList(any(Pageable.class)))
                 .thenReturn(questionPage);
+        Mockito.when(teacherMainService.getNewExamList(anyLong(), any(Pageable.class)))
+                .thenReturn(newExamPage);
     }
 
     @Test
@@ -87,6 +92,21 @@ public class TeacherMainApiControllerTest {
             .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
             .andExpect(jsonPath("$.content[0].createdAt").exists())
             .andExpect(jsonPath("$.pagination.currentPage").value(1)
+        );
+    }
+
+    @Test
+    void testGetNewExamList() throws Exception {
+        mockMvc.perform(get("/api/teacher/main/new-exam")
+            .param("memberSeq", "3")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].studentNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("new 시험"))
+            .andExpect(jsonPath("$.content[0].status").value("PREPARED")
         );
     }
 }
