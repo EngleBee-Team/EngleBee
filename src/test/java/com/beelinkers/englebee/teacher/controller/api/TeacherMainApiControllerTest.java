@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.teacher.controller.api;
 
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageQuestionDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ public class TeacherMainApiControllerTest {
     @MockBean
     private TeacherMainService teacherMainService;
     private Page<TeacherMainPageLectureDTO> lecturePage;
+    private Page<TeacherMainPageQuestionDTO> questionPage;
 
     @BeforeEach
     void setUp() {
@@ -45,8 +47,15 @@ public class TeacherMainApiControllerTest {
                 List.of(List.of("어법", "중"), List.of("문장", "중"))
             ))
         );
+        questionPage = new PageImpl<>(List.of(new TeacherMainPageQuestionDTO(
+                1L, "user2", "REST API 모범 사례", LocalDateTime.now()
+            ))
+        );
+
         Mockito.when(teacherMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
+        Mockito.when(teacherMainService.getQuestionList(any(Pageable.class)))
+                .thenReturn(questionPage);
     }
 
     @Test
@@ -69,4 +78,17 @@ public class TeacherMainApiControllerTest {
         );
     }
 
+    @Test
+    void testGetQuestionList() throws Exception {
+        ResultActions result = mockMvc.perform(get("/api/teacher/main/question")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
+            .andExpect(jsonPath("$.content[0].createdAt").exists())
+            .andExpect(jsonPath("$.pagination.currentPage").value(1)
+        );
+    }
 }
