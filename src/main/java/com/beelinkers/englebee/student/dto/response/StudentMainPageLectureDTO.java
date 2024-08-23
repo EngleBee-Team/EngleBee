@@ -3,13 +3,16 @@ package com.beelinkers.englebee.student.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageNewExamDTO {
-    private Long seq;
-    private Long lectureSeq;
-    private String status;
+public class StudentMainPageLectureDTO {
+    private Long id;
+    private Long teacherSeq;
     private String title;
+    private String status;
+    private LocalDateTime createdAt;
+
 }

@@ -3,18 +3,18 @@ package com.beelinkers.englebee.student.dto.response.mapper;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.Question;
-import com.beelinkers.englebee.student.dto.response.MainPageSubmitExamDTO;
-import com.beelinkers.englebee.student.dto.response.MainPageLectureDTO;
-import com.beelinkers.englebee.student.dto.response.MainPageNewExamDTO;
-import com.beelinkers.englebee.student.dto.response.MainPageQuestionDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudentMainPageMapper {
 
     // main > lecture
-    public MainPageLectureDTO mainPageLectureDto(Lecture lecture) {
-        return new MainPageLectureDTO(
+    public StudentMainPageLectureDTO mainPageLectureDto(Lecture lecture) {
+        return new StudentMainPageLectureDTO(
             lecture.getSeq(),
             lecture.getTeacher().getSeq(),
             lecture.getTitle(),
@@ -24,8 +24,8 @@ public class StudentMainPageMapper {
     }
 
     // main > Q&A
-    public MainPageQuestionDTO mainPageQuestionDTO(Question question) {
-        return new MainPageQuestionDTO(
+    public StudentMainPageQuestionDTO mainPageQuestionDTO(Question question) {
+        return new StudentMainPageQuestionDTO(
             question.getSeq(),
             question.getMember().getSeq(),
             question.getTitle(),
@@ -34,8 +34,8 @@ public class StudentMainPageMapper {
     }
 
     // main > newExamList
-    public MainPageNewExamDTO mainPageNewExamDTO(Exam exam) {
-        return new MainPageNewExamDTO(
+    public StudentMainPageNewExamDTO mainPageNewExamDTO(Exam exam) {
+        return new StudentMainPageNewExamDTO(
             exam.getSeq(),
             exam.getLecture().getSeq(),
             exam.getStatus().name(),
@@ -44,8 +44,8 @@ public class StudentMainPageMapper {
     }
 
     // main > submitExamList
-    public MainPageSubmitExamDTO mainPageSubmitExamDTO(Exam exam) {
-        return new MainPageSubmitExamDTO(
+    public StudentMainPageSubmitExamDTO mainPageSubmitExamDTO(Exam exam) {
+        return new StudentMainPageSubmitExamDTO(
             exam.getSeq(),
             exam.getLecture().getSeq(),
             exam.getStatus().name(),

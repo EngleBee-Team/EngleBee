@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageQuestionDTO {
+public class StudentMainPageQuestionDTO {
     private Long seq;
     private Long memberSeq;
     private String title;

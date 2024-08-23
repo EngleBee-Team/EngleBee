@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageSubmitExamDTO {
+public class StudentMainPageNewExamDTO {
     private Long seq;
     private Long lectureSeq;
     private String status;

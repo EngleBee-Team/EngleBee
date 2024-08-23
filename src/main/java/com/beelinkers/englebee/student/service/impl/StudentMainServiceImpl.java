@@ -26,25 +26,25 @@ public class StudentMainServiceImpl implements StudentMainService {
     private final StudentMainPageMapper studentMainPageMapper;
 
     @Override
-    public Page<MainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
+    public Page<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
         return lectureRepository.findByStudentSeqAndStatus(memberSeq, LectureStatus.CREATED, pageable)
                 .map(studentMainPageMapper::mainPageLectureDto);
     }
 
     @Override
-    public Page<MainPageQuestionDTO> getQuestionList(Pageable pageable) {
+    public Page<StudentMainPageQuestionDTO> getQuestionList(Pageable pageable) {
         return questionRepository.findAll(pageable)
                 .map(studentMainPageMapper::mainPageQuestionDTO);
     }
 
     @Override
-    public Page<MainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
+    public Page<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
         return examRepository.findByLectureStudentSeqAndStatus(memberSeq,ExamStatus.PREPARED, pageable)
                 .map(studentMainPageMapper::mainPageNewExamDTO);
     }
 
     @Override
-    public Page<MainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable) {
+    public Page<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable) {
        return examRepository.findByLectureStudentSeqAndStatusIn(
                     memberSeq, List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable
                ).map(studentMainPageMapper::mainPageSubmitExamDTO);
