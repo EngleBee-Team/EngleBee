@@ -9,5 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
     // 학생 수강 목록 조회
     Page<Lecture> findByStudentSeqAndStatus(Long studentSeq, LectureStatus status, Pageable pageable);
+    // 선생님 강의 목록 조회
+    Page<Lecture> findByTeacherSeqAndStatus(Long teacherSeq, LectureStatus status, Pageable pageable);
 }
 
