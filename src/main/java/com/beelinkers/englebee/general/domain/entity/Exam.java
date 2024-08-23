@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,7 +39,7 @@ public class Exam extends BaseEntity {
   private Long seq;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "lecture_seq", nullable = false)
+  @JoinColumn(name = "lecture_seq", nullable = false, unique = true)
   private Lecture lecture;
 
   @Enumerated(EnumType.STRING)
@@ -52,5 +53,25 @@ public class Exam extends BaseEntity {
   private String feedback;
 
   @OneToMany(mappedBy = "exam", fetch = FetchType.LAZY)
-  private List<TeacherQuestion> questions = new ArrayList<>();
+  private List<TeacherQuestion> teacherQuestions = new ArrayList<>();
+
+  @Builder
+  public Exam(Lecture lecture, String title) {
+    this.lecture = lecture;
+    this.title = title;
+    this.status = ExamStatus.CREATED;
+  }
+
+  public void prepare() {
+    this.status = ExamStatus.PREPARED;
+  }
+
+  public void submit() {
+    this.status = ExamStatus.SUBMITTED;
+  }
+
+  public void addTeacherFeedback(String feedback) {
+    this.feedback = feedback;
+    this.status = ExamStatus.FEEDBACK_COMPLETED;
+  }
 }

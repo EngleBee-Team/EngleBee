@@ -1,5 +1,6 @@
 package com.beelinkers.englebee.auth.domain.entity;
 
+import com.beelinkers.englebee.auth.exception.InvalidStudentGradeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,4 +16,13 @@ public enum StudentGrade {
   TWELFTH_GRADE("고3");
 
   private final String koreanGrade;
+
+  public static StudentGrade fromKoreanGrade(String koreanGrade) {
+    for (StudentGrade grade : values()) {
+      if (grade.getKoreanGrade().equals(koreanGrade)) {
+        return grade;
+      }
+    }
+    throw new InvalidStudentGradeException("유효하지 않은 학년 입력입니다: " + koreanGrade);
+  }
 }

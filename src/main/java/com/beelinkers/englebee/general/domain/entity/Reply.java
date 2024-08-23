@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,5 +43,13 @@ public class Reply extends BaseEntity {
 
   @Column(name = "content", length = 2000, nullable = false)
   private String content;
+
+  @Builder
+  public Reply(Question question, Member author, String content) {
+    this.question = question;
+    this.member = author;
+    this.content = content;
+    question.getReplies().add(this);
+  }
 
 }

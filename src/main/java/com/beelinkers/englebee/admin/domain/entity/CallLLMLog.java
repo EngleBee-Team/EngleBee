@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,5 +31,10 @@ public class CallLLMLog extends BaseEntity {
 
   @Column(name = "token_count", nullable = false)
   private Long tokenCount;
+
+  @Builder
+  public CallLLMLog(Long tokenCount) {
+    this.tokenCount = tokenCount;
+  }
 
 }

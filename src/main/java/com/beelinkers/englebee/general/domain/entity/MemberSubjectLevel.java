@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,4 +39,10 @@ public class MemberSubjectLevel extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "subject_level_seq", nullable = false)
   private SubjectLevel subjectLevel;
+
+  @Builder
+  public MemberSubjectLevel(Member student, SubjectLevel subjectLevel) {
+    this.student = student;
+    this.subjectLevel = subjectLevel;
+  }
 }

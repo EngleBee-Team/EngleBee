@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,10 @@ public class SubjectLevel extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "level_code", nullable = false)
   private LevelCode levelCode;
+
+  @Builder
+  public SubjectLevel(SubjectCode subjectCode, LevelCode levelCode) {
+    this.subjectCode = subjectCode;
+    this.levelCode = levelCode;
+  }
 }

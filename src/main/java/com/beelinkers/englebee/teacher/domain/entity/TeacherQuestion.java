@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,10 +46,28 @@ public class TeacherQuestion extends BaseEntity {
   @Column(name = "correct_answer", nullable = false)
   private Integer correctAnswer;
 
+  @Column(name = "intent", length = 500)
+  private String intent;
+
   @Column(name = "student_answer")
   private Integer studentAnswer;
 
-  @Column(name = "intent", length = 500)
-  private String intent;
+  @Builder
+  public TeacherQuestion(String direction, String choices, Integer correctAnswer,
+      String intent) {
+    this.direction = direction;
+    this.choices = choices;
+    this.correctAnswer = correctAnswer;
+    this.intent = intent;
+  }
+
+  public void registerToExam(Exam exam) {
+    this.exam = exam;
+    exam.getTeacherQuestions().add(this);
+  }
+
+  public void insertStudentAnswer(Integer studentAnswer) {
+    this.studentAnswer = studentAnswer;
+  }
 
 }
