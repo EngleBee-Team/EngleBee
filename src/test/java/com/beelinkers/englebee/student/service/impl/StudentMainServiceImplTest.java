@@ -8,6 +8,7 @@ import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMainPageMapper;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,6 +131,31 @@ public class StudentMainServiceImplTest {
         // then
         assertThat(result.getTotalElements()).isEqualTo(1);
         assertThat(result.getContent().get(0).getTitle()).isEqualTo("풀어야 할 시험1");
+        assertThat(result.getContent().get(0).getTeacherNickname()).isEqualTo("user3");
+    }
+
+    @Test
+    @DisplayName("제출한 시험 목록을 조회할 수 있다")
+    void 제출한_시험_목록을_조회할_수_있다() {
+        // given
+        Exam exam = Exam.builder()
+                .lecture(Lecture.builder().teacher(Member.builder().nickname("user3").build()).build())
+                .title("풀었던 시험1")
+                .build();
+
+        Page<Exam> examPage = new PageImpl<>(List.of(exam));
+        StudentMainPageSubmitExamDTO examDTO = new StudentMainPageSubmitExamDTO(
+                1L, 1L, "SUBMITTED", "풀었던 시험1", "user3", LocalDateTime.now()
+        );
+        when(examRepository.findByLectureStudentSeqAndStatusIn(1L, List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable)).thenReturn(examPage);
+        when(studentMainPageMapper.mainPageSubmitExamDTO(exam)).thenReturn(examDTO);
+
+        // when
+        Page<StudentMainPageSubmitExamDTO> result = studentMainService.getSubmitExamList(1L, pageable);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getContent().get(0).getTitle()).isEqualTo("풀었던 시험1");
         assertThat(result.getContent().get(0).getTeacherNickname()).isEqualTo("user3");
     }
 }
