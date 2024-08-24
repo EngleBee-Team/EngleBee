@@ -1,12 +1,12 @@
 package com.beelinkers.englebee.student.service.impl;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
-import com.beelinkers.englebee.general.domain.entity.Lecture;
-import com.beelinkers.englebee.general.domain.entity.LectureStatus;
-import com.beelinkers.englebee.general.domain.entity.Question;
+import com.beelinkers.englebee.general.domain.entity.*;
+import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
 import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMainPageMapper;
 import com.beelinkers.englebee.student.service.StudentMainService;
@@ -44,6 +44,9 @@ public class StudentMainServiceImplTest {
     @MockBean
     private QuestionRepository questionRepository;
 
+    @MockBean
+    private ExamRepository examRepository;
+
     private Pageable pageable;
 
     @BeforeEach
@@ -72,10 +75,10 @@ public class StudentMainServiceImplTest {
         when(lectureRepository.findByStudentSeqAndStatus(1L, LectureStatus.CREATED, pageable)).thenReturn(lecturePage);
         when(studentMainPageMapper.mainPageLectureDto(lecture)).thenReturn(lectureDTO);
 
-        // When
+        // when
         Page<StudentMainPageLectureDTO> resultLecture = studentMainService.getLectureList(1L, pageable);
 
-        // Then
+        // then
         assertThat(resultLecture.getTotalElements()).isEqualTo(1);
         assertThat(resultLecture.getContent().get(0).getTitle()).isEqualTo("기초 문법 강의");
         assertThat(resultLecture.getContent().get(0).getTeacherNickname()).isEqualTo("user3");
@@ -105,4 +108,28 @@ public class StudentMainServiceImplTest {
         assertThat(resultQuestion.getContent().get(0).getCreatedAt()).isNotNull();
     }
 
+    @Test
+    @DisplayName("풀어야 할 시험 목록을 조회할 수 있다")
+    void 풀어야_할_시험_목록을_조회할_수_있다() {
+        // given
+        Exam exam = Exam.builder()
+                .lecture(Lecture.builder().teacher(Member.builder().nickname("user3").build()).build())
+                .title("풀어야 할 시험1")
+                .build();
+
+        Page<Exam> examPage = new PageImpl<>(List.of(exam));
+        StudentMainPageNewExamDTO examDTO = new StudentMainPageNewExamDTO(
+                1L, 1L, "CREATED", "풀어야 할 시험1", "user3", LocalDateTime.now()
+        );
+        when(examRepository.findByLectureStudentSeqAndStatus(1L, ExamStatus.PREPARED, pageable)).thenReturn(examPage);
+        when(studentMainPageMapper.mainPageNewExamDTO(exam)).thenReturn(examDTO);
+
+        // when
+        Page<StudentMainPageNewExamDTO> result = studentMainService.getNewExamList(1L, pageable);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getContent().get(0).getTitle()).isEqualTo("풀어야 할 시험1");
+        assertThat(result.getContent().get(0).getTeacherNickname()).isEqualTo("user3");
+    }
 }
