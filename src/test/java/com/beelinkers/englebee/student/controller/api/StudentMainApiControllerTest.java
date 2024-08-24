@@ -3,6 +3,7 @@ package com.beelinkers.englebee.student.controller.api;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,6 +51,10 @@ public class StudentMainApiControllerTest {
         Page<StudentMainPageNewExamDTO> newExamPage = new PageImpl<>(List.of(new StudentMainPageNewExamDTO(
                 1L, 1L, "PREPARED", "풀어야 할 시험", "user3", LocalDateTime.now()
         )));
+        Page<StudentMainPageSubmitExamDTO> submitExamPage = new PageImpl<>(List.of(
+                new StudentMainPageSubmitExamDTO(1L, 1L, "SUBMITTED", "제출된 시험", "user3", LocalDateTime.now()),
+                new StudentMainPageSubmitExamDTO(1L, 1L, "FEEDBACK_COMPLETED", "피드백 받은 시험", "user3", LocalDateTime.now())
+        ));
 
         Mockito.when(studentMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
@@ -57,6 +62,9 @@ public class StudentMainApiControllerTest {
                 .thenReturn(questionPage);
         Mockito.when(studentMainService.getNewExamList(anyLong(), any(Pageable.class)))
                 .thenReturn(newExamPage);
+        Mockito.when(studentMainService.getSubmitExamList(anyLong(), any(Pageable.class)))
+                .thenReturn(submitExamPage);
+
     }
 
     @Test
@@ -120,4 +128,26 @@ public class StudentMainApiControllerTest {
             .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 
+    @Test
+    @DisplayName("제출된 시험 목록 조회 API 테스트")
+    void 제출된_시험_목록_조회_API_테스트() throws Exception {
+        // when
+        mockMvc.perform(get("/api/student/main/submit-exams")
+            .param("memberSeq", "1")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].teacherNickname").value("user3"))
+            .andExpect(jsonPath("$.content[0].title").value("제출된 시험"))
+            .andExpect(jsonPath("$.content[0].status").value("SUBMITTED"))
+            .andExpect(jsonPath("$.content[1].teacherNickname").value("user3"))
+            .andExpect(jsonPath("$.content[1].title").value("피드백 받은 시험"))
+            .andExpect(jsonPath("$.content[1].status").value("FEEDBACK_COMPLETED"))
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(2))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
+    }
 }
