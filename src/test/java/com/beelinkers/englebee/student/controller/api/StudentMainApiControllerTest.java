@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,11 +47,16 @@ public class StudentMainApiControllerTest {
         Page<StudentMainPageQuestionDTO> questionPage = new PageImpl<>(List.of(new StudentMainPageQuestionDTO(
                 1L, "user2", "REST API 모범 사례", LocalDateTime.now()
         )));
+        Page<StudentMainPageNewExamDTO> newExamPage = new PageImpl<>(List.of(new StudentMainPageNewExamDTO(
+                1L, 1L, "PREPARED", "풀어야 할 시험", "user3", LocalDateTime.now()
+        )));
 
         Mockito.when(studentMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
         Mockito.when(studentMainService.getQuestionList(any(Pageable.class)))
                 .thenReturn(questionPage);
+        Mockito.when(studentMainService.getNewExamList(anyLong(), any(Pageable.class)))
+                .thenReturn(newExamPage);
     }
 
     @Test
@@ -94,5 +100,24 @@ public class StudentMainApiControllerTest {
             .andExpect(jsonPath("$.pagination.currentPage").value(1));
     }
 
+    @Test
+    @DisplayName("풀어야 할 시험 목록 조회 API 테스트")
+    void 풀어야_할_시험_목록_조회_API_테스트() throws Exception {
+        // when
+        mockMvc.perform(get("/api/student/main/new-exams")
+            .param("memberSeq", "2")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].teacherNickname").value("user3"))
+            .andExpect(jsonPath("$.content[0].title").value("풀어야 할 시험"))
+            .andExpect(jsonPath("$.content[0].status").value("PREPARED"))
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(1))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
+    }
 
 }
