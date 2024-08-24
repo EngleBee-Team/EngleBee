@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,9 +43,14 @@ public class StudentMainApiControllerTest {
                 1L, "teacher1", "기초문법강의", "CREATED",
                 LocalDateTime.now(), List.of(List.of("어법", "중"), List.of("문장", "중"))
         )));
+        Page<StudentMainPageQuestionDTO> questionPage = new PageImpl<>(List.of(new StudentMainPageQuestionDTO(
+                1L, "user2", "REST API 모범 사례", LocalDateTime.now()
+        )));
 
         Mockito.when(studentMainService.getLectureList(anyLong(), any(Pageable.class)))
                 .thenReturn(lecturePage);
+        Mockito.when(studentMainService.getQuestionList(any(Pageable.class)))
+                .thenReturn(questionPage);
     }
 
     @Test
@@ -64,6 +70,25 @@ public class StudentMainApiControllerTest {
             .andExpect(jsonPath("$.content[0].createdAt").exists())
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][0]").value("어법"))
             .andExpect(jsonPath("$.content[0].subjectLevelCode[0][1]").value("중"))
+            .andExpect(jsonPath("$.pagination.totalPages").value(1))
+            .andExpect(jsonPath("$.pagination.totalElements").value(1))
+            .andExpect(jsonPath("$.pagination.currentPage").value(1));
+    }
+
+    @Test
+    @DisplayName("질문 목록 조회 API 테스트")
+    void 질문_목록_조회_API_테스트() throws Exception {
+        // when
+        mockMvc.perform(get("/api/student/main/question")
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content[0].memberNickname").value("user2"))
+            .andExpect(jsonPath("$.content[0].title").value("REST API 모범 사례"))
+            .andExpect(jsonPath("$.content[0].createdAt").exists())
             .andExpect(jsonPath("$.pagination.totalPages").value(1))
             .andExpect(jsonPath("$.pagination.totalElements").value(1))
             .andExpect(jsonPath("$.pagination.currentPage").value(1));
