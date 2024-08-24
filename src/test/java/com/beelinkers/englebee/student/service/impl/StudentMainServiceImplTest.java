@@ -3,8 +3,11 @@ package com.beelinkers.englebee.student.service.impl;
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.LectureStatus;
+import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
+import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMainPageQuestionDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMainPageMapper;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +41,9 @@ public class StudentMainServiceImplTest {
     @MockBean
     private LectureRepository lectureRepository;
 
+    @MockBean
+    private QuestionRepository questionRepository;
+
     private Pageable pageable;
 
     @BeforeEach
@@ -48,7 +54,7 @@ public class StudentMainServiceImplTest {
     @Test
     @DisplayName("수강하는 수업을 조회할 수 있다")
     void 수강하는_수업을_조회할_수_있다() {
-        // Given
+        // given
         Member teacher = Member.builder().nickname("user3").build();
         Member student = Member.builder().nickname("user2").build();
 
@@ -63,7 +69,6 @@ public class StudentMainServiceImplTest {
                 1L, "user3", "기초 문법 강의", "CREATED", LocalDateTime.now(), List.of()
         );
 
-        // Mock 설정
         when(lectureRepository.findByStudentSeqAndStatus(1L, LectureStatus.CREATED, pageable)).thenReturn(lecturePage);
         when(studentMainPageMapper.mainPageLectureDto(lecture)).thenReturn(lectureDTO);
 
@@ -74,6 +79,30 @@ public class StudentMainServiceImplTest {
         assertThat(resultLecture.getTotalElements()).isEqualTo(1);
         assertThat(resultLecture.getContent().get(0).getTitle()).isEqualTo("기초 문법 강의");
         assertThat(resultLecture.getContent().get(0).getTeacherNickname()).isEqualTo("user3");
+    }
+
+    @Test
+    @DisplayName("질문 목록을 조회할 수 있다")
+    void 질문_목록을_조회할_수_있다(){
+        // given
+        Question question = Question.builder()
+                .title("질문1")
+                .build();
+        Page<Question> questionPage = new PageImpl<>(List.of(question));
+        StudentMainPageQuestionDTO questionDTO = new StudentMainPageQuestionDTO(
+          1L, "user2", "질문1", LocalDateTime.now()
+        );
+        when(questionRepository.findAll(pageable)).thenReturn(questionPage);
+        when(studentMainPageMapper.mainPageQuestionDTO(question)).thenReturn(questionDTO);
+
+        // when
+        Page<StudentMainPageQuestionDTO> resultQuestion = studentMainService.getQuestionList(pageable);
+
+        // then
+        assertThat(resultQuestion.getTotalElements()).isEqualTo(1);
+        assertThat(resultQuestion.getContent().get(0).getTitle()).isEqualTo("질문1");
+        assertThat(resultQuestion.getContent().get(0).getMemberNickname()).isEqualTo("user2");
+        assertThat(resultQuestion.getContent().get(0).getCreatedAt()).isNotNull();
     }
 
 }
