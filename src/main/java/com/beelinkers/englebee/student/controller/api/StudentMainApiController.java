@@ -1,6 +1,5 @@
 package com.beelinkers.englebee.student.controller.api;
 
-import com.beelinkers.englebee.general.controller.page.MainPageController;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.student.dto.response.*;
@@ -25,15 +24,15 @@ public class StudentMainApiController {
   private final StudentMainService studentMainService;
 
   @GetMapping("/lecture")
-  public ResponseEntity<GeneralPagedResponseDTO<MainPageLectureDTO>> getLectureList(
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageLectureDTO>> getLectureList(
           @RequestParam("memberSeq") Long memberSeq,
           @PageableDefault(size = 10) Pageable pageable) {
-    Page<MainPageLectureDTO> lectureList = studentMainService.getLectureList(memberSeq, pageable);
+    Page<StudentMainPageLectureDTO> lectureList = studentMainService.getLectureList(memberSeq, pageable);
     PaginationResponseDTO pagination = new PaginationResponseDTO(
       lectureList.getNumber() + 1, lectureList.getSize(), lectureList.getTotalPages(),
       lectureList.getTotalElements(), lectureList.hasPrevious(), lectureList.hasNext()
     );
-    GeneralPagedResponseDTO<MainPageLectureDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+    GeneralPagedResponseDTO<StudentMainPageLectureDTO> pagedPagination = new GeneralPagedResponseDTO<>(
             lectureList.getContent(),
             pagination
     );
@@ -41,14 +40,14 @@ public class StudentMainApiController {
   }
 
   @GetMapping("/question")
-  public ResponseEntity<GeneralPagedResponseDTO<MainPageQuestionDTO>> getQuestionList(
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageQuestionDTO>> getQuestionList(
           @PageableDefault(size = 10) Pageable pageable) {
-    Page<MainPageQuestionDTO> questionList = studentMainService.getQuestionList(pageable);
+    Page<StudentMainPageQuestionDTO> questionList = studentMainService.getQuestionList(pageable);
     PaginationResponseDTO pagination = new PaginationResponseDTO(
             questionList.getNumber()+1, questionList.getSize(),questionList.getTotalPages(),
             questionList.getTotalElements(), questionList.hasPrevious(), questionList.hasNext()
     );
-    GeneralPagedResponseDTO<MainPageQuestionDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+    GeneralPagedResponseDTO<StudentMainPageQuestionDTO> pagedPagination = new GeneralPagedResponseDTO<>(
             questionList.getContent(),
             pagination
     );
@@ -56,15 +55,15 @@ public class StudentMainApiController {
   }
 
   @GetMapping("/new-exams")
-  public ResponseEntity<GeneralPagedResponseDTO<MainPageNewExamDTO>> getNewExamList(
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageNewExamDTO>> getNewExamList(
           @RequestParam("memberSeq")Long memberSeq,
           @PageableDefault(size = 10) Pageable pageable) {
-    Page<MainPageNewExamDTO> newExamList = studentMainService.getNewExamList(memberSeq, pageable);
+    Page<StudentMainPageNewExamDTO> newExamList = studentMainService.getNewExamList(memberSeq, pageable);
     PaginationResponseDTO pagination = new PaginationResponseDTO(
             newExamList.getNumber()+1, newExamList.getSize(), newExamList.getTotalPages(),
             newExamList.getTotalElements(), newExamList.hasPrevious(), newExamList.hasNext()
     );
-    GeneralPagedResponseDTO<MainPageNewExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+    GeneralPagedResponseDTO<StudentMainPageNewExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
             newExamList.getContent(),
             pagination
     );
@@ -72,15 +71,15 @@ public class StudentMainApiController {
   }
 
   @GetMapping("/submit-exams")
-  public ResponseEntity<GeneralPagedResponseDTO<MainPageSubmitExamDTO>> getSubmitExamList(
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO>> getSubmitExamList(
           @RequestParam("memberSeq") Long memberSeq,
           @PageableDefault(size = 10) Pageable pageable ) {
-    Page<MainPageSubmitExamDTO> submitExamList = studentMainService.getSubmitExamList(memberSeq, pageable);
+    Page<StudentMainPageSubmitExamDTO> submitExamList = studentMainService.getSubmitExamList(memberSeq, pageable);
     PaginationResponseDTO pagination = new PaginationResponseDTO(
             submitExamList.getNumber()+1, submitExamList.getSize(), submitExamList.getTotalPages(),
             submitExamList.getTotalElements(), submitExamList.hasPrevious(), submitExamList.hasNext()
     );
-    GeneralPagedResponseDTO<MainPageSubmitExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
+    GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
       submitExamList.getContent(),
       pagination
     );

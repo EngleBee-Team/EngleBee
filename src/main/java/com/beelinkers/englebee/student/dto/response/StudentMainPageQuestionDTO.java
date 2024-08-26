@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageSubmitExamDTO {
+public class StudentMainPageQuestionDTO {
     private Long seq;
-    private Long lectureSeq;
-    private String status;
+    private String memberNickname;
     private String title;
+    private LocalDateTime createdAt;
 }

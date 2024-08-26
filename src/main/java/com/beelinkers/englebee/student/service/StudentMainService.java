@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface StudentMainService {
-    Page<MainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable);
-    Page<MainPageQuestionDTO> getQuestionList(Pageable pageable);
-    Page<MainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable);
-    Page<MainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable);
+    Page<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable);
+    Page<StudentMainPageQuestionDTO> getQuestionList(Pageable pageable);
+    Page<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable);
+    Page<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable);
 
 }

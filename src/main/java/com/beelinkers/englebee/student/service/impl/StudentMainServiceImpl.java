@@ -29,29 +29,29 @@ public class StudentMainServiceImpl implements StudentMainService {
     private final StudentMainPageMapper studentMainPageMapper;
 
     @Override
-    @Transactional(readOnly=true)
-    public Page<MainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
         return lectureRepository.findByStudentSeqAndStatus(memberSeq, LectureStatus.CREATED, pageable)
                 .map(studentMainPageMapper::mainPageLectureDto);
     }
 
     @Override
-    @Transactional(readOnly=true)
-    public Page<MainPageQuestionDTO> getQuestionList(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<StudentMainPageQuestionDTO> getQuestionList(Pageable pageable) {
         return questionRepository.findAll(pageable)
                 .map(studentMainPageMapper::mainPageQuestionDTO);
     }
 
     @Override
-    @Transactional(readOnly=true)
-    public Page<MainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
         return examRepository.findByLectureStudentSeqAndStatus(memberSeq,ExamStatus.PREPARED, pageable)
                 .map(studentMainPageMapper::mainPageNewExamDTO);
     }
 
     @Override
-    @Transactional(readOnly=true)
-    public Page<MainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable) {
        return examRepository.findByLectureStudentSeqAndStatusIn(
                     memberSeq, List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable
                ).map(studentMainPageMapper::mainPageSubmitExamDTO);

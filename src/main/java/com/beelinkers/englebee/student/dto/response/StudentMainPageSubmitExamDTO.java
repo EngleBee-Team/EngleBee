@@ -9,9 +9,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageQuestionDTO {
+public class StudentMainPageSubmitExamDTO {
     private Long seq;
-    private Long memberSeq;
+    private Long lectureSeq;
+    private String status;
     private String title;
+    private String teacherNickname;
     private LocalDateTime createdAt;
 }
