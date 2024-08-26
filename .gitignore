@@ -38,6 +38,5 @@ out/
 
 ### gradle
 gradle/
-gradlew
 gradlew.bat
-
+gradlew
