@@ -113,4 +113,5 @@ public class Member extends BaseEntity {
     return status.isDeActivated();
   }
 
+
 }

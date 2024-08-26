@@ -1,0 +1,67 @@
+name: CICD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  # Docker 이미지를 빌드하고 Docker Hub에 푸시하는 작업
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      # 1. Docker 이미지를 먼저 빌드
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/englebee:latest .
+
+      # 2. DockerHub 로그인 (빌드 후 로그인)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 3. Docker 이미지를 Docker Hub에 푸시
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/englebee:latest
+
+  # Docker 이미지를 EC2에서 실행하는 작업
+  run-docker-image-on-ec2:
+    needs: build-docker-image
+    runs-on: ubuntu-latest
+
+    steps:
+      # SSH 클라이언트 설치
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      # SSH 키 설정
+      - name: Add SSH key
+        run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem && chmod 600 key.pem
+
+      # EC2에서 Docker 명령어 실행
+      - name: SSH and Run Docker Commands on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+            sudo usermod -aG docker $USER
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/englebee:latest
+
+            # 존재하는 경우에만 컨테이너를 중지 및 삭제
+            if [ "$(sudo docker ps -aq -f name=englebee)" ]; then
+              sudo docker stop englebee
+              sudo docker rm englebee
+            fi
+
+            # Docker 컨테이너 실행 시 환경 변수 주입
+            sudo docker run --name englebee -d -p 8080:8080 \
+              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+              ${{ secrets.DOCKERHUB_USERNAME }}/englebee:latest
+
+            sudo docker system prune -f
+          EOF
+
