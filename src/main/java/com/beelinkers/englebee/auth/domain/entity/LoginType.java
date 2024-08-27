@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum LoginType {
-  GOOGLE
+  GOOGLE, NAVER
 
 }
