@@ -36,6 +36,19 @@
     table tbody tr {
       background-color: white !important;
     }
+     .member-level-chart{
+       width: 400px;
+       height: 400px;
+     }
+    .chart-wrap{
+      display: flex;
+      height: 400px;
+    }
+    canvas{
+      display: block;
+      width: 400px;
+      height: 100%;
+    }
   </style>
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -44,6 +57,11 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <!--chart-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -73,7 +91,11 @@
         <h5>태그별 멤버 분표</h5>
       </div>
       <div class="card-body card-body-hr">
-        멤버 태그별 분포 차트를 볼 수 있습니다
+        <div class = "chart-wrap">
+          <canvas id="grammer-count" class="member-level-chart"></canvas>
+          <canvas id="sentence-count" class="member-level-chart"></canvas>
+          <canvas id="word-count" class="member-level-chart"></canvas>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -115,6 +137,171 @@
     <!— Purchase the pro version with-->
   </div>
 </footer>
+<script>
+  $(function(){
 
+    function fetchData() {
+      $.ajax({
+        url: '/api/admin/userlevel',
+        method: 'GET',
+        contentType: "application/json",
+        success: function (data) {
+
+          const grammarList = data.grammarList;
+          const sentenceList = data.sentenceList;
+          const wordList = data.wordList;
+          console.log("성공" + grammarList);
+
+          grammarList.forEach(function (item) {
+            console.log(item.levelCode + ": " + item.count);
+          });
+
+          // levelCode와 count를 별도의 배열로 분리
+          const grammerLabels = grammarList.map(item => item.levelCode);  // 레벨 코드들
+          const grammerCounts = grammarList.map(item => item.count);  // 각 레벨에 해당하는 카운트
+
+          const sentenceLabels = sentenceList.map(item => item.levelCode);
+          const sentenceCounts = sentenceList.map(item => item.count);
+
+          const wordLabels = wordList.map(item => item.levelCode);
+          const wordCounts = wordList.map(item => item.count);
+
+          const ctx = document.getElementById('grammer-count').getContext('2d');
+          const grammerCanvas = document.getElementById('grammer-count');
+          grammerCanvas.style.width = '400px';
+          grammerCanvas.style.height = '100%';
+          const grammerchart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: grammerLabels,  // 차트의 레이블 (레벨 코드)
+              datasets: [{
+                label: 'Grammar Levels',
+                data: grammerCounts,  // 각 레벨의 카운트
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: 'Grammar Levels Distribution'
+                }
+              }
+            },
+          });
+
+          const sentenceCtx = document.getElementById('sentence-count').getContext('2d');
+          const sentenceChart = new Chart(sentenceCtx, {
+            type: 'pie',
+            data: {
+              labels: sentenceLabels,  // 차트의 레이블 (레벨 코드)
+              datasets: [{
+                label: 'Sentence Levels',
+                data: sentenceCounts,  // 각 레벨의 카운트
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: 'Sentence Levels Distribution'
+                }
+              }
+            },
+          });
+
+                const wordCtx = document.getElementById('word-count').getContext('2d');
+                const wordChart = new Chart(wordCtx, {
+                  type: 'pie',
+                  data: {
+                    labels: wordLabels,  // 차트의 레이블 (레벨 코드)
+                    datasets: [{
+                      label: 'Sentence Levels',
+                      data: wordCounts,  // 각 레벨의 카운트
+                      backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                      ],
+                      borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Word Levels Distribution'
+                      }
+                    }
+                  },
+                });
+
+              },
+
+              error: function () {
+                console.error('[ERROR] 데이터를 불러오던 도중 에러가 발생했습니다');
+              }
+            });
+        }
+
+    fetchData();
+  })
+</script>
 </body>
 </html>
