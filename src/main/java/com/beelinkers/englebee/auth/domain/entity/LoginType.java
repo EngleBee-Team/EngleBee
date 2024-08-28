@@ -1,6 +1,6 @@
 package com.beelinkers.englebee.auth.domain.entity;
 
-import com.beelinkers.englebee.auth.exception.InvalidStudentGradeException;
+import com.beelinkers.englebee.auth.exception.InvalidLoginTypeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ public enum LoginType {
         return loginType;
       }
     }
-    throw new InvalidStudentGradeException("유효하지 않은 로그인 타입 입력입니다: " + alias);
+    throw new InvalidLoginTypeException("유효하지 않은 로그인 타입 입력입니다: " + alias);
   }
 
   public boolean isGoogle() {
