@@ -86,7 +86,7 @@ public class MemberTest {
         .build();
 
     // when
-    member.signOut();
+    member.deactivate();
 
     // then
     assertThat(member.isActive()).isFalse();

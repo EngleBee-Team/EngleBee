@@ -89,7 +89,7 @@ public class Member extends BaseEntity {
     this.refreshToken = refreshToken;
   }
 
-  public void signOut() {
+  public void deactivate() {
     this.status = MemberStatus.DEACTIVATED;
   }
 
@@ -112,6 +112,5 @@ public class Member extends BaseEntity {
   public boolean isDeactivated() {
     return status.isDeActivated();
   }
-
-
+  
 }

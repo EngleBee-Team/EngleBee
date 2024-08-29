@@ -12,4 +12,6 @@ public interface AuthService {
 
   Member signupTeacher(SignupProgressSessionMember signupProgressSessionMember,
       TeacherSignupRequestDTO teacherSignupRequestDTO);
+
+  void deactivateAccount(Long memberSeq);
 }

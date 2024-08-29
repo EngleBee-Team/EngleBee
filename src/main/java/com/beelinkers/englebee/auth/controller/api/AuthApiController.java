@@ -3,6 +3,7 @@ package com.beelinkers.englebee.auth.controller.api;
 import static com.beelinkers.englebee.auth.constant.AuthConstant.SESSION_MEMBER_KEY;
 import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS_SESSION_MEMBER_KEY;
 
+import com.beelinkers.englebee.auth.annotation.LoginMember;
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
@@ -57,6 +58,15 @@ public class AuthApiController {
     httpSession.setAttribute(SESSION_MEMBER_KEY,
         new SessionMember(member.getSeq(), member.getRole()));
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @PostMapping("/account/deactivate")
+  public ResponseEntity<Void> deactivate(@LoginMember SessionMember sessionMember,
+      HttpSession httpSession) {
+    Long memberSeq = sessionMember.getSeq();
+    authService.deactivateAccount(memberSeq);
+    httpSession.invalidate();
+    return ResponseEntity.ok().build();
   }
 
 }
