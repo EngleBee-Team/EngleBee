@@ -22,7 +22,7 @@ public class MainPageController {
 
     log.info("sessionMember = {}", sessionMember);
     if (sessionMember == null) {
-      return "/common-main";
+      return "common-main";
     }
 
     Long memberSeq = sessionMember.getSeq();

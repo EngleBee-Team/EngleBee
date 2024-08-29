@@ -14,10 +14,10 @@ public class SignupProgressPageController {
   public String getSignupProgressPage(
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember) {
     if (signupProgressSessionMember == null) {
-      return "/common-main";
+      return "common-main";
     }
     log.info("signup progress session = {}", signupProgressSessionMember);
-    return "/auth/signup-progress";
+    return "auth/signup-progress";
   }
 
 }
