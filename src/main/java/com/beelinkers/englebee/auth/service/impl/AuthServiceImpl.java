@@ -8,6 +8,8 @@ import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
+import com.beelinkers.englebee.general.exception.MemberNicknameDuplicatedException;
+import com.beelinkers.englebee.general.service.GeneralMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,12 @@ public class AuthServiceImpl implements AuthService {
 
   private final MemberRepository memberRepository;
 
+  private final GeneralMemberService generalMemberService;
+
   @Override
   public Member signupStudent(SignupProgressSessionMember signupProgressSessionMember,
       StudentSignupRequestDTO studentSignupRequestDTO) {
+    checkNicknameDuplicated(studentSignupRequestDTO.getNickname());
     Member student = Member.builder()
         .email(signupProgressSessionMember.getEmail())
         .role(Role.STUDENT)
@@ -32,12 +37,14 @@ public class AuthServiceImpl implements AuthService {
         .grade(StudentGrade.fromKoreanGrade(studentSignupRequestDTO.getGrade()))
         .personalInfoCollectionAgreed(studentSignupRequestDTO.getPersonalInfoCollectionAgreed())
         .build();
+    log.debug("학생 회원 가입 완료 : {}", student.getNickname());
     return memberRepository.save(student);
   }
 
   @Override
   public Member signupTeacher(SignupProgressSessionMember signupProgressSessionMember,
       TeacherSignupRequestDTO teacherSignupRequestDTO) {
+    checkNicknameDuplicated(teacherSignupRequestDTO.getNickname());
     Member teacher = Member.builder()
         .email(signupProgressSessionMember.getEmail())
         .role(Role.TEACHER)
@@ -46,6 +53,13 @@ public class AuthServiceImpl implements AuthService {
         .grade(null)
         .personalInfoCollectionAgreed(teacherSignupRequestDTO.getPersonalInfoCollectionAgreed())
         .build();
+    log.debug("선생님 회원 가입 완료 : {}", teacher.getNickname());
     return memberRepository.save(teacher);
+  }
+
+  private void checkNicknameDuplicated(String nickname) {
+    if (generalMemberService.checkNicknameDuplicated(nickname)) {
+      throw new MemberNicknameDuplicatedException("중복된 닉네임입니다.");
+    }
   }
 }
