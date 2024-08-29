@@ -44,9 +44,6 @@ public class Member extends BaseEntity {
   @Column(name = "email", length = 100, nullable = false)
   private String email;
 
-  @Column(name = "profile", length = 255)
-  private String profile;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "role", length = 20, nullable = false)
   private Role role;
@@ -58,9 +55,6 @@ public class Member extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "grade", length = 20)
   private StudentGrade grade;
-
-  @Column(name = "refresh_token", length = 255)
-  private String refreshToken;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "login_type", length = 20)
@@ -79,14 +73,6 @@ public class Member extends BaseEntity {
     this.grade = grade;
     this.loginType = loginType;
     this.personalInfoCollectionAgreed = personalInfoCollectionAgreed;
-  }
-
-  public void updateProfile(String profileUrl) {
-    this.profile = profileUrl;
-  }
-
-  public void updateRefreshToken(String refreshToken) {
-    this.refreshToken = refreshToken;
   }
 
   public void deactivate() {
@@ -112,5 +98,5 @@ public class Member extends BaseEntity {
   public boolean isDeactivated() {
     return status.isDeActivated();
   }
-  
+
 }
