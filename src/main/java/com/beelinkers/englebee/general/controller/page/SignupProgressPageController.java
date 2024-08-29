@@ -1,7 +1,7 @@
 package com.beelinkers.englebee.general.controller.page;
 
+import com.beelinkers.englebee.auth.annotation.SignupProgressMember;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SignupProgressPageController {
 
   @GetMapping("/signup")
-  public String getSignupProgressPage(HttpSession httpSession) {
-    SignupProgressSessionMember session = (SignupProgressSessionMember) httpSession.getAttribute(
-        "SIGNUP_PROGRESS_SESSION_MEMBER");
-    if (session == null) {
+  public String getSignupProgressPage(
+      @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember) {
+    if (signupProgressSessionMember == null) {
       return "/common-main";
     }
-    log.info("signup progress session = {}", session);
+    log.info("signup progress session = {}", signupProgressSessionMember);
     return "/auth/signup-progress";
   }
 

@@ -4,6 +4,7 @@ import static com.beelinkers.englebee.auth.constant.AuthConstant.SESSION_MEMBER_
 import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS_SESSION_MEMBER_KEY;
 
 import com.beelinkers.englebee.auth.annotation.LoginMember;
+import com.beelinkers.englebee.auth.annotation.SignupProgressMember;
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
@@ -31,42 +32,46 @@ public class AuthApiController {
   private final AuthService authService;
 
   @PostMapping("/signup/student")
-  public ResponseEntity<Void> signupStudent(HttpSession httpSession,
-      @RequestBody @Valid StudentSignupRequestDTO studentSignupRequestDTO) {
-    SignupProgressSessionMember signupProgressSessionMember = (SignupProgressSessionMember) httpSession.getAttribute(
-        SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
-    if (signupProgressSessionMember == null) {
-      throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
-    }
+  public ResponseEntity<Void> signupStudent(
+      @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
+      @RequestBody @Valid StudentSignupRequestDTO studentSignupRequestDTO,
+      HttpSession httpSession) {
+    checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     Member member = authService.signupStudent(signupProgressSessionMember, studentSignupRequestDTO);
-    httpSession.removeAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
-    httpSession.setAttribute(SESSION_MEMBER_KEY,
-        new SessionMember(member.getSeq(), member.getRole()));
+    makeMemberSession(httpSession, member);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/signup/teacher")
-  public ResponseEntity<Void> signupTeacher(HttpSession httpSession,
-      @RequestBody @Valid TeacherSignupRequestDTO teacherSignupRequestDTO) {
-    SignupProgressSessionMember signupProgressSessionMember = (SignupProgressSessionMember) httpSession.getAttribute(
-        SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
-    if (signupProgressSessionMember == null) {
-      throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
-    }
+  public ResponseEntity<Void> signupTeacher(
+      @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
+      @RequestBody @Valid TeacherSignupRequestDTO teacherSignupRequestDTO,
+      HttpSession httpSession) {
+    checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     Member member = authService.signupTeacher(signupProgressSessionMember, teacherSignupRequestDTO);
-    httpSession.removeAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
-    httpSession.setAttribute(SESSION_MEMBER_KEY,
-        new SessionMember(member.getSeq(), member.getRole()));
+    makeMemberSession(httpSession, member);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/account/deactivate")
   public ResponseEntity<Void> deactivate(@LoginMember SessionMember sessionMember,
       HttpSession httpSession) {
-    Long memberSeq = sessionMember.getSeq();
-    authService.deactivateAccount(memberSeq);
+    authService.deactivateAccount(sessionMember.getSeq());
     httpSession.invalidate();
-    return ResponseEntity.ok().build();
+    return ResponseEntity.noContent().build();
+  }
+
+  private void checkSignupProgressMemberSessionExist(
+      SignupProgressSessionMember signupProgressSessionMember) {
+    if (signupProgressSessionMember == null) {
+      throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
+    }
+  }
+
+  private void makeMemberSession(HttpSession httpSession, Member member) {
+    httpSession.removeAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
+    httpSession.setAttribute(SESSION_MEMBER_KEY,
+        new SessionMember(member.getSeq(), member.getRole()));
   }
 
 }
