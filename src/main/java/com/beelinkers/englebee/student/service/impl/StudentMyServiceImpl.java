@@ -3,9 +3,11 @@ package com.beelinkers.englebee.student.service.impl;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMyPageMapper;
 import com.beelinkers.englebee.student.service.StudentMyService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,5 +33,13 @@ public class StudentMyServiceImpl implements StudentMyService {
     return createdExamList.map(studentMyPageMapper::studentMyPageCreatedExam);
   }
 
+  @Override
+  @Transactional(readOnly = true)
+  public Page<StudentMyPageCompletedExamDTO> getStudentMyCompletedExamInfo(Long memberSeq,
+      Pageable pageable) {
+    Page<Exam> completedExamList = examRepository.findByLectureStudentSeqAndStatusIn(memberSeq,
+        List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable);
+    return completedExamList.map(studentMyPageMapper::studentMyPageCompletedExam);
+  }
 
 }

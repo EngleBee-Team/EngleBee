@@ -2,6 +2,7 @@ package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
 import com.beelinkers.englebee.student.service.StudentMyService;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,24 @@ public class StudentMyApiController {
     return ResponseEntity.ok(createdExamPagination);
   }
 
+  @GetMapping("/completed-exam")
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMyPageCompletedExamDTO>> getStudentMyCompletedExam(
+      @RequestParam("memberSeq") Long memberSeq,
+      @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<StudentMyPageCompletedExamDTO> completedExamList = studentMyService.getStudentMyCompletedExamInfo(
+        memberSeq, pageable);
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+        completedExamList.getNumber(), completedExamList.getSize(),
+        completedExamList.getTotalPages(),
+        completedExamList.getTotalElements(), completedExamList.hasPrevious(),
+        completedExamList.hasNext()
+    );
+    GeneralPagedResponseDTO<StudentMyPageCompletedExamDTO> completedExamPagination = new GeneralPagedResponseDTO<>(
+        completedExamList.getContent(), pagination
+    );
+
+    return ResponseEntity.ok(completedExamPagination);
+  }
 
 }
