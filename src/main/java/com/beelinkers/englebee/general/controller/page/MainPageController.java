@@ -1,39 +1,41 @@
 package com.beelinkers.englebee.general.controller.page;
 
+import com.beelinkers.englebee.auth.annotation.LoginMember;
+import com.beelinkers.englebee.auth.domain.entity.Role;
+import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.general.service.MainPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainPageController {
 
-    private final MainPageService mainPageService;
+  private final MainPageService mainPageService;
 
-    @GetMapping("/main")
-    public String getMainPage(/*@AuthenticationPrincipal UserDetails*/
-            @RequestParam("memberSeq") Long memberSeq, Model model) {
-    /*
-      TODO : JWT Token 확인 이후, ROLE에 따라
-       /my 에 들어온 요청을 각각 다른 페이지로 렌더링
-    */
-        String userRole = mainPageService.getUserRole(memberSeq);
+  @GetMapping("/main")
+  public String getMainPage(@LoginMember SessionMember sessionMember, Model model) {
 
-        model.addAttribute("memberSeq", memberSeq);
-        model.addAttribute("nickname", mainPageService.getNickname(memberSeq));
-
-        if (userRole.equals("ROLE_STUDENT")) {
-            return "student/student-main";
-        } else if (userRole.equals("ROLE_TEACHER")) {
-            return "teacher/teacher-main";
-        }
-        return "redirect:/main";
-
+    log.info("sessionMember = {}", sessionMember);
+    if (sessionMember == null) {
+      return "/common-main";
     }
+
+    Long memberSeq = sessionMember.getSeq();
+    model.addAttribute("nickname", mainPageService.getNickname(memberSeq));
+    model.addAttribute("memberSeq", memberSeq);
+
+    Role sessionUserRole = sessionMember.getRole();
+    if (sessionUserRole.isStudent()) {
+      return "student/student-main";
+    } else if (sessionUserRole.isTeacher()) {
+      return "teacher/teacher-main";
+    }
+    return "admin/admin-dashboard";
+  }
 
 }
