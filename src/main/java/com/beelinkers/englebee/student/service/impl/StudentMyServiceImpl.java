@@ -64,7 +64,7 @@ public class StudentMyServiceImpl implements StudentMyService {
   public Page<StudentMyPageWrittenReplyDTO> getStudentMyWrittenReplyInfo(Long memberSeq,
       Pageable pageable) {
     Member member = memberRepository.findById(memberSeq)
-        .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberSeq));
+        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
 
     return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
         .map(studentMyPageMapper::studentMyPageWrittenReply);
