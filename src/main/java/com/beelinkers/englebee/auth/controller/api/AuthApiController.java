@@ -12,6 +12,8 @@ import com.beelinkers.englebee.auth.exception.SignupProgressSessionNotFoundExcep
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
+import com.beelinkers.englebee.general.exception.MemberNicknameLengthException;
+import com.beelinkers.englebee.general.service.GeneralMemberService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -30,6 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApiController {
 
   private final AuthService authService;
+  private final GeneralMemberService generalMemberService;
+
+  @PostMapping("/nickname-duplicated")
+  public ResponseEntity<Boolean> checkNicknameIsDuplicated(
+      @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
+      @RequestParam String nickname) {
+    checkSignupProgressMemberSessionExist(signupProgressSessionMember);
+    if (nickname.length() > 20 || nickname.isEmpty()) {
+      throw new MemberNicknameLengthException("닉네임의 길이는 1글자 ~ 20글자 사이여야 합니다.");
+    }
+    return ResponseEntity.ok()
+        .body(generalMemberService.checkNicknameDuplicated(nickname));
+  }
 
   @PostMapping("/signup/student")
   public ResponseEntity<Void> signupStudent(
