@@ -4,6 +4,7 @@ import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
 import com.beelinkers.englebee.student.service.StudentMyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,24 @@ public class StudentMyApiController {
     );
 
     return ResponseEntity.ok(completedExamPagination);
+  }
+
+  @GetMapping("/written-qna")
+  public ResponseEntity<GeneralPagedResponseDTO<StudentMyPageWrittenQnaDTO>> getStudentMyWrittenQna(
+      @RequestParam("memberSeq") Long memberSeq,
+      @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<StudentMyPageWrittenQnaDTO> writtenQnaList = studentMyService.getStudentMyWrittenQnaInfo(
+        memberSeq, pageable
+    );
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+        writtenQnaList.getNumber(), writtenQnaList.getSize(), writtenQnaList.getTotalPages(),
+        writtenQnaList.getTotalElements(), writtenQnaList.hasPrevious(), writtenQnaList.hasNext()
+    );
+    GeneralPagedResponseDTO<StudentMyPageWrittenQnaDTO> writtenQnaPagination = new GeneralPagedResponseDTO<>(
+        writtenQnaList.getContent(), pagination
+    );
+    return ResponseEntity.ok(writtenQnaPagination);
   }
 
 }

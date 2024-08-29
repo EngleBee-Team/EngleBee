@@ -1,8 +1,10 @@
 package com.beelinkers.englebee.student.dto.response.mapper;
 
 import com.beelinkers.englebee.general.domain.entity.Exam;
+import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,6 +37,16 @@ public class StudentMyPageMapper {
         exam.getStatus().name(),
         teacherNickName,
         exam.getCreatedAt()
+    );
+  }
+
+  // written-qna
+  public StudentMyPageWrittenQnaDTO studentMyPageWrittenQna(Question question) {
+    return new StudentMyPageWrittenQnaDTO(
+        question.getSeq(),
+        question.getTitle(),
+        question.getContent(),
+        question.getCreatedAt()
     );
   }
 

@@ -3,8 +3,10 @@ package com.beelinkers.englebee.student.service.impl;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
+import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMyPageMapper;
 import com.beelinkers.englebee.student.service.StudentMyService;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudentMyServiceImpl implements StudentMyService {
 
   private final ExamRepository examRepository;
+  private final QuestionRepository questionRepository;
   private final StudentMyPageMapper studentMyPageMapper;
 
   @Override
@@ -41,5 +44,14 @@ public class StudentMyServiceImpl implements StudentMyService {
         List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable);
     return completedExamList.map(studentMyPageMapper::studentMyPageCompletedExam);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<StudentMyPageWrittenQnaDTO> getStudentMyWrittenQnaInfo(Long memberSeq,
+      Pageable pageable) {
+    return questionRepository.findByMemberSeqOrderByCreatedAtDesc(memberSeq, pageable)
+        .map(studentMyPageMapper::studentMyPageWrittenQna);
+  }
+
 
 }
