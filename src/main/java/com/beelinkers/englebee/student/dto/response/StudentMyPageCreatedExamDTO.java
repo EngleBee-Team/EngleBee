@@ -13,6 +13,7 @@ public class StudentMyPageCreatedExamDTO {
   private Long seq;
   private Long lectureSeq;
   private String title;
+  private String status;
   private String teacherNickname;
   private LocalDateTime createdAt;
 }
