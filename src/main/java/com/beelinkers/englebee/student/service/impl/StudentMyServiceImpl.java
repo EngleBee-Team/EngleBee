@@ -1,12 +1,16 @@
 package com.beelinkers.englebee.student.service.impl;
 
+import com.beelinkers.englebee.auth.domain.entity.Member;
+import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
+import com.beelinkers.englebee.general.domain.repository.ReplyRepository;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMyPageMapper;
 import com.beelinkers.englebee.student.service.StudentMyService;
 import java.util.List;
@@ -25,6 +29,8 @@ public class StudentMyServiceImpl implements StudentMyService {
 
   private final ExamRepository examRepository;
   private final QuestionRepository questionRepository;
+  private final MemberRepository memberRepository;
+  private final ReplyRepository replyRepository;
   private final StudentMyPageMapper studentMyPageMapper;
 
   @Override
@@ -53,5 +59,15 @@ public class StudentMyServiceImpl implements StudentMyService {
         .map(studentMyPageMapper::studentMyPageWrittenQna);
   }
 
+  @Override
+  @Transactional(readOnly = true)
+  public Page<StudentMyPageWrittenReplyDTO> getStudentMyWrittenReplyInfo(Long memberSeq,
+      Pageable pageable) {
+    Member member = memberRepository.findById(memberSeq)
+        .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberSeq));
+
+    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
+        .map(studentMyPageMapper::studentMyPageWrittenReply);
+  }
 
 }

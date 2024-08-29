@@ -2,9 +2,11 @@ package com.beelinkers.englebee.student.dto.response.mapper;
 
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Question;
+import com.beelinkers.englebee.general.domain.entity.Reply;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCompletedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
+import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenReplyDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -49,5 +51,16 @@ public class StudentMyPageMapper {
         question.getCreatedAt()
     );
   }
+
+  // written-reply
+  public StudentMyPageWrittenReplyDTO studentMyPageWrittenReply(Reply reply) {
+    return new StudentMyPageWrittenReplyDTO(
+        reply.getSeq(),
+        reply.getQuestion().getSeq(),
+        reply.getContent(),
+        reply.getCreatedAt()
+    );
+  }
+
 
 }
