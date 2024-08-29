@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>이것은 메인</title>
+  <style>
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-btn {
+      margin: 10px;
+      padding: 15px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      border: none;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .login-btn img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="login-container">
+  <!-- 구글 로그인 버튼 -->
+  <a href="/oauth2/authorization/google" class="login-btn">
+    <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+        alt="Google Login">
+    구글 로그인
+  </a>
+
+  <!-- 네이버 로그인 버튼 -->
+  <a href="/oauth2/authorization/naver" class="login-btn">
+    <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Naver_Logo.svg/2560px-Naver_Logo.svg.png"
+        alt="Naver Login">
+    네이버 로그인
+  </a>
+</div>
+</body>
+</html>

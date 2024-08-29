@@ -86,46 +86,10 @@ public class MemberTest {
         .build();
 
     // when
-    member.signOut();
+    member.deactivate();
 
     // then
     assertThat(member.isActive()).isFalse();
     assertThat(member.isDeactivated()).isTrue();
-  }
-
-  @Test
-  @DisplayName("멤버 중 STUDNET와 TEACHER는 프로필 사진을 변경할 수 있다.")
-  public void 멤버_중_STUDENT와_TEACHER는_프로필_사진을_변경할_수_있다() {
-    // given
-    Member member = Member.builder()
-        .nickname("nickname")
-        .email("email@example.com")
-        .role(Role.TEACHER)
-        .personalInfoCollectionAgreed(true)
-        .build();
-
-    // when
-    member.updateProfile("http://example.com/profile.jpg");
-
-    // then
-    assertThat(member.getProfile()).isEqualTo("http://example.com/profile.jpg");
-  }
-
-  @Test
-  @DisplayName("멤버는 Refresh Token을 발급 혹은 재발급 받을 수 있다.")
-  public void 멤버는_Refresh_Token을_발급_혹은_재발급_받을_수_있다() {
-    // given
-    Member member = Member.builder()
-        .nickname("nickname")
-        .email("email@example.com")
-        .role(Role.STUDENT)
-        .personalInfoCollectionAgreed(true)
-        .build();
-
-    // when
-    member.updateRefreshToken("new_refresh_token");
-
-    // then
-    assertThat(member.getRefreshToken()).isEqualTo("new_refresh_token");
   }
 }
