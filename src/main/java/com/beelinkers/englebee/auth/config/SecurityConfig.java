@@ -53,11 +53,13 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/oauth2/**", "/login/**", "/h2-console/**", "/api/auth/**",
-                "/main", "/signup")
+                "/main", "/signup", "/api/auth/signup/**")
             .permitAll()
             .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
             .requestMatchers("/api/teacher/**").hasRole(Role.TEACHER.name())
             .requestMatchers("/api/student/**").hasRole(Role.STUDENT.name())
+            .requestMatchers("/api/auth/signout")
+            .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
             .anyRequest().authenticated());
 
     return http.build();
