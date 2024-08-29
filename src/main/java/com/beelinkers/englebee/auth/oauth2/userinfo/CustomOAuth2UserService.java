@@ -1,5 +1,8 @@
 package com.beelinkers.englebee.auth.oauth2.userinfo;
 
+import static com.beelinkers.englebee.auth.constant.AuthConstant.SESSION_MEMBER_KEY;
+import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS_SESSION_MEMBER_KEY;
+
 import com.beelinkers.englebee.auth.domain.entity.LoginType;
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
@@ -47,8 +50,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
     if (optionalMember.isEmpty()) {
-      httpSession.setAttribute("SIGNUP_PROGRESS_SESSION_MEMBER",
-          new SignupProgressSessionMember(email));
+      httpSession.setAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY,
+          new SignupProgressSessionMember(email, loginAttemptedType));
       throw new SignupRequiredException("회원가입 미완료 : 추가 회원가입 페이지로 이동");
     } else {
       Member member = optionalMember.get();
@@ -59,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       }
 
       httpSession.invalidate();
-      httpSession.setAttribute("SESSION_MEMBER",
+      httpSession.setAttribute(SESSION_MEMBER_KEY,
           new SessionMember(member.getSeq(), member.getRole()));
     }
     return new CustomOAuth2User(oAuth2Response, optionalMember.get().getRole());

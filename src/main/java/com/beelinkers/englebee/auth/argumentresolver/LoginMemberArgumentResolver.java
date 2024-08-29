@@ -1,5 +1,7 @@
 package com.beelinkers.englebee.auth.argumentresolver;
 
+import static com.beelinkers.englebee.auth.constant.AuthConstant.SESSION_MEMBER_KEY;
+
 import com.beelinkers.englebee.auth.annotation.LoginMember;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +29,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
   public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
       NativeWebRequest webRequest,
       WebDataBinderFactory binderFactory) {
-    return httpSession.getAttribute("SESSION_MEMBER");
+    return httpSession.getAttribute(SESSION_MEMBER_KEY);
   }
 }
