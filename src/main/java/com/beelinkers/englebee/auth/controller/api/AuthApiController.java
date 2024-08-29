@@ -5,6 +5,7 @@ import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
+import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.exception.SignupProgressSessionNotFoundException;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
@@ -43,5 +44,19 @@ public class AuthApiController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  @PostMapping("/signup/teacher")
+  public ResponseEntity<Void> signupTeacher(HttpSession httpSession,
+      @RequestBody @Valid TeacherSignupRequestDTO teacherSignupRequestDTO) {
+    SignupProgressSessionMember signupProgressSessionMember = (SignupProgressSessionMember) httpSession.getAttribute(
+        SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
+    if (signupProgressSessionMember == null) {
+      throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
+    }
+    Member member = authService.signupTeacher(signupProgressSessionMember, teacherSignupRequestDTO);
+    httpSession.removeAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
+    httpSession.setAttribute(SESSION_MEMBER_KEY,
+        new SessionMember(member.getSeq(), member.getRole()));
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
 
 }

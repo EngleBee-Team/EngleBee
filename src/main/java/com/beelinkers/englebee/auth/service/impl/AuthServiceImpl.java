@@ -5,6 +5,7 @@ import com.beelinkers.englebee.auth.domain.entity.Role;
 import com.beelinkers.englebee.auth.domain.entity.StudentGrade;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
+import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,19 @@ public class AuthServiceImpl implements AuthService {
         .personalInfoCollectionAgreed(studentSignupRequestDTO.getPersonalInfoCollectionAgreed())
         .build();
     return memberRepository.save(student);
+  }
+
+  @Override
+  public Member signupTeacher(SignupProgressSessionMember signupProgressSessionMember,
+      TeacherSignupRequestDTO teacherSignupRequestDTO) {
+    Member teacher = Member.builder()
+        .email(signupProgressSessionMember.getEmail())
+        .role(Role.TEACHER)
+        .loginType(signupProgressSessionMember.getLoginType())
+        .nickname(teacherSignupRequestDTO.getNickname())
+        .grade(null)
+        .personalInfoCollectionAgreed(teacherSignupRequestDTO.getPersonalInfoCollectionAgreed())
+        .build();
+    return memberRepository.save(teacher);
   }
 }
