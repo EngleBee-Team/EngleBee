@@ -2,6 +2,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,7 +26,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +41,16 @@ public class TeacherMainApiControllerTest {
   @MockBean
   private TeacherMainService teacherMainService;
 
+  @Autowired
+  private WebApplicationContext context;
+
+
+  @BeforeEach
+  public void setupSecurity() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(context)
+        .apply(springSecurity())
+        .build();
+  }
 
   @BeforeEach
   void setUp() {
@@ -70,6 +84,7 @@ public class TeacherMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"TEACHER"})
   @DisplayName("강의 목록 조회 API 테스트")
   void 강의_목록_조회_API_테스트() throws Exception {
     //when
@@ -92,6 +107,7 @@ public class TeacherMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"TEACHER"})
   @DisplayName("질문 목록 조회 API 테스트")
   void 질문_목록_조회_API_테스트() throws Exception {
     //when
@@ -111,6 +127,7 @@ public class TeacherMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"TEACHER"})
   @DisplayName("출제 할 문제 목록 API 테스트")
   void 출제_할_문제_목록_API_테스트() throws Exception {
     //when
@@ -131,6 +148,7 @@ public class TeacherMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"TEACHER"})
   @DisplayName("출제 한 목록 조회 API 테스트")
   void 출제_한_목록_조회_API_테스트() throws Exception {
     //when

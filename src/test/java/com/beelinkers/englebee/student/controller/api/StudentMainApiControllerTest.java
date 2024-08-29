@@ -2,6 +2,7 @@ package com.beelinkers.englebee.student.controller.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,7 +26,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,6 +40,16 @@ public class StudentMainApiControllerTest {
 
   @MockBean
   private StudentMainService studentMainService;
+
+  @Autowired
+  private WebApplicationContext context;
+
+  @BeforeEach
+  public void setupSecurity() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(context)
+        .apply(springSecurity())
+        .build();
+  }
 
   @BeforeEach
   void setUp() {
@@ -72,6 +86,7 @@ public class StudentMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"STUDENT"})
   @DisplayName("수강 중인 강의 목록 조회 API 테스트")
   void 수강_중인_강의_목록_조회_API_테스트() throws Exception {
     // when
@@ -94,6 +109,7 @@ public class StudentMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"STUDENT"})
   @DisplayName("질문 목록 조회 API 테스트")
   void 질문_목록_조회_API_테스트() throws Exception {
     // when
@@ -113,6 +129,7 @@ public class StudentMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"STUDENT"})
   @DisplayName("풀어야 할 시험 목록 조회 API 테스트")
   void 풀어야_할_시험_목록_조회_API_테스트() throws Exception {
     // when
@@ -133,6 +150,7 @@ public class StudentMainApiControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = {"STUDENT"})
   @DisplayName("제출된 시험 목록 조회 API 테스트")
   void 제출된_시험_목록_조회_API_테스트() throws Exception {
     // when
