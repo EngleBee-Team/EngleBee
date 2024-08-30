@@ -38,6 +38,7 @@ out/
 
 ### gradle
 gradle/
-gradlew
 gradlew.bat
+gradlew
 
+/src/main/resources/application-local.properties
