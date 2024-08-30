@@ -1,6 +1,5 @@
 package com.beelinkers.englebee.teacher.service.impl;
 
-import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
@@ -66,10 +65,15 @@ public class TeacherMyServiceImpl implements TeacherMyService {
   @Transactional(readOnly = true)
   public Page<TeacherMyPageWrittenReplyDTO> getTeacherMyPageWrittenReplyInfo(Long memberSeq,
       Pageable pageable) {
-    Member member = memberRepository.findById(memberSeq)
-        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
+//    Member member = memberRepository.findById(memberSeq)
+//        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
+//    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
+//        .map(teacherMyPageMapper::teacherMyPageWrittenReply);
 
-    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
+//    return replyRepository.findByQuestionMemberSeqOrderByCreatedAt(memberSeq, pageable)
+//        .map(teacherMyPageMapper::teacherMyPageWrittenReply);
+
+    return replyRepository.findRepliesByMemberSeq(memberSeq, pageable)
         .map(teacherMyPageMapper::teacherMyPageWrittenReply);
   }
 

@@ -1,7 +1,5 @@
 package com.beelinkers.englebee.student.service.impl;
 
-import com.beelinkers.englebee.auth.domain.entity.Member;
-import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
@@ -29,7 +27,6 @@ public class StudentMyServiceImpl implements StudentMyService {
 
   private final ExamRepository examRepository;
   private final QuestionRepository questionRepository;
-  private final MemberRepository memberRepository;
   private final ReplyRepository replyRepository;
   private final StudentMyPageMapper studentMyPageMapper;
 
@@ -63,10 +60,7 @@ public class StudentMyServiceImpl implements StudentMyService {
   @Transactional(readOnly = true)
   public Page<StudentMyPageWrittenReplyDTO> getStudentMyWrittenReplyInfo(Long memberSeq,
       Pageable pageable) {
-    Member member = memberRepository.findById(memberSeq)
-        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
-
-    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
+    return replyRepository.findRepliesByMemberSeq(memberSeq, pageable)
         .map(studentMyPageMapper::studentMyPageWrittenReply);
   }
 
