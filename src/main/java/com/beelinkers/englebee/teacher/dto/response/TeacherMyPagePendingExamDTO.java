@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherMyPageNewExamDTO {
+public class TeacherMyPagePendingExamDTO {
 
   private Long seq;
   private Long lectureSeq;

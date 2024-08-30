@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherWrittenReplyDTO {
+public class TeacherMyPageWrittenQnaDTO {
 
   private Long seq;
-  private Long questionSeq;
-  private String Content;
+  private String title;
+  private String content;
   private LocalDateTime createdAt;
 }
