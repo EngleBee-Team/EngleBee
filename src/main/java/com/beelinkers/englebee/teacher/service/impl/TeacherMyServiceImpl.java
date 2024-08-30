@@ -3,6 +3,7 @@ package com.beelinkers.englebee.teacher.service.impl;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMyPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
@@ -30,5 +31,15 @@ public class TeacherMyServiceImpl implements TeacherMyService {
         memberSeq, ExamStatus.CREATED, pageable
     );
     return pendingExamList.map(teacherMyPageMapper::teacherMyPagePendingExam);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<TeacherMyPageExamHistoryDTO> getTeacherMyPageExamHistoryInfo(Long memberSeq,
+      Pageable pageable) {
+    Page<Exam> examHistoryList = examRepository.findByLectureTeacherSeqAndStatusNot(
+        memberSeq, ExamStatus.CREATED, pageable
+    );
+    return examHistoryList.map(teacherMyPageMapper::teacherMyPageExamHistory);
   }
 }

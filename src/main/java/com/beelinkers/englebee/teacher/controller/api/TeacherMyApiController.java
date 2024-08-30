@@ -2,6 +2,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
 import lombok.RequiredArgsConstructor;
@@ -39,4 +40,23 @@ public class TeacherMyApiController {
     );
     return ResponseEntity.ok(pendingExamPagination);
   }
+
+  @GetMapping("/exam-history")
+  public ResponseEntity<GeneralPagedResponseDTO<TeacherMyPageExamHistoryDTO>> getTeacherExamHistory(
+      @RequestParam("memberSeq") Long memberSeq, @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<TeacherMyPageExamHistoryDTO> examHistoryList = teacherMyService.getTeacherMyPageExamHistoryInfo(
+        memberSeq, pageable
+    );
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+        examHistoryList.getNumber(), examHistoryList.getSize(), examHistoryList.getTotalPages(),
+        examHistoryList.getTotalElements(), examHistoryList.hasPrevious(), examHistoryList.hasNext()
+    );
+    GeneralPagedResponseDTO<TeacherMyPageExamHistoryDTO> examHistoryPagination = new GeneralPagedResponseDTO<>(
+        examHistoryList.getContent(), pagination
+    );
+    return ResponseEntity.ok(examHistoryPagination);
+  }
+
 }
+
