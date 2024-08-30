@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    // 전체 리스트
-    Page<Question> findAll(@NonNull Pageable pageable);
 
+  Page<Question> findAll(@NonNull Pageable pageable);
+
+  Page<Question> findByMemberSeqOrderByCreatedAtDesc(Long memberSeq, Pageable pageable);
 }
