@@ -5,8 +5,6 @@
   width:300px;
 }
 .card-body-hr{
-  display:flex;
-  justify-content: space-around;
   margin-top: 30px;
 }
 img{

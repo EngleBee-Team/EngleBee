@@ -36,6 +36,27 @@
     table tbody tr {
       background-color: white !important;
     }
+     .member-level-chart{
+       width: 400px;
+       height: 400px;
+     }
+    .chart-wrap2, .chart-wrap4, .chart-wrap{
+      display: flex;
+      justify-content: space-around;
+      height: 400px;
+    }
+    canvas{
+      display: block;
+      width: 400px;
+      height: 100%;
+    }
+    .none{
+      display: none;
+    }
+    #no-lecture, #no-llm{
+      text-align: center;
+      font-size: xx-large;
+    }
   </style>
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -44,6 +65,12 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <link th:href="@{/asset/css/hr.css}" rel="">
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <!--chart-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" th:src="@{../assets/js/admin-chart.js}"></script>
 </head>
 
 <body>
@@ -70,26 +97,14 @@
     </div><!-- End Page Title -->
     <div class="card">
       <div class="card-header card-header-hr">
-        <h5>태그별 멤버 분표</h5>
+        <h5>학생 과목별 수준 분표</h5>
       </div>
       <div class="card-body card-body-hr">
-        멤버 태그별 분포 차트를 볼 수 있습니다
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>일일 수업 개설 횟수</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        일일 수업 개설 횟수를 볼 수 있습니다
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>나이대별 학생 분포</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        나이대별 학생 분포 수를 볼 수 있습니다
+        <div class = "chart-wrap">
+          <canvas id="grammer-count" class="member-level-chart"></canvas>
+          <canvas id="sentence-count" class="member-level-chart"></canvas>
+          <canvas id="word-count" class="member-level-chart"></canvas>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -97,7 +112,71 @@
         <h5>LLM API 호출 수</h5>
       </div>
       <div class="card-body card-body-hr">
-        날짜별 LLM API 호출 수 통계를 볼 수 있습니다.
+        <div class = "chart-wrap-2">
+          <div class = "select-wrap">
+            <label for="row2year">Year:</label>
+            <select id="row2year" name="year">
+              <option value="">Select Year</option>
+              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+              <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
+                <option th:value="${year}" th:text="${year}"></option>
+              </th:block>
+            </select>
+            <label for="row2month">Month:</label>
+            <select id="row2month" name="month">
+              <option value="">Select Month</option>
+              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+              <th:block th:each="month : ${#numbers.sequence(1, 12)}">
+                <option th:value="${month}" th:text="${month}"></option>
+              </th:block>
+            </select>
+          </div>
+          <div id="no-lecture">There are no llm that called.</div>
+          <div class="chart-wrap2">
+            <canvas id="llmChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header card-header-hr">
+        <h5>나이대별 학생 분포</h5>
+      </div>
+      <div class="card-body card-body-hr">
+        <div class = "chart-wrap">
+          <canvas id="age-group-count" class="member-level-chart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header card-header-hr">
+        <h5>일일 수업 개설 수</h5>
+      </div>
+      <div class="card-body card-body-hr">
+        <div class = "chart-wrap-2">
+          <div class = "select-wrap">
+            <label for="row4year">Year:</label>
+            <select id="row4year" name="year">
+              <option value="">Select Year</option>
+              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+              <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
+                <option th:value="${year}" th:text="${year}"></option>
+              </th:block>
+            </select>
+            <label for="row4month">Month:</label>
+            <select id="row4month" name="month">
+              <option value="">Select Month</option>
+              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+              <th:block th:each="month : ${#numbers.sequence(1, 12)}">
+                <option th:value="${month}" th:text="${month}"></option>
+              </th:block>
+            </select>
+          </div>
+          <div id="no-llm">There are no lecture that created.</div>
+            <div class="chart-wrap4">
+              <canvas id="lectureChart"></canvas>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -115,6 +194,6 @@
     <!— Purchase the pro version with-->
   </div>
 </footer>
-
 </body>
 </html>
+
