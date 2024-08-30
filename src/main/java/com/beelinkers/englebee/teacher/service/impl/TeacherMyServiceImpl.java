@@ -2,9 +2,12 @@ package com.beelinkers.englebee.teacher.service.impl;
 
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
+import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
+import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenQnaDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMyPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class TeacherMyServiceImpl implements TeacherMyService {
 
   private final TeacherMyPageMapper teacherMyPageMapper;
   private final ExamRepository examRepository;
+  private final QuestionRepository questionRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -41,5 +45,14 @@ public class TeacherMyServiceImpl implements TeacherMyService {
         memberSeq, ExamStatus.CREATED, pageable
     );
     return examHistoryList.map(teacherMyPageMapper::teacherMyPageExamHistory);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<TeacherMyPageWrittenQnaDTO> getTeacherMyPageWrittenQnaInfo(Long memberSeq,
+      Pageable pageable) {
+    Page<Question> questionList = questionRepository.findByMemberSeqOrderByCreatedAtDesc(memberSeq,
+        pageable);
+    return questionList.map(teacherMyPageMapper::teacherMyPageWrittenQna);
   }
 }
