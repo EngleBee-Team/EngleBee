@@ -1,13 +1,17 @@
 package com.beelinkers.englebee.teacher.service.impl;
 
+import com.beelinkers.englebee.auth.domain.entity.Member;
+import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.entity.Question;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
+import com.beelinkers.englebee.general.domain.repository.ReplyRepository;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenQnaDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMyPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,8 @@ public class TeacherMyServiceImpl implements TeacherMyService {
   private final TeacherMyPageMapper teacherMyPageMapper;
   private final ExamRepository examRepository;
   private final QuestionRepository questionRepository;
+  private final MemberRepository memberRepository;
+  private final ReplyRepository replyRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -55,4 +61,16 @@ public class TeacherMyServiceImpl implements TeacherMyService {
         pageable);
     return questionList.map(teacherMyPageMapper::teacherMyPageWrittenQna);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<TeacherMyPageWrittenReplyDTO> getTeacherMyPageWrittenReplyInfo(Long memberSeq,
+      Pageable pageable) {
+    Member member = memberRepository.findById(memberSeq)
+        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
+
+    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
+        .map(teacherMyPageMapper::teacherMyPageWrittenReply);
+  }
+
 }

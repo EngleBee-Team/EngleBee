@@ -5,6 +5,7 @@ import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenQnaDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,24 @@ public class TeacherMyApiController {
         questionList.getContent(), pagination
     );
     return ResponseEntity.ok(questionListPagination);
+  }
+
+  @GetMapping("/reply-list")
+  public ResponseEntity<GeneralPagedResponseDTO<TeacherMyPageWrittenReplyDTO>> getTeacherMyWrittenReply(
+      @RequestParam("memberSeq") Long memberSeq, @PageableDefault(size = 10) Pageable pageable
+  ) {
+    Page<TeacherMyPageWrittenReplyDTO> writtenReplyList = teacherMyService.getTeacherMyPageWrittenReplyInfo(
+        memberSeq, pageable
+    );
+    PaginationResponseDTO pagination = new PaginationResponseDTO(
+        writtenReplyList.getNumber(), writtenReplyList.getSize(), writtenReplyList.getTotalPages(),
+        writtenReplyList.getTotalElements(), writtenReplyList.hasPrevious(),
+        writtenReplyList.hasNext()
+    );
+    GeneralPagedResponseDTO<TeacherMyPageWrittenReplyDTO> writtenReplyPagination = new GeneralPagedResponseDTO<>(
+        writtenReplyList.getContent(), pagination
+    );
+    return ResponseEntity.ok(writtenReplyPagination);
   }
 
 }
