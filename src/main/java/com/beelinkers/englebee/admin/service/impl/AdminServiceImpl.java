@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminServiceImpl implements AdminService {
 
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
@@ -25,21 +27,25 @@ public class AdminServiceImpl implements AdminService {
   private final CreatedLectureLogRepository createdLectureLogRepository;
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminMemberSubjectLevelCountDTO> getChartUserLevelGrammer() {
     return memberSubjectLevelRepository.findLevelCountsGrammer();
   }
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminMemberSubjectLevelCountDTO> getChartUserLevelSentence() {
     return memberSubjectLevelRepository.findLevelCountsSentence();
   }
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminMemberSubjectLevelCountDTO> getChartUserLevelWord() {
     return memberSubjectLevelRepository.findLevelCountsWord();
   }
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminDashboardDayGroupCountDTO> getChartDayCallLLMCount(int year,
       int month) {
     List<Object[]> results = callLLMLogRepository.findCallLLMGroupByDay(year, month);
@@ -49,12 +55,14 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminMemberAgeGroupCountDTO> getChartUserAgeGroup() {
     List<AdminMemberAgeGroupCountDTO> ageGroupList = memberRepository.findAgeGroupCount();
     return ageGroupList;
   }
 
   @Override
+  @Transactional(readOnly=true)
   public List<AdminDashboardDayGroupCountDTO> getChartDayCreateLectureCount(int year, int month) {
     List<Object[]> results = createdLectureLogRepository.findCreateLectureGroupByDay(year, month);
     return results.stream()
