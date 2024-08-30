@@ -2,7 +2,7 @@ package com.beelinkers.englebee.admin.controller.api;
 
 import com.beelinkers.englebee.admin.dto.request.AdminYearMonthDTO;
 import com.beelinkers.englebee.admin.dto.response.AdminDashboardDayGroupCountDTO;
-import com.beelinkers.englebee.admin.dto.response.AdminDashboardMemberSubjectLevelCountDTO;
+import com.beelinkers.englebee.admin.dto.response.AdminDashboardMemberChartDTO;
 import com.beelinkers.englebee.admin.dto.response.AdminMemberAgeGroupCountDTO;
 import com.beelinkers.englebee.admin.dto.response.AdminMemberSubjectLevelCountDTO;
 import com.beelinkers.englebee.admin.service.AdminService;
@@ -25,12 +25,12 @@ public class AdminApiController {
   private final AdminService adminService;
 
   @GetMapping("/member-chart")
-  public ResponseEntity<AdminDashboardMemberSubjectLevelCountDTO> getChartUserTags() {
+  public ResponseEntity<AdminDashboardMemberChartDTO> getChartUserTags() {
     List<AdminMemberSubjectLevelCountDTO> grammerList = adminService.getChartUserLevelGrammer();
     List<AdminMemberSubjectLevelCountDTO> sentenceList = adminService.getChartUserLevelSentence();
     List<AdminMemberSubjectLevelCountDTO> wordList = adminService.getChartUserLevelWord();
     List<AdminMemberAgeGroupCountDTO> ageList = adminService.getChartUserAgeGroup();
-    AdminDashboardMemberSubjectLevelCountDTO memberSubjectLevelCountDTO = new AdminDashboardMemberSubjectLevelCountDTO(grammerList,sentenceList,wordList,ageList);
+    AdminDashboardMemberChartDTO memberSubjectLevelCountDTO = new AdminDashboardMemberChartDTO(grammerList,sentenceList,wordList,ageList);
     return ResponseEntity.ok(memberSubjectLevelCountDTO);
   }
 
