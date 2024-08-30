@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDashboardMemberSubjectLevelCountDTO {
+public class AdminDashboardMemberChartDTO {
   private List<AdminMemberSubjectLevelCountDTO> grammarList;
   private List<AdminMemberSubjectLevelCountDTO> sentenceList;
   private List<AdminMemberSubjectLevelCountDTO> wordList;
+  private List<AdminMemberAgeGroupCountDTO> ageGroupList;
 }
