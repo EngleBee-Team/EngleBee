@@ -2,8 +2,6 @@ package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.entity.LectureStatus;
-import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
-import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO;
@@ -31,40 +29,32 @@ public class StudentMainApiController {
       @RequestParam("lectureSeq") Long lectureSeq,
       @RequestParam("lectureStatus") String lectureStatus) {
     LectureStatus status = LectureStatus.valueOf(lectureStatus.toUpperCase());
-    List<StudentMainPageLectureDTO> lectureList = studentMainService.getLectureList(memberSeq,
+    List<StudentMainPageLectureDTO> lectureList = studentMainService.getOngoingLectureInfo(
+        memberSeq,
         lectureSeq, status);
     return ResponseEntity.ok(lectureList);
   }
 
   @GetMapping("/created-exam")
-  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageNewExamDTO>> getCreatedExam(
+  public ResponseEntity<List<StudentMainPageNewExamDTO>> getCreatedExam(
       @RequestParam("memberSeq") Long memberSeq) {
     ExamStatus status = ExamStatus.PREPARED;
-    List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getNewExamList(memberSeq,
+    List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getCreatedExamListInfo(
+        memberSeq,
         status);
-    GeneralPagedResponseDTO<StudentMainPageNewExamDTO> examPagination = new GeneralPagedResponseDTO<>(
-        createdExamList,
-        new PaginationResponseDTO(1, createdExamList.size(), 1, createdExamList.size(), false,
-            false)
-    );
-    return ResponseEntity.ok(examPagination);
+    return ResponseEntity.ok(createdExamList);
   }
 
   @GetMapping("/completed-exam")
-  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO>> getCompletedExam(
+  public ResponseEntity<List<StudentMainPageSubmitExamDTO>> getCompletedExam(
       @RequestParam("memberSeq") Long memberSeq,
       @RequestParam(value = "status", required = false) List<ExamStatus> status) {
     if (status == null || status.isEmpty()) {
       status = List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED);
     }
-    List<StudentMainPageSubmitExamDTO> completedExamList = studentMainService.getSubmitExamList(
+    List<StudentMainPageSubmitExamDTO> completedExamList = studentMainService.getCompletedExamListInfo(
         memberSeq, status);
-    GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO> examPagination = new GeneralPagedResponseDTO<>(
-        completedExamList,
-        new PaginationResponseDTO(1, completedExamList.size(), 1, completedExamList.size(), false,
-            false)
-    );
-    return ResponseEntity.ok(examPagination);
+    return ResponseEntity.ok(completedExamList);
   }
 
 
