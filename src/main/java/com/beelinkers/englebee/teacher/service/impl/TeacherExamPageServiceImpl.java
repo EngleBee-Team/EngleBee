@@ -29,52 +29,69 @@ import org.springframework.transaction.annotation.Transactional;
 public class TeacherExamPageServiceImpl implements TeacherExamPageService {
 
   private final MemberRepository memberRepository;
-  private final MemberSubjectLevelRepository memberSubjectLevelRepository;
   private final ExamRepository examRepository;
+  private final MemberSubjectLevelRepository memberSubjectLevelRepository;
 
   @Override
   @Transactional(readOnly = true)
   public TeacherExamRegisterPageDTO getTeacherExamRegisterPageInfo(Long teacherSeq, Long examSeq) {
+    Member teacher = validateAndGetTeacher(teacherSeq);
+    Exam exam = validateAndGetExam(examSeq);
+    validateTeacherAccessToExam(teacher, exam);
+    Lecture lecture = exam.getLecture();
+    Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
+    Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(lecture.getStudent());
+    return new TeacherExamRegisterPageDTO(studentSubjectLevels, lectureSubjectLevels);
+  }
+
+  private Member validateAndGetTeacher(Long teacherSeq) {
     Member teacher = memberRepository.findById(teacherSeq)
         .orElseThrow(() -> new MemberNotFoundException("해당하는 선생님 멤버가 존재하지 않습니다."));
-
-    Exam exam = examRepository.findById(examSeq)
-        .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
-
     if (!teacher.isTeacher()) {
       throw new InvalidMemberRoleException("해당 멤버는 선생님 멤버가 아닙니다.");
     }
+    return teacher;
+  }
 
+  private Exam validateAndGetExam(Long examSeq) {
+    return examRepository.findById(examSeq)
+        .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
+  }
+
+  private void validateTeacherAccessToExam(Member teacher, Exam exam) {
     Lecture lecture = exam.getLecture();
     if (!lecture.getTeacher().equals(teacher)) {
       throw new TeacherIllegalAccessToExamException("해당하는 시험은 선생님이 낸 시험이 아닙니다.");
     }
+  }
 
-    Member student = lecture.getStudent();
+  private Map<String, String> extractLectureSubjectLevels(Lecture lecture) {
+    Map<String, String> lectureSubjectLevels = new HashMap<>();
+    lecture.getSubjectLevels().forEach(
+        lectureSubjectLevel -> {
+          SubjectLevel subjectLevel = lectureSubjectLevel.getSubjectLevel();
+          lectureSubjectLevels.put(
+              subjectLevel.getSubjectCode().getKoreanCode(),
+              subjectLevel.getLevelCode().getKoreanCode()
+          );
+        }
+    );
+    return lectureSubjectLevels;
+  }
+
+  private Map<String, String> extractStudentSubjectLevels(Member student) {
     List<MemberSubjectLevel> memberSubjectLevels = memberSubjectLevelRepository.findByStudent(
         student);
     Map<String, String> studentSubjectLevels = new HashMap<>();
     memberSubjectLevels.forEach(
         memberSubjectLevel -> {
-          System.out.println(
-              "========================memberSubjectLevel로 인한 SELECT문 호출 ========================");
           SubjectLevel subjectLevel = memberSubjectLevel.getSubjectLevel();
-          studentSubjectLevels.put(subjectLevel.getSubjectKoreanCode(),
-              subjectLevel.getLevelKoreanCode());
+          studentSubjectLevels.put(
+              subjectLevel.getSubjectCode().getKoreanCode(),
+              subjectLevel.getLevelCode().getKoreanCode()
+          );
         }
     );
-
-    Map<String, String> lectureSubjectLevels = new HashMap<>();
-    lecture.getSubjectLevels().forEach(
-        lectureSubjectLevel -> {
-          SubjectLevel subjectLevel = lectureSubjectLevel.getSubjectLevel();
-          lectureSubjectLevels.put(subjectLevel.getSubjectKoreanCode(),
-              subjectLevel.getLevelKoreanCode());
-        }
-    );
-
-    System.out.println("studentSubjectLevels = " + studentSubjectLevels);
-
-    return new TeacherExamRegisterPageDTO(studentSubjectLevels, lectureSubjectLevels);
+    return studentSubjectLevels;
   }
 }
