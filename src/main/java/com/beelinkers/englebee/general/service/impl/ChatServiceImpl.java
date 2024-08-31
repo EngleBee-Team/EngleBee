@@ -23,7 +23,7 @@ public class ChatServiceImpl implements ChatService {
   @Override
   public void finishLectureCreateExam(Long lectureSeq) {
     Lecture lecture = lectureRepository.findById(lectureSeq)
-        .orElseThrow(()-> new InvalidLectureSeqException("Lecture not found"));
+        .orElseThrow(()-> new InvalidLectureSeqException("잘못된 입력값입니다"));
     lecture.finish();
     lectureRepository.save(lecture);
 
