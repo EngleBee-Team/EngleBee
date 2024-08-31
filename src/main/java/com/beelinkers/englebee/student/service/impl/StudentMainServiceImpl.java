@@ -28,7 +28,7 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Long lectureSeq,
+  public List<StudentMainPageLectureDTO> getOngoingLectureInfo(Long memberSeq, Long lectureSeq,
       LectureStatus lectureStatus) {
     return lectureRepository.findByStudentSeqAndSeqAndStatus(memberSeq, lectureSeq,
             lectureStatus)
@@ -39,7 +39,7 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, ExamStatus status) {
+  public List<StudentMainPageNewExamDTO> getCreatedExamListInfo(Long memberSeq, ExamStatus status) {
     return examRepository.findTop5ByLectureStudentSeqAndStatusOrderByCreatedAtDesc(memberSeq,
             status)
         .stream()
@@ -48,7 +48,7 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq,
+  public List<StudentMainPageSubmitExamDTO> getCompletedExamListInfo(Long memberSeq,
       List<ExamStatus> status) {
     return examRepository.findTop5ByLectureStudentSeqAndStatusInOrderByCreatedAtDesc(
             memberSeq, status)

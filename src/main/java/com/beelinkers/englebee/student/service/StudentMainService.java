@@ -9,11 +9,12 @@ import java.util.List;
 
 public interface StudentMainService {
 
-  List<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Long lectureSeq,
+  List<StudentMainPageLectureDTO> getOngoingLectureInfo(Long memberSeq, Long lectureSeq,
       LectureStatus lectureStatus);
 
-  List<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, ExamStatus status);
+  List<StudentMainPageNewExamDTO> getCreatedExamListInfo(Long memberSeq, ExamStatus status);
 
-  List<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, List<ExamStatus> status);
+  List<StudentMainPageSubmitExamDTO> getCompletedExamListInfo(Long memberSeq,
+      List<ExamStatus> status);
 
 }
