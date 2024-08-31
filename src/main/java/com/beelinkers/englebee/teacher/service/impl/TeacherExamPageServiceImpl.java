@@ -1,21 +1,16 @@
 package com.beelinkers.englebee.teacher.service.impl;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
-import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.LectureSubjectLevel;
 import com.beelinkers.englebee.general.domain.entity.MemberSubjectLevel;
 import com.beelinkers.englebee.general.domain.entity.SubjectLevel;
-import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.LectureSubjectLevelRepository;
 import com.beelinkers.englebee.general.domain.repository.MemberSubjectLevelRepository;
-import com.beelinkers.englebee.general.exception.ExamNotFoundException;
-import com.beelinkers.englebee.general.exception.InvalidMemberRoleException;
-import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
-import com.beelinkers.englebee.teacher.exception.TeacherIllegalAccessToExamException;
 import com.beelinkers.englebee.teacher.service.TeacherExamPageService;
+import com.beelinkers.englebee.teacher.service.TeacherExamValidationService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,42 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TeacherExamPageServiceImpl implements TeacherExamPageService {
 
-  private final MemberRepository memberRepository;
-  private final ExamRepository examRepository;
+  private final TeacherExamValidationService validationService;
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
   private final LectureSubjectLevelRepository lectureSubjectLevelRepository;
 
   @Override
   @Transactional(readOnly = true)
   public TeacherExamRegisterPageDTO getTeacherExamRegisterPageInfo(Long teacherSeq, Long examSeq) {
-    Member teacher = validateAndGetTeacher(teacherSeq);
-    Exam exam = validateAndGetExam(examSeq);
-    validateTeacherAccessToExam(teacher, exam);
+    Member teacher = validationService.validateAndGetTeacher(teacherSeq);
+    Exam exam = validationService.validateAndGetExam(examSeq);
+    validationService.validateTeacherAccessToExam(teacher, exam);
+
     Lecture lecture = exam.getLecture();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
     Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(lecture.getStudent());
     return new TeacherExamRegisterPageDTO(studentSubjectLevels, lectureSubjectLevels);
-  }
-
-  private Member validateAndGetTeacher(Long teacherSeq) {
-    Member teacher = memberRepository.findById(teacherSeq)
-        .orElseThrow(() -> new MemberNotFoundException("해당하는 선생님 멤버가 존재하지 않습니다."));
-    if (!teacher.isTeacher()) {
-      throw new InvalidMemberRoleException("해당 멤버는 선생님 멤버가 아닙니다.");
-    }
-    return teacher;
-  }
-
-  private Exam validateAndGetExam(Long examSeq) {
-    return examRepository.findById(examSeq)
-        .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
-  }
-
-  private void validateTeacherAccessToExam(Member teacher, Exam exam) {
-    Lecture lecture = exam.getLecture();
-    if (!lecture.getTeacher().equals(teacher)) {
-      throw new TeacherIllegalAccessToExamException("해당하는 시험은 선생님이 낸 시험이 아닙니다.");
-    }
   }
 
   private Map<String, String> extractLectureSubjectLevels(Lecture lecture) {
