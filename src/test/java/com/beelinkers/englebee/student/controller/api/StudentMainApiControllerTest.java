@@ -86,11 +86,11 @@ public class StudentMainApiControllerTest {
         2L, 1L, ExamStatus.PREPARED.name(), "기초문법강의", "teacher", LocalDateTime.now()
     );
     List<StudentMainPageNewExamDTO> newExamList = List.of(newExamDTO);
-    when(studentMainService.getCreatedExamListInfo(2L, ExamStatus.PREPARED)).thenReturn(
+    when(studentMainService.getPreparedExamInfo(2L, ExamStatus.PREPARED)).thenReturn(
         newExamList);
 
     // when
-    ResponseEntity<List<StudentMainPageNewExamDTO>> response = studentMainApiController.getCreatedExam(
+    ResponseEntity<List<StudentMainPageNewExamDTO>> response = studentMainApiController.getPreparedExam(
         2L);
 
     // then
@@ -114,7 +114,7 @@ public class StudentMainApiControllerTest {
     );
     List<StudentMainPageSubmitExamDTO> submitExamList = List.of(submitExamDTO,
         submitExamFeedbackDTO);
-    when(studentMainService.getCompletedExamListInfo(2L,
+    when(studentMainService.getCompletedExamInfo(2L,
         List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED)))
         .thenReturn(submitExamList);
 

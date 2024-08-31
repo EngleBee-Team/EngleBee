@@ -104,7 +104,7 @@ public class StudentMainServiceImplTest {
     when(studentMainPageMapper.mainPageNewExamDTO(exam)).thenReturn(examDTO);
 
     // when
-    List<StudentMainPageNewExamDTO> result = studentMainService.getCreatedExamListInfo(1L,
+    List<StudentMainPageNewExamDTO> result = studentMainService.getPreparedExamInfo(1L,
         ExamStatus.PREPARED);
 
     // then
@@ -132,7 +132,7 @@ public class StudentMainServiceImplTest {
     when(studentMainPageMapper.mainPageSubmitExamDTO(exam)).thenReturn(examDTO);
 
     // when
-    List<StudentMainPageSubmitExamDTO> result = studentMainService.getCompletedExamListInfo(1L,
+    List<StudentMainPageSubmitExamDTO> result = studentMainService.getCompletedExamInfo(1L,
         List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED));
 
     // then
