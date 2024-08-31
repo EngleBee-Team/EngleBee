@@ -12,9 +12,9 @@ public interface StudentMainService {
   List<StudentMainPageLectureDTO> getOngoingLectureInfo(Long memberSeq, Long lectureSeq,
       LectureStatus lectureStatus);
 
-  List<StudentMainPageNewExamDTO> getCreatedExamListInfo(Long memberSeq, ExamStatus status);
+  List<StudentMainPageNewExamDTO> getPreparedExamInfo(Long memberSeq, ExamStatus status);
 
-  List<StudentMainPageSubmitExamDTO> getCompletedExamListInfo(Long memberSeq,
+  List<StudentMainPageSubmitExamDTO> getCompletedExamInfo(Long memberSeq,
       List<ExamStatus> status);
 
 }

@@ -36,10 +36,10 @@ public class StudentMainApiController {
   }
 
   @GetMapping("/created-exam")
-  public ResponseEntity<List<StudentMainPageNewExamDTO>> getCreatedExam(
+  public ResponseEntity<List<StudentMainPageNewExamDTO>> getPreparedExam(
       @RequestParam("memberSeq") Long memberSeq) {
     ExamStatus status = ExamStatus.PREPARED;
-    List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getCreatedExamListInfo(
+    List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getPreparedExamInfo(
         memberSeq,
         status);
     return ResponseEntity.ok(createdExamList);
@@ -52,7 +52,7 @@ public class StudentMainApiController {
     if (status == null || status.isEmpty()) {
       status = List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED);
     }
-    List<StudentMainPageSubmitExamDTO> completedExamList = studentMainService.getCompletedExamListInfo(
+    List<StudentMainPageSubmitExamDTO> completedExamList = studentMainService.getCompletedExamInfo(
         memberSeq, status);
     return ResponseEntity.ok(completedExamList);
   }

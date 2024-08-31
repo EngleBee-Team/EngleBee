@@ -39,7 +39,8 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<StudentMainPageNewExamDTO> getCreatedExamListInfo(Long memberSeq, ExamStatus status) {
+  public List<StudentMainPageNewExamDTO> getPreparedExamInfo(Long memberSeq,
+      ExamStatus status) {
     return examRepository.findTop5ByLectureStudentSeqAndStatusOrderByCreatedAtDesc(memberSeq,
             status)
         .stream()
@@ -48,7 +49,7 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<StudentMainPageSubmitExamDTO> getCompletedExamListInfo(Long memberSeq,
+  public List<StudentMainPageSubmitExamDTO> getCompletedExamInfo(Long memberSeq,
       List<ExamStatus> status) {
     return examRepository.findTop5ByLectureStudentSeqAndStatusInOrderByCreatedAtDesc(
             memberSeq, status)
