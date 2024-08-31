@@ -23,7 +23,7 @@ public class TeacherExamApiController {
 
   private final TeacherExamService teacherExamService;
 
-  @PostMapping("/{examSeq}")
+  @PostMapping("/register/{examSeq}")
   public ResponseEntity<Void> registerExam(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq,
       @Valid @RequestBody TeacherExamRegisterRequestDTO teacherExamRegisterRequestDTO) {
