@@ -6,6 +6,7 @@ import com.beelinkers.englebee.general.domain.entity.MemberSubjectLevel;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface MemberSubjectLevelRepository extends JpaRepository<MemberSubjectLevel, Long> {
 
@@ -36,5 +37,6 @@ public interface MemberSubjectLevelRepository extends JpaRepository<MemberSubjec
           "GROUP BY sl.levelCode")
   List<AdminMemberSubjectLevelCountDTO> findLevelCountsWord();
 
-  List<MemberSubjectLevel> findByStudent(Member student);
+  @Query("SELECT msl FROM MemberSubjectLevel msl JOIN FETCH msl.subjectLevel WHERE msl.student = :student")
+  List<MemberSubjectLevel> findByStudentWithSubjectLevel(@Param("student") Member student);
 }

@@ -4,9 +4,11 @@ import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
+import com.beelinkers.englebee.general.domain.entity.LectureSubjectLevel;
 import com.beelinkers.englebee.general.domain.entity.MemberSubjectLevel;
 import com.beelinkers.englebee.general.domain.entity.SubjectLevel;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
+import com.beelinkers.englebee.general.domain.repository.LectureSubjectLevelRepository;
 import com.beelinkers.englebee.general.domain.repository.MemberSubjectLevelRepository;
 import com.beelinkers.englebee.general.exception.ExamNotFoundException;
 import com.beelinkers.englebee.general.exception.InvalidMemberRoleException;
@@ -31,6 +33,7 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
   private final MemberRepository memberRepository;
   private final ExamRepository examRepository;
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
+  private final LectureSubjectLevelRepository lectureSubjectLevelRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -66,32 +69,34 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
   }
 
   private Map<String, String> extractLectureSubjectLevels(Lecture lecture) {
-    Map<String, String> lectureSubjectLevels = new HashMap<>();
-    lecture.getSubjectLevels().forEach(
+    List<LectureSubjectLevel> lectureSubjectLevels =
+        lectureSubjectLevelRepository.findByLectureWithSubjectLevel(lecture);
+    Map<String, String> lectureSubjectLevelsMap = new HashMap<>();
+    lectureSubjectLevels.forEach(
         lectureSubjectLevel -> {
           SubjectLevel subjectLevel = lectureSubjectLevel.getSubjectLevel();
-          lectureSubjectLevels.put(
+          lectureSubjectLevelsMap.put(
               subjectLevel.getSubjectCode().getKoreanCode(),
               subjectLevel.getLevelCode().getKoreanCode()
           );
         }
     );
-    return lectureSubjectLevels;
+    return lectureSubjectLevelsMap;
   }
 
   private Map<String, String> extractStudentSubjectLevels(Member student) {
-    List<MemberSubjectLevel> memberSubjectLevels = memberSubjectLevelRepository.findByStudent(
+    List<MemberSubjectLevel> studentSubjectLevels = memberSubjectLevelRepository.findByStudentWithSubjectLevel(
         student);
-    Map<String, String> studentSubjectLevels = new HashMap<>();
-    memberSubjectLevels.forEach(
+    Map<String, String> studentSubjectLevelsMap = new HashMap<>();
+    studentSubjectLevels.forEach(
         memberSubjectLevel -> {
           SubjectLevel subjectLevel = memberSubjectLevel.getSubjectLevel();
-          studentSubjectLevels.put(
+          studentSubjectLevelsMap.put(
               subjectLevel.getSubjectCode().getKoreanCode(),
               subjectLevel.getLevelCode().getKoreanCode()
           );
         }
     );
-    return studentSubjectLevels;
+    return studentSubjectLevelsMap;
   }
 }
