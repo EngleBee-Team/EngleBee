@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
+import com.beelinkers.englebee.general.domain.entity.LectureStatus;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
@@ -10,9 +11,6 @@ import com.beelinkers.englebee.student.service.StudentMainService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,26 +26,20 @@ public class StudentMainApiController {
   private final StudentMainService studentMainService;
 
   @GetMapping("/lecture")
-  public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageLectureDTO>> getOngoingLecture(
+  public ResponseEntity<List<StudentMainPageLectureDTO>> getOngoingLecture(
       @RequestParam("memberSeq") Long memberSeq,
-      @PageableDefault(size = 10) Pageable pageable) {
-    Page<StudentMainPageLectureDTO> lectureList = studentMainService.getLectureList(memberSeq,
-        pageable);
-    PaginationResponseDTO pagination = new PaginationResponseDTO(
-        lectureList.getNumber(), lectureList.getSize(), lectureList.getTotalPages(),
-        lectureList.getTotalElements(), lectureList.hasPrevious(), lectureList.hasNext()
-    );
-    GeneralPagedResponseDTO<StudentMainPageLectureDTO> pagedPagination = new GeneralPagedResponseDTO<>(
-        lectureList.getContent(),
-        pagination
-    );
-    return ResponseEntity.ok(pagedPagination);
+      @RequestParam("lectureSeq") Long lectureSeq,
+      @RequestParam("lectureStatus") String lectureStatus) {
+    LectureStatus status = LectureStatus.valueOf(lectureStatus.toUpperCase());
+    List<StudentMainPageLectureDTO> lectureList = studentMainService.getLectureList(memberSeq,
+        lectureSeq, status);
+    return ResponseEntity.ok(lectureList);
   }
 
   @GetMapping("/created-exam")
   public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageNewExamDTO>> getCreatedExam(
-      @RequestParam("memberSeq") Long memberSeq,
-      @RequestParam(value = "status", required = false, defaultValue = "PREPARED") ExamStatus status) {
+      @RequestParam("memberSeq") Long memberSeq) {
+    ExamStatus status = ExamStatus.PREPARED;
     List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getNewExamList(memberSeq,
         status);
     GeneralPagedResponseDTO<StudentMainPageNewExamDTO> examPagination = new GeneralPagedResponseDTO<>(

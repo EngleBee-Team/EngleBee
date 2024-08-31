@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +28,13 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
-    return lectureRepository.findByStudentSeqAndStatus(memberSeq, LectureStatus.CREATED, pageable)
-        .map(studentMainPageMapper::mainPageLectureDto);
+  public List<StudentMainPageLectureDTO> getLectureList(Long memberSeq, Long lectureSeq,
+      LectureStatus lectureStatus) {
+    return lectureRepository.findByStudentSeqAndSeqAndStatus(memberSeq, lectureSeq,
+            lectureStatus)
+        .stream()
+        .map(studentMainPageMapper::mainPageLectureDto)
+        .collect(Collectors.toList());
   }
 
   @Override
