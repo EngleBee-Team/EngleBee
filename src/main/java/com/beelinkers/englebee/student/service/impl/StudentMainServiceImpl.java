@@ -10,6 +10,7 @@ import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO
 import com.beelinkers.englebee.student.dto.response.mapper.StudentMainPageMapper;
 import com.beelinkers.englebee.student.service.StudentMainService;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,17 +37,22 @@ public class StudentMainServiceImpl implements StudentMainService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
-    return examRepository.findByLectureStudentSeqAndStatus(memberSeq, ExamStatus.PREPARED, pageable)
-        .map(studentMainPageMapper::mainPageNewExamDTO);
+  public List<StudentMainPageNewExamDTO> getNewExamList(Long memberSeq, ExamStatus status) {
+    return examRepository.findTop5ByLectureStudentSeqAndStatusOrderByCreatedAtDesc(memberSeq,
+            status)
+        .stream()
+        .map(studentMainPageMapper::mainPageNewExamDTO).toList();
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Page<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq, Pageable pageable) {
-    return examRepository.findByLectureStudentSeqAndStatusIn(
-        memberSeq, List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED), pageable
-    ).map(studentMainPageMapper::mainPageSubmitExamDTO);
+  public List<StudentMainPageSubmitExamDTO> getSubmitExamList(Long memberSeq,
+      List<ExamStatus> status) {
+    return examRepository.findTop5ByLectureStudentSeqAndStatusInOrderByCreatedAtDesc(
+            memberSeq, status)
+        .stream()
+        .map(studentMainPageMapper::mainPageSubmitExamDTO)
+        .collect(Collectors.toList());
   }
 
 }

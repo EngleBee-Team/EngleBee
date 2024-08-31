@@ -1,11 +1,13 @@
 package com.beelinkers.englebee.student.controller.api;
 
+import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageSubmitExamDTO;
 import com.beelinkers.englebee.student.service.StudentMainService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,38 +44,35 @@ public class StudentMainApiController {
     return ResponseEntity.ok(pagedPagination);
   }
 
-  @GetMapping("/new-exams")
+  @GetMapping("/created-exam")
   public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageNewExamDTO>> getCreatedExam(
       @RequestParam("memberSeq") Long memberSeq,
-      @PageableDefault(size = 10) Pageable pageable) {
-    Page<StudentMainPageNewExamDTO> newExamList = studentMainService.getNewExamList(memberSeq,
-        pageable);
-    PaginationResponseDTO pagination = new PaginationResponseDTO(
-        newExamList.getNumber(), newExamList.getSize(), newExamList.getTotalPages(),
-        newExamList.getTotalElements(), newExamList.hasPrevious(), newExamList.hasNext()
+      @RequestParam(value = "status", required = false, defaultValue = "PREPARED") ExamStatus status) {
+    List<StudentMainPageNewExamDTO> createdExamList = studentMainService.getNewExamList(memberSeq,
+        status);
+    GeneralPagedResponseDTO<StudentMainPageNewExamDTO> examPagination = new GeneralPagedResponseDTO<>(
+        createdExamList,
+        new PaginationResponseDTO(1, createdExamList.size(), 1, createdExamList.size(), false,
+            false)
     );
-    GeneralPagedResponseDTO<StudentMainPageNewExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
-        newExamList.getContent(),
-        pagination
-    );
-    return ResponseEntity.ok(pagedPagination);
+    return ResponseEntity.ok(examPagination);
   }
 
-  @GetMapping("/submit-exams")
+  @GetMapping("/completed-exam")
   public ResponseEntity<GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO>> getCompletedExam(
       @RequestParam("memberSeq") Long memberSeq,
-      @PageableDefault(size = 10) Pageable pageable) {
-    Page<StudentMainPageSubmitExamDTO> submitExamList = studentMainService.getSubmitExamList(
-        memberSeq, pageable);
-    PaginationResponseDTO pagination = new PaginationResponseDTO(
-        submitExamList.getNumber(), submitExamList.getSize(), submitExamList.getTotalPages(),
-        submitExamList.getTotalElements(), submitExamList.hasPrevious(), submitExamList.hasNext()
+      @RequestParam(value = "status", required = false) List<ExamStatus> status) {
+    if (status == null || status.isEmpty()) {
+      status = List.of(ExamStatus.SUBMITTED, ExamStatus.FEEDBACK_COMPLETED);
+    }
+    List<StudentMainPageSubmitExamDTO> completedExamList = studentMainService.getSubmitExamList(
+        memberSeq, status);
+    GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO> examPagination = new GeneralPagedResponseDTO<>(
+        completedExamList,
+        new PaginationResponseDTO(1, completedExamList.size(), 1, completedExamList.size(), false,
+            false)
     );
-    GeneralPagedResponseDTO<StudentMainPageSubmitExamDTO> pagedPagination = new GeneralPagedResponseDTO<>(
-        submitExamList.getContent(),
-        pagination
-    );
-    return ResponseEntity.ok(pagedPagination);
+    return ResponseEntity.ok(examPagination);
   }
 
 
