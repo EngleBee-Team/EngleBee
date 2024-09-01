@@ -2,6 +2,7 @@ package com.beelinkers.englebee.teacher.controller.api;
 
 import com.beelinkers.englebee.auth.annotation.LoginMember;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
+import com.beelinkers.englebee.teacher.dto.request.TeacherExamFeedbackRequestDTO;
 import com.beelinkers.englebee.teacher.dto.request.TeacherExamRegisterRequestDTO;
 import com.beelinkers.englebee.teacher.service.TeacherExamService;
 import jakarta.validation.Valid;
@@ -31,16 +32,13 @@ public class TeacherExamApiController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  /**
-   * @param : examSeq = 시험 PK
-   * @param : feedback = 선생님 피드백 내용
-   * @param : Map<String,String> = 학생의 수준 평가 내용
-   */
-  /*public ResponseEntity<Void> feedbackExam(@LoginMember SessionMember sessionMember,
+
+  @PostMapping("/feedback/{examSeq}")
+  public ResponseEntity<Void> feedbackExam(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq,
       @Valid @RequestBody TeacherExamFeedbackRequestDTO teacherExamFeedbackRequestDTO) {
     teacherExamService.feedbackExam(sessionMember.getSeq(), examSeq, teacherExamFeedbackRequestDTO);
     return ResponseEntity.status(HttpStatus.CREATED).build();
-  }*/
+  }
 
 }

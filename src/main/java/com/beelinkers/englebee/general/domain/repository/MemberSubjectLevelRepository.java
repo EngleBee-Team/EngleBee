@@ -39,4 +39,6 @@ public interface MemberSubjectLevelRepository extends JpaRepository<MemberSubjec
 
   @Query("SELECT msl FROM MemberSubjectLevel msl JOIN FETCH msl.subjectLevel WHERE msl.student = :student")
   List<MemberSubjectLevel> findByStudentWithSubjectLevel(@Param("student") Member student);
+
+  void deleteByStudent(Member student);
 }
