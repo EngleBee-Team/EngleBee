@@ -27,11 +27,23 @@ public class StudentExamPageServiceImpl implements StudentExamPageService {
   @Override
   @Transactional(readOnly = true)
   public StudentExamSolvePageDTO getStudentExamSolvePageDTO(Long studentSeq, Long examSeq) {
-    Member student = studentExamValidationService.validateAndGetStudent(studentSeq);
+    Member student = validateAndGetStudent(studentSeq);
+    Exam exam = validateExamAndCheckIsPreparedForSolving(student, examSeq);
+    return mapToStudentExamSolvePageDTO(exam);
+  }
+
+  private Member validateAndGetStudent(Long studentSeq) {
+    return studentExamValidationService.validateAndGetStudent(studentSeq);
+  }
+
+  private Exam validateExamAndCheckIsPreparedForSolving(Member student, Long examSeq) {
     Exam exam = studentExamValidationService.validateAndGetExam(examSeq);
     studentExamValidationService.validateStudentAccessToExam(student, exam);
     studentExamValidationService.validateExamIsReadyToBeSolved(exam);
+    return exam;
+  }
 
+  private StudentExamSolvePageDTO mapToStudentExamSolvePageDTO(Exam exam) {
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
     return studentExamSolvePageMapper.toExamSolvePageDTO(exam.getTitle(), teacherQuestions);
   }
