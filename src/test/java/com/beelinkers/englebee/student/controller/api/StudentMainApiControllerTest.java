@@ -74,7 +74,7 @@ public class StudentMainApiControllerTest {
 
     // then
     assertEquals(lectureList, response.getBody());
-    assertEquals(200, response.getStatusCodeValue());
+    assertEquals(200, response.getStatusCode().value());
   }
 
   @Test
@@ -124,7 +124,7 @@ public class StudentMainApiControllerTest {
 
     // then
     assertEquals(submitExamList, response.getBody());
-    assertEquals(200, response.getStatusCodeValue());
+    assertEquals(200, response.getStatusCode().value());
 
   }
 }
