@@ -32,15 +32,22 @@ public class StudentExamServiceImpl implements StudentExamService {
     studentExamValidationService.validateStudentAccessToExam(student, exam);
     studentExamValidationService.validateExamIsReadyToBeSolved(exam);
 
-    List<StudentAnswerToTeacherQuestionDTO> studentAnswerToTeacherQuestionDTOs = studentExamSolveRequestDTO.getStudentAnswerToTeacherQuestionDTOs();
-    studentAnswerToTeacherQuestionDTOs.forEach(
-        dto -> {
-          TeacherQuestion teacherQuestion = teacherQuestionRepository.findById(
-              dto.getTeacherQuestionSeq()).orElseThrow(
-              () -> new TeacherQuestionNotFoundException("해당하는 선생님 질문이 존재하지 않습니다."));
-          teacherQuestion.insertStudentAnswer(dto.getStudentAnswer());
-        }
-    );
+    List<Long> teacherQuestionSeqs = studentExamSolveRequestDTO.getStudentAnswerToTeacherQuestionDTOs()
+        .stream()
+        .map(StudentAnswerToTeacherQuestionDTO::getTeacherQuestionSeq)
+        .toList();
+
+    List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findAllById(
+        teacherQuestionSeqs);
+
+    studentExamSolveRequestDTO.getStudentAnswerToTeacherQuestionDTOs().forEach(dto -> {
+      TeacherQuestion teacherQuestion = teacherQuestions.stream()
+          .filter(question -> question.getSeq().equals(dto.getTeacherQuestionSeq()))
+          .findFirst()
+          .orElseThrow(() -> new TeacherQuestionNotFoundException("해당하는 선생님 질문이 존재하지 않습니다."));
+      teacherQuestion.insertStudentAnswer(dto.getStudentAnswer());
+    });
+    
     exam.submit();
   }
 }
