@@ -34,10 +34,8 @@ public class ChatServiceImpl implements ChatService {
     // 4. Exam 객체 생성
     Exam exam = Exam.builder()
         .lecture(lecture)
-        .title(lecture.getTitle() + " -Exam") // 적절한 제목 설정
+        .title(lecture.getTitle() + " - Exam") // 적절한 제목 설정
         .build();
 
-    // 5. Exam 저장
-    examRepository.save(exam);
   }
 }
