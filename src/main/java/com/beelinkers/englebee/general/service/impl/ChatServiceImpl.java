@@ -25,7 +25,6 @@ public class ChatServiceImpl implements ChatService {
     Lecture lecture = lectureRepository.findById(lectureSeq)
         .orElseThrow(()-> new InvalidLectureSeqException("잘못된 입력값입니다"));
     lecture.finish();
-    lectureRepository.save(lecture);
 
     createAndSaveExam(lecture);
   }
@@ -37,5 +36,7 @@ public class ChatServiceImpl implements ChatService {
         .title(lecture.getTitle() + " - Exam") // 적절한 제목 설정
         .build();
 
+    // 5. Exam 저장
+    examRepository.save(exam);
   }
 }
