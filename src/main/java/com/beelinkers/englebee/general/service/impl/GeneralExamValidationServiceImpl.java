@@ -22,6 +22,7 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
   private final MemberRepository memberRepository;
   private final ExamRepository examRepository;
 
+  @Override
   @Transactional(readOnly = true)
   public Member validateAndGetTeacher(Long teacherSeq) {
     Member teacher = memberRepository.findById(teacherSeq)
@@ -32,6 +33,7 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
     return teacher;
   }
 
+  @Override
   @Transactional(readOnly = true)
   public Member validateAndGetStudent(Long studentSeq) {
     Member student = memberRepository.findById(studentSeq)
@@ -42,12 +44,14 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
     return student;
   }
 
+  @Override
   @Transactional(readOnly = true)
   public Exam validateAndGetExam(Long examSeq) {
     return examRepository.findById(examSeq)
         .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
   }
 
+  @Override
   @Transactional(readOnly = true)
   public void validateTeacherAccessToExam(Member teacher, Exam exam) {
     if (!exam.getLecture().getTeacher().equals(teacher)) {
@@ -55,6 +59,7 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
     }
   }
 
+  @Override
   @Transactional(readOnly = true)
   public void validateStudentAccessToExam(Member student, Exam exam) {
     if (!exam.getLecture().getStudent().equals(student)) {
@@ -62,10 +67,27 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
     }
   }
 
+  @Override
   @Transactional(readOnly = true)
-  public void validateExamStatus(Exam exam, ExamStatus expectedStatus) {
-    if (!exam.getStatus().equals(expectedStatus)) {
-      throw new InvalidExamStatusException("잘못된 시험 상태 값입니다. ExamStatus : " + expectedStatus);
+  public void validateExamIsReadyToBeSolved(Exam exam) {
+    if (exam.getStatus() != ExamStatus.PREPARED) {
+      throw new InvalidExamStatusException("시험을 풀 수 없습니다 : 시험이 준비 상태가 아닙니다.");
+    }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void validatedExamIsReadyToBeRegistered(Exam exam) {
+    if (exam.getStatus() != ExamStatus.CREATED) {
+      throw new InvalidExamStatusException("시험을 등록할 수 없습니다 : 시험이 생성 상태가 아닙니다.");
+    }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void validateExamIsReadyToBeFeedBacked(Exam exam) {
+    if (exam.getStatus() != ExamStatus.SUBMITTED) {
+      throw new InvalidExamStatusException("시험에 피드백을 할 수 없습니다 : 시험이 제출완료 상태가 아닙니다.");
     }
   }
 

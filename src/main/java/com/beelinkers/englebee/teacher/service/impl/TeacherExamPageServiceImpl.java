@@ -35,6 +35,7 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
     Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
+    teacherExamValidationService.validatedExamIsReadyToBeRegistered(exam);
 
     Lecture lecture = exam.getLecture();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);

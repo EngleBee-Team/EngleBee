@@ -2,7 +2,6 @@ package com.beelinkers.englebee.student.service.impl;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.general.domain.entity.Exam;
-import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.service.GeneralExamValidationService;
 import com.beelinkers.englebee.student.dto.response.StudentExamSolvePageDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentExamSolvePageMapper;
@@ -31,7 +30,7 @@ public class StudentExamPageServiceImpl implements StudentExamPageService {
     Member student = studentExamValidationService.validateAndGetStudent(studentSeq);
     Exam exam = studentExamValidationService.validateAndGetExam(examSeq);
     studentExamValidationService.validateStudentAccessToExam(student, exam);
-    studentExamValidationService.validateExamStatus(exam, ExamStatus.PREPARED);
+    studentExamValidationService.validateExamIsReadyToBeSolved(exam);
 
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
     return studentExamSolvePageMapper.toExamSolvePageDTO(exam.getTitle(), teacherQuestions);

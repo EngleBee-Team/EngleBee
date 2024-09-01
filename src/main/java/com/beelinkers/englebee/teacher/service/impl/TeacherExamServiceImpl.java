@@ -2,7 +2,6 @@ package com.beelinkers.englebee.teacher.service.impl;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.general.domain.entity.Exam;
-import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.service.GeneralExamValidationService;
 import com.beelinkers.englebee.teacher.domain.repository.TeacherQuestionRepository;
 import com.beelinkers.englebee.teacher.dto.request.TeacherExamRegisterRequestDTO;
@@ -31,7 +30,7 @@ public class TeacherExamServiceImpl implements TeacherExamService {
     Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
-    teacherExamValidationService.validateExamStatus(exam, ExamStatus.CREATED);
+    teacherExamValidationService.validatedExamIsReadyToBeRegistered(exam);
 
     exam.updateTitle(teacherExamRegisterRequestDTO.getTitle());
     List<TeacherQuestionCreateRequestDTO> teacherQuestionCreateRequestDTOs = teacherExamRegisterRequestDTO.getTeacherQuestionCreateRequestDTOs();
