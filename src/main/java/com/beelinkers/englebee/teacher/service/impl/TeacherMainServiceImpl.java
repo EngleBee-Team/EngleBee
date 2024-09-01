@@ -9,6 +9,7 @@ import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMainPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class TeacherMainServiceImpl implements TeacherMainService {
         .collect(Collectors.toList());
   }
 
-  // new-exam
+  // pending-exam
   @Override
   public List<TeacherMainPagePendingExamDTO> getPendingExamInfo(Long memberSeq,
       ExamStatus status) {
@@ -43,13 +44,22 @@ public class TeacherMainServiceImpl implements TeacherMainService {
         .stream().map(teacherMainPageMapper::teacherMainPagePendingExamDto).toList();
   }
 
-  // authored-exam
+  // exam-history
   @Override
   public List<TeacherMainPageExamHistoryDTO> getExamHistoryInfo(Long memberSeq,
       List<ExamStatus> status) {
-    return examRepository.findTop5ByLectureTeacherSeqAndStatusInOrderByCreatedAtDesc(memberSeq,
+    List<TeacherMainPageExamHistoryDTO> examHistoryList = new ArrayList<>();
+    examRepository.findTop5ByLectureTeacherSeqAndStatusInOrderByCreatedAtDesc(memberSeq,
             status)
-        .stream().map(teacherMainPageMapper::teacherMainPageExamHistoryDTO).toList();
+        .forEach(exam -> {
+          TeacherMainPageExamHistoryDTO dto = teacherMainPageMapper.teacherMainPageExamHistoryDTO(
+              exam);
+          if (dto != null) {
+            examHistoryList.add(dto);
+          }
+        });
+    return examHistoryList;
+
   }
 
 }

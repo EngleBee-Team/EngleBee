@@ -46,7 +46,7 @@ public class TeacherMainPageMapper {
         exam.getTitle(),
         exam.getStatus().name(),
         lecture.getStudent().getNickname(),
-        lecture.getCreatedAt()
+        exam.getCreatedAt()
     );
   }
 
