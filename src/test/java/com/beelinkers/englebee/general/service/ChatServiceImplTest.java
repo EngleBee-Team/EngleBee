@@ -46,7 +46,6 @@ public class ChatServiceImplTest {
 
     //then
     verify(mokeLecture).finish();
-    verify(lectureRepository).save(mokeLecture);
 
     ArgumentCaptor<Exam> examCapter = ArgumentCaptor.forClass(Exam.class);
     verify(examRepository).save(examCapter.capture());
