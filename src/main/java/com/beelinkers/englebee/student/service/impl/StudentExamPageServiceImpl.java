@@ -34,7 +34,7 @@ public class StudentExamPageServiceImpl implements StudentExamPageService {
     studentExamValidationService.validateExamStatus(exam, ExamStatus.PREPARED);
 
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
-    return studentExamSolvePageMapper.toExamSolvePageDTO(teacherQuestions);
+    return studentExamSolvePageMapper.toExamSolvePageDTO(exam.getTitle(), teacherQuestions);
   }
 
 }

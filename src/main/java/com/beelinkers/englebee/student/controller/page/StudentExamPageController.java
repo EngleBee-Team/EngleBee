@@ -25,6 +25,7 @@ public class StudentExamPageController {
     StudentExamSolvePageDTO studentExamSolvePageDTO = studentExamPageService.getStudentExamSolvePageDTO(
         studentSeq, examSeq);
     model.addAttribute("examSeq", examSeq);
+    model.addAttribute("examTitle", studentExamSolvePageDTO.getExamTitle());
     model.addAttribute("teacherQuestions",
         studentExamSolvePageDTO.getTeacherQuestionForStudentToSolveDTOS());
     return "student/exam-solve";

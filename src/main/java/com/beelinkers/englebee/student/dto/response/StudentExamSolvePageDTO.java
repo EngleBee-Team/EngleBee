@@ -8,5 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class StudentExamSolvePageDTO {
 
+  private String examTitle;
   private List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOS;
 }

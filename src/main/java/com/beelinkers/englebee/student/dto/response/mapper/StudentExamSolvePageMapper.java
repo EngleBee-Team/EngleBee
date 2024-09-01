@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentExamSolvePageMapper {
 
-  public StudentExamSolvePageDTO toExamSolvePageDTO(List<TeacherQuestion> teacherQuestions) {
+  public StudentExamSolvePageDTO toExamSolvePageDTO(String examTitle,
+      List<TeacherQuestion> teacherQuestions) {
     List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOS = teacherQuestions.stream()
         .map(tq -> new TeacherQuestionForStudentToSolveDTO(
             tq.getDirection(),
@@ -18,7 +19,7 @@ public class StudentExamSolvePageMapper {
                 .map(String::trim)
                 .toList()))
         .toList();
-    return new StudentExamSolvePageDTO(teacherQuestionForStudentToSolveDTOS);
+    return new StudentExamSolvePageDTO(examTitle, teacherQuestionForStudentToSolveDTOS);
   }
 
 }
