@@ -33,6 +33,16 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
   }
 
   @Transactional(readOnly = true)
+  public Member validateAndGetStudent(Long studentSeq) {
+    Member student = memberRepository.findById(studentSeq)
+        .orElseThrow(() -> new MemberNotFoundException("해당하는 학생 멤버가 존재하지 않습니다."));
+    if (!student.isStudent()) {
+      throw new InvalidMemberRoleException("해당 멤버는 학생 멤버가 아닙니다.");
+    }
+    return student;
+  }
+
+  @Transactional(readOnly = true)
   public Exam validateAndGetExam(Long examSeq) {
     return examRepository.findById(examSeq)
         .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
@@ -41,6 +51,13 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
   @Transactional(readOnly = true)
   public void validateTeacherAccessToExam(Member teacher, Exam exam) {
     if (!exam.getLecture().getTeacher().equals(teacher)) {
+      throw new TeacherIllegalAccessToExamException("해당하는 시험은 선생님이 낸 시험이 아닙니다.");
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public void validateStudentAccessToExam(Member student, Exam exam) {
+    if (!exam.getLecture().getStudent().equals(student)) {
       throw new TeacherIllegalAccessToExamException("해당하는 시험은 선생님이 낸 시험이 아닙니다.");
     }
   }

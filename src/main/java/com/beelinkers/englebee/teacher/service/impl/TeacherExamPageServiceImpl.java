@@ -8,9 +8,9 @@ import com.beelinkers.englebee.general.domain.entity.MemberSubjectLevel;
 import com.beelinkers.englebee.general.domain.entity.SubjectLevel;
 import com.beelinkers.englebee.general.domain.repository.LectureSubjectLevelRepository;
 import com.beelinkers.englebee.general.domain.repository.MemberSubjectLevelRepository;
+import com.beelinkers.englebee.general.service.GeneralExamValidationService;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
 import com.beelinkers.englebee.teacher.service.TeacherExamPageService;
-import com.beelinkers.englebee.teacher.service.TeacherExamValidationService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,16 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TeacherExamPageServiceImpl implements TeacherExamPageService {
 
-  private final TeacherExamValidationService validationService;
+  private final GeneralExamValidationService teacherExamValidationService;
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
   private final LectureSubjectLevelRepository lectureSubjectLevelRepository;
 
   @Override
   @Transactional(readOnly = true)
   public TeacherExamRegisterPageDTO getTeacherExamRegisterPageInfo(Long teacherSeq, Long examSeq) {
-    Member teacher = validationService.validateAndGetTeacher(teacherSeq);
-    Exam exam = validationService.validateAndGetExam(examSeq);
-    validationService.validateTeacherAccessToExam(teacher, exam);
+    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+    Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
+    teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
 
     Lecture lecture = exam.getLecture();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
