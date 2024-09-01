@@ -77,13 +77,17 @@
       </div>
     </div>
   </div>
+  <div class="controls mb-4">
+    <input type="hidden" id="lectureSeq-input" th:value="${lectureseq}"/>
+    <button id="exitButton" class="btn btn-primary btn-lg mx-2 mb-2" style="background: red">수업종료</button>
+  </div>
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script>
   // Socket Connection
-  const sock = new SockJS("http://172.30.1.1:8080/socket/"); // 본인의 소켓서버
+  const sock = new SockJS("https://englebee.site/socket/"); // 본인의 소켓서버
   // RTC STUN Server Object
   const configuration = {
     "iceServers": [{
@@ -323,6 +327,27 @@
         $('#message').val('')
       }
     });
+
+    $("#exitButton").click(function(){
+      let lectureSeq = $("#lectureSeq-input").val();
+
+      $.ajax({
+        url: '/api/chat/end-lecture',
+        method: 'GET',
+        contentType: "application/json",
+        data : {"lectureSeq" : lectureSeq},
+        success: function (data) {
+          console.log("성공" + data);
+          location.replace("/main");
+        },
+
+        error: function (xhr, status, error) {
+          console.error('실패' + xhr.responseText);
+          alert(xhr.responseText);
+        }
+      });
+
+    })
 
   })
 </script>
