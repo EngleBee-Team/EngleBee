@@ -37,11 +37,32 @@ public class TeacherExamServiceImpl implements TeacherExamService {
   @Override
   public void registerExam(Long teacherSeq, Long examSeq,
       TeacherExamRegisterRequestDTO teacherExamRegisterRequestDTO) {
-    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+    Member teacher = validateAndGetTeacher(teacherSeq);
+    Exam exam = validateExamAndCheckIsPreparedForRegistration(teacher, examSeq);
+    makeExamPrepared(exam, teacherExamRegisterRequestDTO);
+  }
+
+  @Override
+  public void feedbackExam(Long teacherSeq, Long examSeq,
+      TeacherExamFeedbackRequestDTO teacherExamFeedbackRequestDTO) {
+    Member teacher = validateAndGetTeacher(teacherSeq);
+    Exam exam = validateExamAndCheckIsPreparedForFeedback(teacher, examSeq);
+    makeExamFeedbackCompleted(exam, teacherExamFeedbackRequestDTO);
+  }
+
+  private Member validateAndGetTeacher(Long teacherSeq) {
+    return teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+  }
+
+  private Exam validateExamAndCheckIsPreparedForRegistration(Member teacher, Long examSeq) {
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
     teacherExamValidationService.validateExamIsReadyToBeRegistered(exam);
+    return exam;
+  }
 
+  private void makeExamPrepared(Exam exam,
+      TeacherExamRegisterRequestDTO teacherExamRegisterRequestDTO) {
     exam.updateTitle(teacherExamRegisterRequestDTO.getTitle());
     List<TeacherQuestionCreateRequestDTO> teacherQuestionCreateRequestDTOs = teacherExamRegisterRequestDTO.getTeacherQuestionCreateRequestDTOs();
     teacherQuestionCreateRequestDTOs.stream()
@@ -53,17 +74,11 @@ public class TeacherExamServiceImpl implements TeacherExamService {
     exam.prepare();
   }
 
-  @Override
-  public void feedbackExam(Long teacherSeq, Long examSeq,
-      TeacherExamFeedbackRequestDTO teacherExamFeedbackRequestDTO) {
-    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+  private Exam validateExamAndCheckIsPreparedForFeedback(Member teacher, Long examSeq) {
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
     teacherExamValidationService.validateExamIsReadyToBeFeedBacked(exam);
-
-    exam.addTeacherFeedback(teacherExamFeedbackRequestDTO.getFeedback());
-    Member student = exam.getLecture().getStudent();
-    updateStudentSubjectLevels(student, teacherExamFeedbackRequestDTO);
+    return exam;
   }
 
   private void updateStudentSubjectLevels(Member student,
@@ -92,5 +107,12 @@ public class TeacherExamServiceImpl implements TeacherExamService {
     LevelCode levelCode = LevelCode.fromKoreanCode(levelCodeStr);
     return subjectLevelRepository.findBySubjectCodeAndLevelCode(subjectCode, levelCode)
         .orElseThrow(() -> new InvalidSubjectLevelCodeException("해당하는 과목 레벨 수준이 존재하지 않습니다."));
+  }
+
+  private void makeExamFeedbackCompleted(Exam exam,
+      TeacherExamFeedbackRequestDTO teacherExamFeedbackRequestDTO) {
+    Member student = exam.getLecture().getStudent();
+    updateStudentSubjectLevels(student, teacherExamFeedbackRequestDTO);
+    exam.addTeacherFeedback(teacherExamFeedbackRequestDTO.getFeedback());
   }
 }
