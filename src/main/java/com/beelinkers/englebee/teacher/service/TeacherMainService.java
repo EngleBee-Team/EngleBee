@@ -1,16 +1,19 @@
 package com.beelinkers.englebee.teacher.service;
 
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
+import com.beelinkers.englebee.general.domain.entity.ExamStatus;
+import com.beelinkers.englebee.general.domain.entity.LectureStatus;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPagePendingExamDTO;
+import java.util.List;
 
 public interface TeacherMainService {
 
-  Page<TeacherMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable);
+  List<TeacherMainPageLectureDTO> getOngoingLectureInfo(Long memberSeq, Long lectureSeq,
+      LectureStatus lectureStatus);
 
-  Page<TeacherMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable);
+  List<TeacherMainPagePendingExamDTO> getPendingExamInfo(Long memberSeq, ExamStatus status);
 
-  Page<TeacherMainPageAuthoredExamDTO> getAuthoredExamList(Long memberSeq, Pageable pageable);
+  List<TeacherMainPageExamHistoryDTO> getExamHistoryInfo(Long memberSeq,
+      List<ExamStatus> status);
 }

@@ -4,15 +4,15 @@ import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.domain.entity.LectureStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPagePendingExamDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherMainPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherMainService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,25 +26,30 @@ public class TeacherMainServiceImpl implements TeacherMainService {
 
   // lecture
   @Override
-  public Page<TeacherMainPageLectureDTO> getLectureList(Long memberSeq, Pageable pageable) {
-    return lectureRepository.findByTeacherSeqAndStatus(memberSeq, LectureStatus.CREATED, pageable)
-        .map(teacherMainPageMapper::teacherMainPageLectureDto);
+  public List<TeacherMainPageLectureDTO> getOngoingLectureInfo(Long memberSeq, Long lectureSeq,
+      LectureStatus lectureStatus) {
+    return lectureRepository.findByTeacherSeqAndSeqAndStatus(memberSeq, lectureSeq, lectureStatus)
+        .stream()
+        .map(teacherMainPageMapper::teacherMainPageLectureDto)
+        .collect(Collectors.toList());
   }
 
   // new-exam
   @Override
-  public Page<TeacherMainPageNewExamDTO> getNewExamList(Long memberSeq, Pageable pageable) {
-    return examRepository.findByLectureTeacherSeqAndStatus(memberSeq, ExamStatus.CREATED, pageable)
-        .map(teacherMainPageMapper::teacherMainPageNewExamDto);
+  public List<TeacherMainPagePendingExamDTO> getPendingExamInfo(Long memberSeq,
+      ExamStatus status) {
+    return examRepository.findTop5ByLectureTeacherSeqAndStatusOrderByCreatedAtDesc(memberSeq,
+            status)
+        .stream().map(teacherMainPageMapper::teacherMainPagePendingExamDto).toList();
   }
 
   // authored-exam
   @Override
-  public Page<TeacherMainPageAuthoredExamDTO> getAuthoredExamList(Long memberSeq,
-      Pageable pageable) {
-    return examRepository.findByLectureTeacherSeqAndStatusNot(memberSeq, ExamStatus.CREATED,
-            pageable)
-        .map(teacherMainPageMapper::teacherMainPageAuthoredExamDTO);
+  public List<TeacherMainPageExamHistoryDTO> getExamHistoryInfo(Long memberSeq,
+      List<ExamStatus> status) {
+    return examRepository.findTop5ByLectureTeacherSeqAndStatusInOrderByCreatedAtDesc(memberSeq,
+            status)
+        .stream().map(teacherMainPageMapper::teacherMainPageExamHistoryDTO).toList();
   }
 
 }
