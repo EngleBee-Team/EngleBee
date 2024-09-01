@@ -14,6 +14,7 @@ public class StudentExamSolvePageMapper {
       List<TeacherQuestion> teacherQuestions) {
     List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOS = teacherQuestions.stream()
         .map(tq -> new TeacherQuestionForStudentToSolveDTO(
+            tq.getSeq(),
             tq.getDirection(),
             Arrays.stream(tq.getChoices().split(","))
                 .map(String::trim)

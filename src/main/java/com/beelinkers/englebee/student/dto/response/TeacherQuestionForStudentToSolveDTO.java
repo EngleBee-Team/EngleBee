@@ -8,6 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TeacherQuestionForStudentToSolveDTO {
 
+  private Long teacherQuestionSeq;
   private String direction;
   private List<String> choices;
 
