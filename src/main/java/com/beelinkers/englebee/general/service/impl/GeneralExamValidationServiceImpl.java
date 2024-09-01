@@ -1,4 +1,4 @@
-package com.beelinkers.englebee.teacher.service.impl;
+package com.beelinkers.englebee.general.service.impl;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
@@ -9,15 +9,15 @@ import com.beelinkers.englebee.general.exception.ExamNotFoundException;
 import com.beelinkers.englebee.general.exception.InvalidExamStatusException;
 import com.beelinkers.englebee.general.exception.InvalidMemberRoleException;
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
+import com.beelinkers.englebee.general.service.GeneralExamValidationService;
 import com.beelinkers.englebee.teacher.exception.TeacherIllegalAccessToExamException;
-import com.beelinkers.englebee.teacher.service.TeacherExamValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherExamValidationServiceImpl implements TeacherExamValidationService {
+public class GeneralExamValidationServiceImpl implements GeneralExamValidationService {
 
   private final MemberRepository memberRepository;
   private final ExamRepository examRepository;
