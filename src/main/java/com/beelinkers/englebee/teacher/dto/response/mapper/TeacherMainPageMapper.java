@@ -2,9 +2,10 @@ package com.beelinkers.englebee.teacher.dto.response.mapper;
 
 import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.entity.Lecture;
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageAuthoredExamDTO;
+import com.beelinkers.englebee.general.dto.response.SubjectLevelCodeDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageExamHistoryDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageLectureDTO;
-import com.beelinkers.englebee.teacher.dto.response.TeacherMainPageNewExamDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMainPagePendingExamDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -14,12 +15,18 @@ public class TeacherMainPageMapper {
 
   // main > lecture
   public TeacherMainPageLectureDTO teacherMainPageLectureDto(Lecture lecture) {
-    List<List<String>> subjectLevelCode = lecture.getSubjectLevels().stream()
-        .map(lectureSubjectLevel -> List.of(
-            lectureSubjectLevel.getSubjectLevel().getSubjectCode().getKoreanCode(),
-            lectureSubjectLevel.getSubjectLevel().getLevelCode().getKoreanCode()
-        ))
+    List<String> subjectCode = lecture.getSubjectLevels().stream()
+        .map(lectureSubjectLevel -> lectureSubjectLevel.getSubjectLevel().getSubjectCode()
+            .getKoreanCode())
         .collect(Collectors.toList());
+
+    List<String> levelCode = lecture.getSubjectLevels().stream()
+        .map(lectureSubjectLevel -> lectureSubjectLevel.getSubjectLevel().getLevelCode()
+            .getKoreanCode())
+        .collect(Collectors.toList());
+
+    SubjectLevelCodeDTO subjectLevelCode = new SubjectLevelCodeDTO(subjectCode, levelCode);
+
     return new TeacherMainPageLectureDTO(
         lecture.getSeq(),
         lecture.getStudent().getNickname(),
@@ -30,27 +37,29 @@ public class TeacherMainPageMapper {
     );
   }
 
-  // main > new-exam
-  public TeacherMainPageNewExamDTO teacherMainPageNewExamDto(Exam exam) {
-    String studentNickname = exam.getLecture().getStudent().getNickname();
-    return new TeacherMainPageNewExamDTO(
+  // main > pending-exam
+  public TeacherMainPagePendingExamDTO teacherMainPageNewExamDto(Exam exam) {
+    Lecture lecture = exam.getLecture();
+    return new TeacherMainPagePendingExamDTO(
         exam.getSeq(),
-        exam.getLecture().getSeq(),
-        studentNickname,
+        lecture.getSeq(),
         exam.getTitle(),
-        exam.getStatus().name()
+        exam.getStatus().name(),
+        lecture.getStudent().getNickname(),
+        lecture.getCreatedAt()
     );
   }
 
-  // main > authored-exam
-  public TeacherMainPageAuthoredExamDTO teacherMainPageAuthoredExamDTO(Exam exam) {
-    String studentNickname = exam.getLecture().getStudent().getNickname();
-    return new TeacherMainPageAuthoredExamDTO(
+  // main > exam-history
+  public TeacherMainPageExamHistoryDTO teacherMainPageAuthoredExamDTO(Exam exam) {
+    Lecture lecture = exam.getLecture();
+    return new TeacherMainPageExamHistoryDTO(
         exam.getSeq(),
-        exam.getLecture().getSeq(),
-        studentNickname,
+        lecture.getSeq(),
         exam.getTitle(),
-        exam.getStatus().name()
+        exam.getStatus().name(),
+        lecture.getStudent().getNickname(),
+        lecture.getCreatedAt()
     );
   }
 
