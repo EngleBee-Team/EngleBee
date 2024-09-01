@@ -10,7 +10,6 @@ import com.beelinkers.englebee.general.domain.entity.Lecture;
 import com.beelinkers.englebee.general.domain.entity.LectureStatus;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.domain.repository.LectureRepository;
-import com.beelinkers.englebee.general.domain.repository.QuestionRepository;
 import com.beelinkers.englebee.general.dto.response.SubjectLevelCodeDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageLectureDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMainPageNewExamDTO;
@@ -39,9 +38,6 @@ public class StudentMainServiceImplTest {
 
   @MockBean
   private LectureRepository lectureRepository;
-
-  @MockBean
-  private QuestionRepository questionRepository;
 
   @MockBean
   private ExamRepository examRepository;
