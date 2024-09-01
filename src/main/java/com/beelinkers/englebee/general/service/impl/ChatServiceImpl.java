@@ -30,7 +30,7 @@ public class ChatServiceImpl implements ChatService {
     createAndSaveExam(lecture);
   }
 
-  private void createAndSaveExam(Lecture lecture) {
+  public void createAndSaveExam(Lecture lecture) {
     // 4. Exam 객체 생성
     Exam exam = Exam.builder()
         .lecture(lecture)
