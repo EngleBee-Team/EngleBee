@@ -14,6 +14,7 @@ import com.beelinkers.englebee.teacher.domain.repository.TeacherQuestionReposito
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamFeedbackPageDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
 import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherExamFeedbackPageMapper;
+import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherExamRegisterPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherExamPageService;
 import java.util.HashMap;
 import java.util.List;
@@ -33,32 +34,37 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
   private final LectureSubjectLevelRepository lectureSubjectLevelRepository;
   private final TeacherQuestionRepository teacherQuestionRepository;
+  private final TeacherExamRegisterPageMapper teacherExamRegisterPageMapper;
   private final TeacherExamFeedbackPageMapper teacherExamFeedbackPageMapper;
 
   @Override
   @Transactional(readOnly = true)
   public TeacherExamRegisterPageDTO getTeacherExamRegisterPageInfo(Long teacherSeq, Long examSeq) {
-    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
-    Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
-    teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
-    teacherExamValidationService.validateExamIsReadyToBeRegistered(exam);
-
+    Member teacher = validateAndGetTeacher(teacherSeq);
+    Exam exam = validateExamAndCheckIsPreparedForRegistration(teacher, examSeq);
     Lecture lecture = exam.getLecture();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
     Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(lecture.getStudent());
-    return new TeacherExamRegisterPageDTO(studentSubjectLevels, lectureSubjectLevels);
+    return mapToTeacherExamRegisterPageDTO(lectureSubjectLevels, studentSubjectLevels);
   }
 
   @Override
   @Transactional(readOnly = true)
   public TeacherExamFeedbackPageDTO getTeacherExamFeedbackPageInfo(Long teacherSeq, Long examSeq) {
-    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+    Member teacher = validateAndGetTeacher(teacherSeq);
+    Exam exam = validateExamAndCheckIsPreparedForFeedback(teacher, examSeq);
+    return mapToTeacherExamFeedbackPageDTO(exam);
+  }
+
+  private Member validateAndGetTeacher(Long teacherSeq) {
+    return teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+  }
+
+  private Exam validateExamAndCheckIsPreparedForRegistration(Member teacher, Long examSeq) {
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
-    teacherExamValidationService.validateExamIsReadyToBeFeedBacked(exam);
-    
-    List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
-    return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(exam.getTitle(), teacherQuestions);
+    teacherExamValidationService.validateExamIsReadyToBeRegistered(exam);
+    return exam;
   }
 
   private Map<String, String> extractLectureSubjectLevels(Lecture lecture) {
@@ -92,4 +98,23 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
     );
     return studentSubjectLevelsMap;
   }
+
+  private TeacherExamRegisterPageDTO mapToTeacherExamRegisterPageDTO(
+      Map<String, String> lectureSubjectLevels, Map<String, String> studentSubjectLevels) {
+    return teacherExamRegisterPageMapper.toExamRegisterPageDTO(lectureSubjectLevels,
+        studentSubjectLevels);
+  }
+
+  private Exam validateExamAndCheckIsPreparedForFeedback(Member teacher, Long examSeq) {
+    Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
+    teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
+    teacherExamValidationService.validateExamIsReadyToBeFeedBacked(exam);
+    return exam;
+  }
+
+  private TeacherExamFeedbackPageDTO mapToTeacherExamFeedbackPageDTO(Exam exam) {
+    List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
+    return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(exam.getTitle(), teacherQuestions);
+  }
+
 }
