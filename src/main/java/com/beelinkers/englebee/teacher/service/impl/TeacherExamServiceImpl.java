@@ -33,7 +33,7 @@ public class TeacherExamServiceImpl implements TeacherExamService {
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
     teacherExamValidationService.validateExamStatus(exam, ExamStatus.CREATED);
 
-    exam.prepare();
+    exam.updateTitle(teacherExamRegisterRequestDTO.getTitle());
     List<TeacherQuestionCreateRequestDTO> teacherQuestionCreateRequestDTOs = teacherExamRegisterRequestDTO.getTeacherQuestionCreateRequestDTOs();
     teacherQuestionCreateRequestDTOs.stream()
         .map(teacherQuestionRequestMapper::toTeacherQuestion)
@@ -41,5 +41,6 @@ public class TeacherExamServiceImpl implements TeacherExamService {
           teacherQuestion.registerToExam(exam);
           teacherQuestionRepository.save(teacherQuestion);
         });
+    exam.prepare();
   }
 }
