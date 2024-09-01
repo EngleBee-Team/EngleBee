@@ -38,7 +38,7 @@ public class TeacherMainPageMapper {
   }
 
   // main > pending-exam
-  public TeacherMainPagePendingExamDTO teacherMainPageNewExamDto(Exam exam) {
+  public TeacherMainPagePendingExamDTO teacherMainPagePendingExamDto(Exam exam) {
     Lecture lecture = exam.getLecture();
     return new TeacherMainPagePendingExamDTO(
         exam.getSeq(),
@@ -51,7 +51,7 @@ public class TeacherMainPageMapper {
   }
 
   // main > exam-history
-  public TeacherMainPageExamHistoryDTO teacherMainPageAuthoredExamDTO(Exam exam) {
+  public TeacherMainPageExamHistoryDTO teacherMainPageExamHistoryDTO(Exam exam) {
     Lecture lecture = exam.getLecture();
     return new TeacherMainPageExamHistoryDTO(
         exam.getSeq(),
