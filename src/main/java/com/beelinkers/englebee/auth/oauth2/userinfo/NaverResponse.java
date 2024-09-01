@@ -1,8 +1,9 @@
 package com.beelinkers.englebee.auth.oauth2.userinfo;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class NaverResponse implements OAuth2Response {
+public class NaverResponse implements OAuth2Response, Serializable {
 
   private final Map<String, Object> attributes;
 
@@ -22,6 +23,6 @@ public class NaverResponse implements OAuth2Response {
 
   @Override
   public String getName() {
-    return attributes.get("name").toString();
+    return "naver-" + attributes.get("email").toString();
   }
 }
