@@ -12,7 +12,7 @@ public class StudentExamSolvePageMapper {
 
   public StudentExamSolvePageDTO toExamSolvePageDTO(String examTitle,
       List<TeacherQuestion> teacherQuestions) {
-    List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOS = teacherQuestions.stream()
+    List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOs = teacherQuestions.stream()
         .map(tq -> new TeacherQuestionForStudentToSolveDTO(
             tq.getSeq(),
             tq.getDirection(),
@@ -20,7 +20,7 @@ public class StudentExamSolvePageMapper {
                 .map(String::trim)
                 .toList()))
         .toList();
-    return new StudentExamSolvePageDTO(examTitle, teacherQuestionForStudentToSolveDTOS);
+    return new StudentExamSolvePageDTO(examTitle, teacherQuestionForStudentToSolveDTOs);
   }
 
 }

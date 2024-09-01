@@ -27,7 +27,7 @@ public class StudentExamPageController {
     model.addAttribute("examSeq", examSeq);
     model.addAttribute("examTitle", studentExamSolvePageDTO.getExamTitle());
     model.addAttribute("teacherQuestions",
-        studentExamSolvePageDTO.getTeacherQuestionForStudentToSolveDTOS());
+        studentExamSolvePageDTO.getTeacherQuestionForStudentToSolveDTOs());
     return "student/exam-solve";
   }
 

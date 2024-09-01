@@ -31,4 +31,16 @@ public class TeacherExamApiController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  /**
+   * @param : examSeq = 시험 PK
+   * @param : feedback = 선생님 피드백 내용
+   * @param : Map<String,String> = 학생의 수준 평가 내용
+   */
+  /*public ResponseEntity<Void> feedbackExam(@LoginMember SessionMember sessionMember,
+      @PathVariable("examSeq") Long examSeq,
+      @Valid @RequestBody TeacherExamFeedbackRequestDTO teacherExamFeedbackRequestDTO) {
+    teacherExamService.feedbackExam(sessionMember.getSeq(), examSeq, teacherExamFeedbackRequestDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }*/
+
 }

@@ -9,7 +9,11 @@ import com.beelinkers.englebee.general.domain.entity.SubjectLevel;
 import com.beelinkers.englebee.general.domain.repository.LectureSubjectLevelRepository;
 import com.beelinkers.englebee.general.domain.repository.MemberSubjectLevelRepository;
 import com.beelinkers.englebee.general.service.GeneralExamValidationService;
+import com.beelinkers.englebee.teacher.domain.entity.TeacherQuestion;
+import com.beelinkers.englebee.teacher.domain.repository.TeacherQuestionRepository;
+import com.beelinkers.englebee.teacher.dto.response.TeacherExamFeedbackPageDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
+import com.beelinkers.englebee.teacher.dto.response.mapper.TeacherExamFeedbackPageMapper;
 import com.beelinkers.englebee.teacher.service.TeacherExamPageService;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,8 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
   private final GeneralExamValidationService teacherExamValidationService;
   private final MemberSubjectLevelRepository memberSubjectLevelRepository;
   private final LectureSubjectLevelRepository lectureSubjectLevelRepository;
+  private final TeacherQuestionRepository teacherQuestionRepository;
+  private final TeacherExamFeedbackPageMapper teacherExamFeedbackPageMapper;
 
   @Override
   @Transactional(readOnly = true)
@@ -35,12 +41,24 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
     Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
-    teacherExamValidationService.validatedExamIsReadyToBeRegistered(exam);
+    teacherExamValidationService.validateExamIsReadyToBeRegistered(exam);
 
     Lecture lecture = exam.getLecture();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
     Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(lecture.getStudent());
     return new TeacherExamRegisterPageDTO(studentSubjectLevels, lectureSubjectLevels);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public TeacherExamFeedbackPageDTO getTeacherExamFeedbackPageInfo(Long teacherSeq, Long examSeq) {
+    Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
+    Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
+    teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
+    teacherExamValidationService.validateExamIsReadyToBeFeedBacked(exam);
+    
+    List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
+    return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(exam.getTitle(), teacherQuestions);
   }
 
   private Map<String, String> extractLectureSubjectLevels(Lecture lecture) {

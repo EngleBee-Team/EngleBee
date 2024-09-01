@@ -77,7 +77,7 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
 
   @Override
   @Transactional(readOnly = true)
-  public void validatedExamIsReadyToBeRegistered(Exam exam) {
+  public void validateExamIsReadyToBeRegistered(Exam exam) {
     if (exam.getStatus() != ExamStatus.CREATED) {
       throw new InvalidExamStatusException("시험을 등록할 수 없습니다 : 시험이 생성 상태가 아닙니다.");
     }

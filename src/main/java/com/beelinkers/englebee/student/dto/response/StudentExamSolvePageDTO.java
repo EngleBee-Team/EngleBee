@@ -9,5 +9,5 @@ import lombok.Getter;
 public class StudentExamSolvePageDTO {
 
   private String examTitle;
-  private List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOS;
+  private List<TeacherQuestionForStudentToSolveDTO> teacherQuestionForStudentToSolveDTOs;
 }

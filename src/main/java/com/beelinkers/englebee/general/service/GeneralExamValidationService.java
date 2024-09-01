@@ -17,7 +17,7 @@ public interface GeneralExamValidationService {
 
   void validateExamIsReadyToBeSolved(Exam exam);
 
-  void validatedExamIsReadyToBeRegistered(Exam exam);
+  void validateExamIsReadyToBeRegistered(Exam exam);
 
   void validateExamIsReadyToBeFeedBacked(Exam exam);
 }

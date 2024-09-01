@@ -30,7 +30,7 @@ public class TeacherExamServiceImpl implements TeacherExamService {
     Member teacher = teacherExamValidationService.validateAndGetTeacher(teacherSeq);
     Exam exam = teacherExamValidationService.validateAndGetExam(examSeq);
     teacherExamValidationService.validateTeacherAccessToExam(teacher, exam);
-    teacherExamValidationService.validatedExamIsReadyToBeRegistered(exam);
+    teacherExamValidationService.validateExamIsReadyToBeRegistered(exam);
 
     exam.updateTitle(teacherExamRegisterRequestDTO.getTitle());
     List<TeacherQuestionCreateRequestDTO> teacherQuestionCreateRequestDTOs = teacherExamRegisterRequestDTO.getTeacherQuestionCreateRequestDTOs();
