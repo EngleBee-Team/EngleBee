@@ -69,9 +69,9 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
 
   @Override
   @Transactional(readOnly = true)
-  public void validateExamIsReadyToBeSolved(Exam exam) {
+  public void validateExamIsReadyToBeSubmitted(Exam exam) {
     if (exam.getStatus() != ExamStatus.PREPARED) {
-      throw new InvalidExamStatusException("시험을 풀 수 없습니다 : 시험이 준비 상태가 아닙니다.");
+      throw new InvalidExamStatusException("시험을 제출할 수 없습니다 : 시험이 준비 상태가 아닙니다.");
     }
   }
 

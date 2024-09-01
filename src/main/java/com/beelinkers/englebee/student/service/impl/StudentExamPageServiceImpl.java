@@ -39,7 +39,7 @@ public class StudentExamPageServiceImpl implements StudentExamPageService {
   private Exam validateExamAndCheckIsPreparedForSolving(Member student, Long examSeq) {
     Exam exam = studentExamValidationService.validateAndGetExam(examSeq);
     studentExamValidationService.validateStudentAccessToExam(student, exam);
-    studentExamValidationService.validateExamIsReadyToBeSolved(exam);
+    studentExamValidationService.validateExamIsReadyToBeSubmitted(exam);
     return exam;
   }
 

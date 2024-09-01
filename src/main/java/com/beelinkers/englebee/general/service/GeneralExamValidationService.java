@@ -15,7 +15,7 @@ public interface GeneralExamValidationService {
 
   void validateStudentAccessToExam(Member student, Exam exam);
 
-  void validateExamIsReadyToBeSolved(Exam exam);
+  void validateExamIsReadyToBeSubmitted(Exam exam);
 
   void validateExamIsReadyToBeRegistered(Exam exam);
 

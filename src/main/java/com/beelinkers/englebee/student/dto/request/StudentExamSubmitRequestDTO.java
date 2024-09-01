@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentExamSolveRequestDTO {
+public class StudentExamSubmitRequestDTO {
 
   List<StudentAnswerToTeacherQuestionDTO> studentAnswerToTeacherQuestionDTOs;
 

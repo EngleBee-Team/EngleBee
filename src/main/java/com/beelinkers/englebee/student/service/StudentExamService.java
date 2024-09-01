@@ -1,9 +1,9 @@
 package com.beelinkers.englebee.student.service;
 
-import com.beelinkers.englebee.student.dto.request.StudentExamSolveRequestDTO;
+import com.beelinkers.englebee.student.dto.request.StudentExamSubmitRequestDTO;
 
 public interface StudentExamService {
 
-  void solveExam(Long studentSeq, Long examSeq,
-      StudentExamSolveRequestDTO studentExamSolveRequestDTO);
+  void submitExam(Long studentSeq, Long examSeq,
+      StudentExamSubmitRequestDTO studentExamSubmitRequestDTO);
 }

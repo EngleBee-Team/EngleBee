@@ -2,7 +2,7 @@ package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.auth.annotation.LoginMember;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
-import com.beelinkers.englebee.student.dto.request.StudentExamSolveRequestDTO;
+import com.beelinkers.englebee.student.dto.request.StudentExamSubmitRequestDTO;
 import com.beelinkers.englebee.student.service.StudentExamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,8 @@ public class StudentExamApiController {
   @PostMapping("/solve/{examSeq}")
   public ResponseEntity<Void> solveExam(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq,
-      @Valid @RequestBody StudentExamSolveRequestDTO studentExamSolveRequestDTO) {
-    studentExamService.solveExam(sessionMember.getSeq(), examSeq, studentExamSolveRequestDTO);
+      @Valid @RequestBody StudentExamSubmitRequestDTO studentExamSubmitRequestDTO) {
+    studentExamService.submitExam(sessionMember.getSeq(), examSeq, studentExamSubmitRequestDTO);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
