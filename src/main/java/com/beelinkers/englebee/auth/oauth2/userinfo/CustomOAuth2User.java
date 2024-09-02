@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.auth.oauth2.userinfo;
 
 import com.beelinkers.englebee.auth.domain.entity.Role;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -10,7 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 @RequiredArgsConstructor
-public class CustomOAuth2User implements OAuth2User {
+public class CustomOAuth2User implements OAuth2User, Serializable {
 
   private final OAuth2Response oAuth2Response;
   private final Role role;

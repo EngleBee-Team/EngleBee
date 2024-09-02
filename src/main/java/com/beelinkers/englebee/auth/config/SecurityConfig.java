@@ -2,6 +2,7 @@ package com.beelinkers.englebee.auth.config;
 
 import com.beelinkers.englebee.auth.domain.entity.Role;
 import com.beelinkers.englebee.auth.oauth2.exception.handler.CustomAuthenticationFailureHandler;
+import com.beelinkers.englebee.auth.oauth2.exception.handler.CustomAuthenticationSuccessHandler;
 import com.beelinkers.englebee.auth.oauth2.userinfo.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
   private final CustomOAuth2UserService customOAuth2UserService;
+  private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
   private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
   @Bean
@@ -39,6 +41,7 @@ public class SecurityConfig {
             .loginPage("/main")
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(customOAuth2UserService))
+            .successHandler(customAuthenticationSuccessHandler)
             .failureHandler(customAuthenticationFailureHandler));
 
     // 로그아웃 설정
@@ -61,6 +64,8 @@ public class SecurityConfig {
             .requestMatchers("/api/student/**").hasRole(Role.STUDENT.name())
             .requestMatchers("/api/auth/account/deactivate")
             .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
+            .requestMatchers("/static/**", "/assets/**", "/css/**", "/js/**", "/images/**")
+            .permitAll() // 정적 자원 허용
             .anyRequest().authenticated());
 
     return http.build();

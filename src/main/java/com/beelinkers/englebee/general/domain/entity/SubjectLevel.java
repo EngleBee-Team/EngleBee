@@ -44,4 +44,12 @@ public class SubjectLevel extends BaseEntity {
     this.subjectCode = subjectCode;
     this.levelCode = levelCode;
   }
+
+  public String getSubjectKoreanCode() {
+    return this.subjectCode.getKoreanCode();
+  }
+
+  public String getLevelKoreanCode() {
+    return this.levelCode.getKoreanCode();
+  }
 }

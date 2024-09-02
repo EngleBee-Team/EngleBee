@@ -70,6 +70,10 @@ public class Exam extends BaseEntity {
     this.status = ExamStatus.SUBMITTED;
   }
 
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
   public void addTeacherFeedback(String feedback) {
     this.feedback = feedback;
     this.status = ExamStatus.FEEDBACK_COMPLETED;

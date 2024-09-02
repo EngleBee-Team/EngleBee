@@ -1,8 +1,9 @@
 package com.beelinkers.englebee.auth.oauth2.userinfo;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class GoogleResponse implements OAuth2Response {
+public class GoogleResponse implements OAuth2Response, Serializable {
 
   private final Map<String, Object> attributes;
 
@@ -22,6 +23,6 @@ public class GoogleResponse implements OAuth2Response {
 
   @Override
   public String getName() {
-    return attributes.get("name").toString();
+    return "google-" + attributes.get("email").toString();
   }
 }
