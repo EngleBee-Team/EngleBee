@@ -62,8 +62,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       }
 
       httpSession.invalidate();
-      System.out.println("member.getSeq() = " + member.getSeq());
-      System.out.println("member.getRole() = " + member.getRole());
       httpSession.setAttribute(SESSION_MEMBER_KEY,
           new SessionMember(member.getSeq(), member.getRole()));
     }

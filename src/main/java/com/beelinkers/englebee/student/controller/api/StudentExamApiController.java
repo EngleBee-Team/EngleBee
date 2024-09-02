@@ -23,7 +23,7 @@ public class StudentExamApiController {
 
   private final StudentExamService studentExamService;
 
-  @PostMapping("/solve/{examSeq}")
+  @PostMapping("/submit/{examSeq}")
   public ResponseEntity<Void> solveExam(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq,
       @Valid @RequestBody StudentExamSubmitRequestDTO studentExamSubmitRequestDTO) {

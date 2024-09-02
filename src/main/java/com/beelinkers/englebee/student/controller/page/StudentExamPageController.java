@@ -18,7 +18,7 @@ public class StudentExamPageController {
 
   private final StudentExamPageService studentExamPageService;
 
-  @GetMapping("/exam/solve/{examSeq}")
+  @GetMapping("/exam/submit/{examSeq}")
   public String getExamSolvePage(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq, Model model) {
     Long studentSeq = sessionMember.getSeq();
