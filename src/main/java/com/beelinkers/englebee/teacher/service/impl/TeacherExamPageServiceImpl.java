@@ -43,9 +43,12 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
     Member teacher = validateAndGetTeacher(teacherSeq);
     Exam exam = validateExamAndCheckIsPreparedForRegistration(teacher, examSeq);
     Lecture lecture = exam.getLecture();
+    Member student = lecture.getStudent();
+    String studentGrade = student.getGrade().getKoreanGrade();
     Map<String, String> lectureSubjectLevels = extractLectureSubjectLevels(lecture);
-    Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(lecture.getStudent());
-    return mapToTeacherExamRegisterPageDTO(lectureSubjectLevels, studentSubjectLevels);
+    Map<String, String> studentSubjectLevels = extractStudentSubjectLevels(student);
+    return mapToTeacherExamRegisterPageDTO(studentGrade, lectureSubjectLevels,
+        studentSubjectLevels);
   }
 
   @Override
@@ -99,9 +102,9 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
     return studentSubjectLevelsMap;
   }
 
-  private TeacherExamRegisterPageDTO mapToTeacherExamRegisterPageDTO(
+  private TeacherExamRegisterPageDTO mapToTeacherExamRegisterPageDTO(String studentGrade,
       Map<String, String> lectureSubjectLevels, Map<String, String> studentSubjectLevels) {
-    return teacherExamRegisterPageMapper.toExamRegisterPageDTO(lectureSubjectLevels,
+    return teacherExamRegisterPageMapper.toExamRegisterPageDTO(studentGrade, lectureSubjectLevels,
         studentSubjectLevels);
   }
 
@@ -114,7 +117,9 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
 
   private TeacherExamFeedbackPageDTO mapToTeacherExamFeedbackPageDTO(Exam exam) {
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
-    return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(exam.getTitle(), teacherQuestions);
+    return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(
+        exam.getLecture().getStudent().getGrade().getKoreanGrade(), exam.getTitle(),
+        teacherQuestions);
   }
 
 }
