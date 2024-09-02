@@ -25,6 +25,7 @@ public class TeacherExamPageController {
     TeacherExamRegisterPageDTO teacherExamRegisterPageInfo = teacherExamPageService.getTeacherExamRegisterPageInfo(
         sessionMember.getSeq(), examSeq);
     model.addAttribute("examSeq", examSeq);
+    model.addAttribute("studentGrade", teacherExamRegisterPageInfo.getStudentGrade());
     model.addAttribute("studentSubjectLevels",
         teacherExamRegisterPageInfo.getStudentSubjectLevels());
     model.addAttribute("lecture6SubjectLevels",
@@ -38,6 +39,7 @@ public class TeacherExamPageController {
     TeacherExamFeedbackPageDTO teacherExamFeedbackPageDTO = teacherExamPageService.getTeacherExamFeedbackPageInfo(
         sessionMember.getSeq(), examSeq);
     model.addAttribute("examSeq", examSeq);
+    model.addAttribute("studentGrade", teacherExamFeedbackPageDTO.getStudentGrade());
     model.addAttribute("examTitle", teacherExamFeedbackPageDTO.getExamTitle());
     model.addAttribute("teacherQuestions",
         teacherExamFeedbackPageDTO.getTeacherQuestionForTeacherToFeedbackDTOs());
