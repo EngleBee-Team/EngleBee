@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TeacherExamFeedbackPageMapper {
 
-  public TeacherExamFeedbackPageDTO toExamFeedbackPageDTO(String examTitle,
+  public TeacherExamFeedbackPageDTO toExamFeedbackPageDTO(String studentGrade, String examTitle,
       List<TeacherQuestion> teacherQuestions) {
     List<TeacherQuestionForTeacherToFeedbackDTO> teacherQuestionForStudentToSolveDTOs = teacherQuestions.stream()
         .map(tq -> new TeacherQuestionForTeacherToFeedbackDTO(
@@ -22,6 +22,7 @@ public class TeacherExamFeedbackPageMapper {
             tq.getStudentAnswer(),
             tq.getIntent()))
         .toList();
-    return new TeacherExamFeedbackPageDTO(examTitle, teacherQuestionForStudentToSolveDTOs);
+    return new TeacherExamFeedbackPageDTO(studentGrade, examTitle,
+        teacherQuestionForStudentToSolveDTOs);
   }
 }
