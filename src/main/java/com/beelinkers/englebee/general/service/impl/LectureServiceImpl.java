@@ -14,6 +14,8 @@ import com.beelinkers.englebee.general.exception.InvalidSubjectLevelCodeExceptio
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.LectureService;
 import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureRequestDTO;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,17 +48,30 @@ public class LectureServiceImpl implements LectureService {
         .build();
     lectureRepository.save(lecture);
 
-    SubjectCode subject = SubjectCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getSubject());
-    LevelCode level = LevelCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getLevel());
+    List<LevelCode> levels = new ArrayList<>();
+    List<SubjectCode> subjects = new ArrayList<>();
 
-    SubjectLevel subjectLevel = subjectLevelRepository.findBySubjectCodeAndLevelCode(subject,level)
-        .orElseThrow(()->new InvalidSubjectLevelCodeException("해당하는 과목 레벨 수준이 존재하지 않습니다."));
+    for(int i=0;i<teacherRegisterLectureRequestDTO.getSubjectLevels().size();i++){
+      if(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getLevel()!=null){
+        levels.add(LevelCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getLevel()));
+        subjects.add(SubjectCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getSubject()));
+      }
+    }
 
-    LectureSubjectLevel lectureSubjectLevel = LectureSubjectLevel.builder()
+    List<SubjectLevel> subjectLevels = new ArrayList<>();
+
+    for(int i=0;i<levels.size();i++) {
+      subjectLevels.add(subjectLevelRepository.findBySubjectCodeAndLevelCode(subjects.get(i),levels.get(i)).orElseThrow(()->new InvalidSubjectLevelCodeException("해당하는 과목 레벨 수준이 존재하지 않습니다")));
+    }
+
+    for(SubjectLevel sl : subjectLevels){
+      LectureSubjectLevel lectureSubjectLevel = LectureSubjectLevel.builder()
         .lecture(lecture)
-        .subjectLevel(subjectLevel)
+        .subjectLevel(sl)
         .build();
-
-    lectureSubjectLevelRepository.save(lectureSubjectLevel);
+      lectureSubjectLevelRepository.save(lectureSubjectLevel);
+    }
   }
+
+
 }
