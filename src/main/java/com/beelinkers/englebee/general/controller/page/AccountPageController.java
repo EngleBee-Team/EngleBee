@@ -5,7 +5,7 @@ import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.entity.Role;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.general.service.AccountService;
-import com.beelinkers.englebee.student.dto.request.StudentAccountPageUpdateRequestDTO;
+import com.beelinkers.englebee.student.dto.request.StudentAccountPageRequestDTO;
 import com.beelinkers.englebee.student.dto.response.StudentAccountPageResponseDTO;
 import com.beelinkers.englebee.student.dto.response.mapper.StudentAccountPageMapper;
 import com.beelinkers.englebee.student.service.StudentAccountService;
@@ -30,10 +30,6 @@ public class AccountPageController {
 
   @GetMapping
   public String getAccountPage(@LoginMember SessionMember sessionMember, Model model) {
-    log.info("sessionMember = {}", sessionMember);
-    if (sessionMember == null) {
-      return "common-main";
-    }
 
     Long memberSeq = sessionMember.getSeq();
     Role memberRole = sessionMember.getRole();
@@ -54,11 +50,8 @@ public class AccountPageController {
   // 수정된 학생 정보 계정 페이지
   @PostMapping("/update")
   public String updateAccount(@LoginMember SessionMember sessionMember,
-      @ModelAttribute StudentAccountPageUpdateRequestDTO updateRequestDTO,
+      @ModelAttribute StudentAccountPageRequestDTO updateRequestDTO,
       Model model) {
-    if (sessionMember == null) {
-      return "redirect:/login";
-    }
 
     Long memberSeq = sessionMember.getSeq();
     Role memberRole = sessionMember.getRole();

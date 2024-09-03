@@ -1,7 +1,7 @@
 package com.beelinkers.englebee.student.controller.api;
 
 import com.beelinkers.englebee.auth.domain.entity.Member;
-import com.beelinkers.englebee.student.dto.request.StudentAccountPageUpdateRequestDTO;
+import com.beelinkers.englebee.student.dto.request.StudentAccountPageRequestDTO;
 import com.beelinkers.englebee.student.service.StudentAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +45,7 @@ public class StudentAccountApiController {
   @PutMapping("/update")
   public ResponseEntity<Member> updateStudentAccount(
       @RequestParam("memberSeq") Long memberSeq,
-      @RequestBody StudentAccountPageUpdateRequestDTO updateRequestDTO) {
-    log.info("업데이트 : memberSeq: {}, with nickname: {}, grade: {} ", memberSeq,
-        updateRequestDTO.getNickname(), updateRequestDTO.getGrade());
+      @RequestBody StudentAccountPageRequestDTO updateRequestDTO) {
     Member updateMember = studentAccountService.updateStudentInfo(
         memberSeq, updateRequestDTO
     );
