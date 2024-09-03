@@ -5,7 +5,7 @@ import com.beelinkers.englebee.auth.domain.entity.StudentGrade;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
-import com.beelinkers.englebee.student.dto.request.StudentAccountPageUpdateRequestDTO;
+import com.beelinkers.englebee.student.dto.request.StudentAccountPageRequestDTO;
 import com.beelinkers.englebee.student.service.StudentAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class StudentAccountServiceImpl implements StudentAccountService {
   @Override
   @Transactional
   public Member updateStudentInfo(Long memberSeq,
-      StudentAccountPageUpdateRequestDTO updateStudentRequest) {
+      StudentAccountPageRequestDTO updateStudentRequest) {
     Member member = memberRepository.findById(memberSeq)
         .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
 

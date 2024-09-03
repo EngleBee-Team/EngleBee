@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentAccountPageUpdateRequestDTO {
+public class StudentAccountPageRequestDTO {
 
   @NotNull(message = "닉네임 입력이 필요합니다.")
   @Length(min = 1, max = 20, message = "닉네임 길이는 1글자 ~ 20글자 사이여야 합니다.")
