@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface QnaService {
 
-  Page<QnaPageResponseDTO> getQnaList(Pageable pageable);
+  Page<QnaPageResponseDTO> getQnaListInfo(Pageable pageable);
 }

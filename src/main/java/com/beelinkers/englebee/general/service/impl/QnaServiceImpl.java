@@ -22,7 +22,7 @@ public class QnaServiceImpl implements QnaService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<QnaPageResponseDTO> getQnaList(Pageable pageable) {
+  public Page<QnaPageResponseDTO> getQnaListInfo(Pageable pageable) {
     return questionRepository.findAllByOrderByCreatedAtDesc(pageable)
         .map(qnaPageMapper::qnaPageResponseDTO);
   }
