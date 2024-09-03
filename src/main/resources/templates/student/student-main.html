@@ -1,610 +1,195 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>메인페이지</title>
+<html xmlns:th="http://www.thymeleaf.org">
 
-    <!-- favicon -->
-    <link rel="icon" type="image/png" th:href="@{assets/img/englebee-favicon.ico}">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
-    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link th:href="@{/assets/css/style.css}" rel="stylesheet">
-    <link th:href="@{/assets/css/style-h.css}" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            margin: 0;
-            /*background-color: #f4f7ff;*/
-            background-color: #fcf7d9;
-            padding-top: 100px; /* 고정 헤더의 높이만큼 여백 추가 */
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        .container {
-
-            max-width: 90%; /* 가로 영역을 더 넓게 설정 */
-            width: 100%;
-            padding: 40px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: auto;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        tbody > tr > td > a {
-            color: #333333 !important;
-        }
-
-        #question-list tbody tr td:nth-child(2) a:hover,
-        #new-exam-list tbody tr td:nth-child(2) a:hover,
-        #submit-exams-list tbody tr td:nth-child(2) a:hover {
-            font-weight: bold;
-        }
-
-        h2 {
-            color: #333;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        ul, li {
-            list-style: none;
-        }
-
-        /* 카드 스타일 */
-        .card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin: 20px;
-            flex: 1;
-        }
-
-        .card-header, .card-footer {
-            border-color: #ebeef4;
-            background-color: #fff;
-            color: #ffc107 !important;
-            padding: 15px;
-        }
-
-        .card-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .card-header-custom {
-            background-color: #f8f9fa;
-            padding: 20px 15px; /* header 높이를 조정 */
-            font-size: 1.1rem;
-            font-weight: bolder;
-            text-align: center; /* header 가운데 정렬 */
-        }
-
-        .card-body-custom {
-            padding: 10px;
-            border-top: 1px solid #dee2e6;
-            /*text-align: center; !* body 가운데 정렬 *!*/
-            align-items: center;
-        }
-
-        table {
-            padding: 15px 10px;
-        }
-
-        table tbody tr {
-            background-color: white !important;
-        }
-
-        .nickBold {
-            font-weight: bold;
-            color: #666666;
-        }
-
-        td {
-            font-size: 0.9rem;
-            color: #007bff;
-        }
-
-        .th-size > th {
-            color: #666666;
-            font-size: 1rem;
-        }
-
-        .exam-th-size > th {
-            color: #666666;
-            font-size: 1rem;
-        }
-
-        .submit-th-size > th {
-            color: #666666;
-            font-size: 1rem;
-        }
-
-        .table:not(caption) > * > * {
-            padding: 0.5rem 0.5rem !important;
-            color: var(--bs-table-color, #333) !important;
-            background-color: transparent !important;
-            border-bottom-width: var(--bs-border-width, 1px) !important;
-            box-shadow: none !important;
-        }
-
-        .nonData > img, .nonData > p {
-            background-color: transparent !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-        }
-
-        /* 이미지 및 문구 스타일 적용 */
-        .nonData img {
-            width: 30% !important;
-            height: auto !important;
-            margin-bottom: 20px !important;
-        }
-
-        .nonData p {
-            font-size: 0.9rem !important;
-            color: #666 !important;
-            margin: 0 !important;
-        }
+<head th:replace="~{fragments/head :: head}"></head>
 
 
-        .qnaIns {
-            text-align: right;
-            font-size: 0.8rem;
-        }
-
-        .card-body-y {
-            padding: 15px;
-        }
-
-
-        /* pagination css */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .pagination-container ul {
-            display: flex;
-            justify-content: center;
-            padding-left: 0;
-            list-style: none;
-        }
-
-        .pagination-container li {
-            display: inline-block;
-            margin: 0 5px;
-        }
-
-        .pagination-container .page-item {
-            padding: 8px 12px;
-            /*border: 1px solid #dee2e6;*/
-            border: 1px solid #f5b402;
-            border-radius: 4px;
-            text-decoration: none;
-            /*color: #007bff;*/
-            color: #f5b402;
-        }
-
-        .pagination-container .page-item.active {
-            /*background-color: #007bff;*/
-            /*border-color: #007bff;*/
-            background-color: #f5b402;
-            border-color: #f5b402;;
-            color: white;
-        }
-
-    </style>
-</head>
-<body>
-<!-- header.html 추가 -->
-<div th:replace="~{layout/header :: header}"></div>
-
-<!-- main -->
-<div class="container">
-
-    <!-- 수업 가능한 강의 섹션 -->
-    <div id="lecture-list" class="section card">
-        <div class="card-header card-header-custom">
-            수강 가능한 강의
-        </div>
-        <div id="lecture-content" class="card-body card-body-custom">
-            <!-- 강의 데이터가 여기에 동적으로 추가됩니다. -->
-        </div>
-    </div>
-
-    <!-- 질문 목록 섹션 -->
-    <div id="question-list" class="section card">
-        <div class="card-header card-header-custom">
-            Q&A 목록
-        </div>
-        <div class="card-body card-body-custom">
-            <!--            <div class="qnaIns"><a href="#"><p>Q&A 등록하러 가기</p></a></div>-->
-            <table class="table">
-                <thead>
-                <tr class="th-size">
-                    <th>No.</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>등록일</th>
-                </tr>
-                </thead>
-                <tbody id="question-content">
-
-                </tbody>
-            </table>
-        </div>
-        <div class="pagination-container" id="question-pagination"></div>
-    </div>
-
-    <div class="card-container">
-        <!-- 새 시험 목록 섹션 -->
-        <div id="new-exam-list" class="section card">
-            <div class="card-header card-header-custom">
-                풀어야 할 시험
+<body  class="bg-white">
+    
+    	<!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
+        <div th:replace="~{fragments/top-nav :: top-nav}"></div>
+        
+        
+        
+        
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
             </div>
-            <div class="card-body card-body-custom">
-                <table class="table">
-                    <thead>
-                    <tr class="exam-th-size" style="color: #666666;">
-                        <th>강사명</th>
-                        <th>제목</th>
-                        <th>등록일</th>
-                    </tr>
-                    </thead>
-                    <tbody id="new-exam-content">
+            <div id="layoutSidenav_content">
+                <main>
+                
+                
+                	<!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
+                    <div th:replace="~{fragments/top-banner :: top-banner}"></div>
 
-                    </tbody>
-                </table>
+
+
+
+                    <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
+                    <div class="container-xl px-4 mt-n10">
+                        <div class="row">
+
+                        	<!-- 학생 : 현재 수강 가능한 강의 -->
+                            <div class="col-xxl-4 col-xl-12 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body h-100 p-5">
+                                        <div class="row align-items-center">
+                                            <div class="col-xl-8 col-xxl-12">
+                                                <div class="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
+                                                    <h1 class="text-google"><b>현재 수강 가능한 강의<br><br></b></h1>
+                                                    <table class="datatable-table">
+                                                    	<tr><th>강의명</th><td>할수있다 자바</td></tr>
+                                                    	<tr><th>선생님</th><td>아무개</td></tr>
+                                                    	<tr><th>수업일</th><td>2022-10-12 10:24:57</td></tr>
+                                                    	<tr>
+                                                    		<th>과목 및 레벨</th>
+                                                    		<td>
+                                                    			<p><div class="badge bg-info rounded-pill">문법 : 중</div></p>
+                                                    			<p><div class="badge bg-primary text-white rounded-pill">어휘 : 하</div></p>
+                                                    			<p><div class="badge bg-warning rounded-pill">문법 : 중</div></p>
+                                                    			<p><div class="badge bg-secondary text-white rounded-pill">어휘 : 하</div></p>
+                                                    		</td>
+                                                    	</tr>
+                                                    </table>
+                                                    <a class="btn btn-primary btn-sm" href="/chat" target="_blank">
+			                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link me-1"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+			                                           강의실 입장
+			                                        </a>
+			                                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 풀어야 할 시험 -->
+                            <div class="col-xxl-4 col-xl-12 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body h-100 p-5">
+                                        <div class="row align-items-center">
+                                            <div class="col-xl-8 col-xxl-12">
+                                                <div class="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
+                                                
+	                                                  <div class="d-flex justify-content-between align-items-center">
+												        <h1 class="text-google"><b>풀어야 할 시험<br><br></b></h1>
+												        <a class="text-arrow-icon small text-danger fw-bold ms-auto" href="/my">더보기...</a>
+												      </div>
+	                                                  <table class="datatable-table">
+	                                                  	<tr>
+	                                                  		<th>강의명</th>
+	                                                  		<th>선생님</th>
+	                                                  		<th>등록일</th>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/1">lec01.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/2">lec02.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/3">lec03.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/4">lec04.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/5">lec05.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  </table>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 제출 완료한 시험 -->
+                            <div class="col-xxl-4 col-xl-12 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body h-100 p-5">
+                                        <div class="row align-items-center">
+                                            <div class="col-xl-8 col-xxl-12">
+                                                <div class="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
+                                                
+	                                                  <div class="d-flex justify-content-between align-items-center">
+												        <h1 class="text-google"><b>제출 완료한 시험<br><br></b></h1>
+												        <a class="text-arrow-icon small text-danger fw-bold ms-auto" href="/my">더보기...</a>
+												      </div>
+	                                                  <table class="datatable-table">
+	                                                  	<tr>
+	                                                  		<th>강의명</th>
+	                                                  		<th>선생님</th>
+	                                                  		<th>등록일</th>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/1">lec01.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/2">lec02.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/3">lec03.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/4">lec04.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  	<tr>
+	                                                  		<td><a href="/eaxm/solve/5">lec05.할수있다 자바</a></td>
+	                                                  		<td>홍길동</td>
+	                                                  		<td>2024-01-01</td>
+	                                                  	</tr>
+	                                                  </table>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        
+                            
+                        </div>
+                    </div>
+                    <!-- --------------------------- [중앙 : 컨텐츠 END]  ------------------------------------->
+                    
+                    
+                </main>
+                
+                
+                
+                <!-- --------------------------- [FRAGMENT : 하단] ------------------------------------->
+                <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+
+
             </div>
-            <div class="pagination-container" id="new-exams-pagination"></div>
         </div>
 
-        <!-- 제출된 시험 목록 섹션 -->
-        <div id="submit-exams-list" class="section card">
-            <div class="card-header card-header-custom">
-                제출한 시험
-            </div>
-            <div class="card-body card-body-custom">
-                <table class="table">
-                    <thead>
-                    <tr class="submit-th-size" style="color: #666666;">
-                        <th>강사명</th>
-                        <th>제목</th>
-                        <th>등록일</th>
-                    </tr>
-                    </thead>
-                    <tbody id="submit-exam-content">
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="pagination-container" id="submit-exams-pagination"></div>
-        </div>
-    </div>
-
-</div>
-
-<!-- footer.html 추가 -->
-<div th:replace="~{layout/footer :: footer}"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Day.js -->
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
-<script>
-    // URL에서 쿼리 파라미터 값을 가져오는 함수
-    function getParameterByName(name) {
-        const url = window.location.href;
-        name = name.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    $(document).ready(function () {
-        let memberSeq = getParameterByName('memberSeq');
-        let sendData = {
-            'memberSeq': memberSeq
-        };
-        lectureList();
-        questionList();
-        newExamList();
-        submitExamList();
-
-        function lectureList() {
-            $.ajax({
-                url        : `/api/student/main/lecture`,
-                method     : 'GET',
-                data       : $.param(sendData),
-                contentType: "application/x-www-form-urlencoded",
-                dataType   : "json",
-                success    : function (response) {
-                    let {content} = response;
-                    if (!content || content.length === 0) {
-                        showNoContentMessage();
-                    } else {
-                        lectureContent(content);
-                    }
-                },
-                error      : function () {
-                    showNoContentMessage();
-                }
-            });
-
-            function lectureContent(content) {
-                let htmlStr = '';
-                $.map(content, function (item) {
-                    let createdDate = dayjs(item.createdAt).format('YYYY-MM-DD');
-                    let subjectLevelHtml = '';
-
-                    if (item.subjectLevelCode && item.subjectLevelCode.length > 0) {
-                        $.each(item.subjectLevelCode, function (index, level) {
-                            subjectLevelHtml += "<span class='lecture-text'>";
-                            subjectLevelHtml += "<span class=\"badge text-bg-success\">" + level[0] + "</span>&nbsp;";
-                            subjectLevelHtml += "<span class=\"badge text-bg-danger\">" + level[1] + "</span>";
-                            subjectLevelHtml += "</span>&nbsp;";
-                        });
-                    }
-                    htmlStr += "<div class='card post-list'>";
-                    htmlStr += "<div class='card-body'  style='display: flex; padding: 0 20px 10px 20px; align-items: flex-end; justify-content: space-around;'>";
-                    htmlStr += "<div style='align-self: center'>";
-                    htmlStr += "<img src=\"/assets/img/logo/logo.png\" alt=\"로고\" style=\"width: 100px; height: auto; \">";
-                    htmlStr += "</div>";
-                    htmlStr += "<div>"
-                    htmlStr += "<h6 class='card-title' style='padding: 10px 0'>강의명 : " + item.title + "</h6>";
-                    htmlStr += "<p class='lecture-text' style='margin-bottom: 0; '>강사명 : " + item.teacherNickname + "</p>";
-                    htmlStr += "<p class='lecture-text'>수업일 : " + createdDate + "</p>";
-                    htmlStr += subjectLevelHtml;
-                    htmlStr += "</div>";
-                    htmlStr += "</div></div>";
-                });
-                $('#lecture-content').html(htmlStr);
-            }
-
-            function showNoContentMessage() {
-                let htmlStr = '';
-                htmlStr += "<div style=\"text-align: center; margin-top: 20px;\">";
-                htmlStr += "<img src=\"/assets/img/logo/logo.png\" alt=\"로고\" style=\"width: 100px; height: auto; margin-bottom: 20px;\">";
-                htmlStr += "<p style=\"font-size: 1rem; color: #666;\">현재 진행 가능한 수업이 없습니다.</p>";
-                htmlStr += "</div>";
-                $('#lecture-content').html(htmlStr);
-            }
-        }
-
-        function questionList(page) {
-            sendData.page = page;
-            $.ajax(({
-                url        : `/api/student/main/question`,
-                method     : 'GET',
-                data       : $.param(sendData),
-                contentType: "application/x-www-form-urlencoded",
-                dataType   : "json",
-                success    : function (response) {
-                    let {content, pagination} = response;
-                    if (content || content.length > 0) {
-                        questionContent(content);
-                        renderPagination(pagination, 'question-pagination', questionList);
-                    }
-                },
-                error      : function () {
-                    console.error("데이터를 찾을 수 없습니다.");
-                }
-            }));
-
-            function questionContent(content) {
-                let htmlStr = '';
-                $.map(content, function (item) {
-                    let createdDate = dayjs(item.createdAt).format('YYYY-MM-DD');
-                    htmlStr += "<tr>";
-                    htmlStr += "<td>" + item.seq + "</td>";
-                    htmlStr += "<td><a href='/qna/board/detail?seq=" + item.seq + "'>" + item.title + "</a></td>";
-                    htmlStr += "<td>" + item.memberNickname + "</td>";
-                    htmlStr += "<td>" + createdDate + "</td>";
-                    htmlStr += "</tr>";
-                });
-                $('#question-content').html(htmlStr);
-            }
-        }
-
-        function newExamList(page) {
-            sendData.page = page;
-            $.ajax(({
-                url        : `/api/student/main/new-exams`,
-                method     : 'GET',
-                data       : $.param(sendData),
-                contentType: "application/x-www-form-urlencoded",
-                dataType   : "json",
-                success    : function (response) {
-                    let {content, pagination} = response;
-                    let tableHeader = $(".exam-th-size").closest('thead');
-                    if (!content || content.length === 0) {
-                        tableHeader.hide();
-                        showNoContentMessage();
-                    } else {
-                        tableHeader.show();
-                        newExamContent(content);
-                        renderPaginationForExams(pagination, 'new-exams-pagination', newExamList);
-                    }
-                },
-                error      : function () {
-                    console.error("데이터를 찾을 수 없습니다.");
-                }
-            }));
-
-            function newExamContent(content) {
-                let htmlStr = '';
-                $.map(content, function (item) {
-                    let createdDate = dayjs(item.createdAt).format('YYYY-MM-DD');
-                    htmlStr += "<tr>";
-                    htmlStr += "<td class='nickBold'> " + item.teacherNickname + " </td>";
-                    htmlStr += "<td><a href='/exam/" + item.seq + "'>" + item.title + "</a></td>";
-                    htmlStr += "<td>" + createdDate + "</td>";
-                    htmlStr += "</tr>";
-                });
-                $('#new-exam-content').html(htmlStr);
-            }
-
-            function showNoContentMessage() {
-                let htmlStr = '';
-                htmlStr += "<div class='nonData' style=\"text-align: center; margin-top: 20px;\">";
-                htmlStr += "<img src=\"/assets/img/logo/logo.png\" alt=\"로고\" style=\"width: 30%; height: auto; background-color: transparent; \">";
-                htmlStr += "<p style=\"font-size: 0.9rem; color: #666;\">풀 시험이 없습니다.</p>";
-                htmlStr += "</div>";
-                $('#new-exam-content').html(htmlStr);
-            }
-
-        }
-
-        function submitExamList(page) {
-            sendData.page = page;
-            $.ajax(({
-                url        : `/api/student/main/submit-exams`,
-                method     : 'GET',
-                data       : $.param(sendData),
-                contentType: "application/x-www-form-urlencoded",
-                dataType   : "json",
-                success    : function (response) {
-                    let {content, pagination} = response;
-                    let tableHeader = $(".submit-th-size").closest('thead');
-                    if (!content || content.length === 0) {
-                        tableHeader.hide();
-                        showNoContentMessage();
-                    } else {
-                        tableHeader.show();
-                        submitExamContent(content);
-                        renderPaginationForExams(pagination, 'submit-exams-pagination', submitExamList);
-                    }
-                },
-                error      : function () {
-                    console.error("데이터를 찾을 수 없습니다.");
-                }
-            }));
-
-            function submitExamContent(content) {
-                let htmlStr = '';
-                $.map(content, function (item) {
-                    let createdDate = dayjs(item.createdAt).format('YYYY-MM-DD');
-                    htmlStr += "<tr>";
-                    htmlStr += "<td class='nickBold'> " + item.teacherNickname + " </td>";
-                    htmlStr += "<td><a href='/exam/" + item.seq + "'>" + item.title + "</a></td>";
-                    htmlStr += "<td>" + createdDate + "</td>";
-                    htmlStr += "</tr>";
-                });
-                $('#submit-exam-content').html(htmlStr);
-            }
-
-            function showNoContentMessage() {
-                let htmlStr = '';
-                htmlStr += "<div class='nonData' style=\"text-align: center; margin-top: 20px;\">";
-                htmlStr += "<img src=\"/assets/img/logo/logo.png\" alt=\"로고\" style=\"width: 30%; height: auto; background-color: transparent; \">";
-                htmlStr += "<p style=\"font-size: 0.9rem; color: #666;\">제출할 시험이 없습니다.</p>";
-                htmlStr += "</div>";
-                $('#submit-exam-content').html(htmlStr);
-            }
-
-        }
-
-        function renderPagination(pagination, containerId, callback) {
-            const {currentPage, totalPages} = pagination;
-            let htmlStr = '';
-
-            const maxPagesToShow = 10;
-            let startPage = Math.max(0, currentPage - Math.floor(maxPagesToShow / 2));
-            let endPage = Math.min(totalPages - 1, startPage + maxPagesToShow - 1);
-
-            if (totalPages > 0) {
-                if (currentPage > 0) {
-                    htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${currentPage - 1}">이전</a></li>`;
-                }
-                for (let i = startPage; i <= endPage; i++) {
-                    if (i === currentPage) {
-                        htmlStr += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
-                    } else {
-                        htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
-                    }
-                }
-                if (currentPage < totalPages - 1) {
-                    htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${currentPage + 1}">다음</a></li>`;
-                }
-            }
-
-            $(`#${containerId}`).html(htmlStr);
-        }
-
-        function renderPaginationForExams(pagination, containerId, callback) {
-            const {currentPage, totalPages} = pagination;
-            let htmlStr = '';
-
-            const maxPagesToShow = 5;
-            let startPage = Math.max(0, currentPage - Math.floor(maxPagesToShow / 2));
-            let endPage = Math.min(totalPages - 1, startPage + maxPagesToShow - 1);
-
-            if (totalPages > 0) {
-                if (totalPages === 1) {
-                    htmlStr += `<li class="page-item active"><a class="page-link" href="#" data-page="0">1</a></li>`;
-                } else {
-                    if (currentPage > 0) {
-                        htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${currentPage - 1}">이전</a></li>`;
-                    }
-
-                    for (let i = startPage; i <= endPage; i++) {
-                        if (i === currentPage) {
-                            htmlStr += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
-                        } else {
-                            htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
-                        }
-                    }
-
-                    if (currentPage < totalPages - 1) {
-                        htmlStr += `<li class="page-item"><a class="page-link" href="#" data-page="${currentPage + 1}">다음</a></li>`;
-                    }
-                }
-            }
-
-            $(`#${containerId}`).html(htmlStr);
-        }
-
-        // 페이지 링크 클릭 이벤트
-        $(document).on('click', '.page-link', function (event) {
-            event.preventDefault();
-            const page = $(this).data('page');
-            if ($(this).closest('#lecture-pagination').length) {
-                lectureList(page);
-            } else if ($(this).closest('#question-pagination').length) {
-                questionList(page);
-            }
-        });
 
 
-    });
-</script>
+
+<!-- 공통 <script> 포함 -->
+<div th:replace="~{fragments/scripts :: scripts}" ></div>
 
 </body>
 </html>

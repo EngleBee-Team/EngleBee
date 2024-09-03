@@ -2,7 +2,6 @@ package com.beelinkers.englebee.student.controller.page;
 
 import com.beelinkers.englebee.auth.annotation.LoginMember;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
-import com.beelinkers.englebee.student.dto.response.StudentExamSolvePageDTO;
 import com.beelinkers.englebee.student.service.StudentExamPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +17,16 @@ public class StudentExamPageController {
 
   private final StudentExamPageService studentExamPageService;
 
-  @GetMapping("/exam/submit/{examSeq}")
+  @GetMapping("/exam/solve/{examSeq}")
   public String getExamSolvePage(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq, Model model) {
-    Long studentSeq = sessionMember.getSeq();
-    StudentExamSolvePageDTO studentExamSolvePageDTO = studentExamPageService.getStudentExamSolvePageDTO(
-        studentSeq, examSeq);
-    model.addAttribute("examSeq", examSeq);
-    model.addAttribute("examTitle", studentExamSolvePageDTO.getExamTitle());
-    model.addAttribute("teacherQuestions",
-        studentExamSolvePageDTO.getTeacherQuestionForStudentToSolveDTOs());
+//    Long studentSeq = sessionMember.getSeq();
+//    StudentExamSolvePageDTO studentExamSolvePageDTO = studentExamPageService.getStudentExamSolvePageDTO(
+//        studentSeq, examSeq);
+//    model.addAttribute("examSeq", examSeq);
+//    model.addAttribute("examTitle", studentExamSolvePageDTO.getExamTitle());
+//    model.addAttribute("teacherQuestions",
+//        studentExamSolvePageDTO.getTeacherQuestionForStudentToSolveDTOs());
     return "student/exam-solve";
   }
 

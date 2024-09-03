@@ -19,18 +19,20 @@ public class MyPageController {
   @GetMapping("/info")
   public String getMyInfoPage(/*@AuthenticationPrincipal UserDetails,*/Model model) {
      /*
-      TODO : JWT Token 확인 이후, ROLE에 따라
-       /my 에 들어온 요청을 각각 다른 페이지로 렌더링
+      TODO : Session 확인 이후, ROLE에 따라
+       /my/info 에 들어온 요청을 각각 다른 페이지로 렌더링
     */
-    return null;
+    return "student/student-info";
+//    return "teacher/teacher-info";
   }
 
   @GetMapping("/account")
   public String getMyAccountPage(/*@AuthenticationPrincipal UserDetails,*/ Model model) {
      /*
-      TODO : JWT Token 확인 이후, ROLE에 따라
-       /my 에 들어온 요청을 각각 다른 페이지로 렌더링
+      TODO : Session 확인 이후, ROLE에 따라
+       /my/info 에 들어온 요청을 각각 다른 페이지로 렌더링
     */
-    return null;
+    return "student/student-account";
+//    return "teacher/teacher-account";
   }
 }
