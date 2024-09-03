@@ -1,88 +1,81 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/header :: head}"></head>
 
 
-<body  class="bg-white">
+<body class="bg-white">
 
 <!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
 <div th:replace="~{fragments/top-nav :: top-nav}"></div>
 
 <div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-    </div>
-    <div id="layoutSidenav_content">
-        <main>
+  <div id="layoutSidenav_nav">
+  </div>
+  <div id="layoutSidenav_content">
+    <main>
 
 
-            <!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
-            <div th:replace="~{fragments/top-banner :: top-banner}"></div>
+      <!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
+      <div th:replace="~{fragments/top-banner :: top-banner}"></div>
 
 
+      <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
 
 
-
-            <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
-                   
-                   
-                   <div class="container-xl px-4 mt-n10">
-                        <div class="card mb-4">
-                            <div class="card-header"><b>일별 사용자 통계</b></div>
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    여기 차트
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card mb-4">
-                                    <div class="card-header"><b>일별 사용자 통계</b></div>
-                                    <div class="card-body">
-                                        <div class="chart-area">
-                                            여기 차트
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card mb-4">
-                                    <div class="card-header"><b>일별 사용자 통계</b></div>
-                                    <div class="card-body">
-                                        <div class="chart-area">
-                                            여기 차트
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       <div class="card mb-4">
-                           <div class="card-header"><b>일별 사용자 통계</b></div>
-                           <div class="card-body">
-                               <div class="chart-area">
-                                   여기 차트
-                               </div>
-                           </div>
-                       </div>
-                    </div>
-                    
-                    
-                    
-                    
-                    <!-- --------------------------- [중앙 : 컨텐츠 END]  ------------------------------------->
+      <div class="container-xl px-4 mt-n10">
+        <div class="card mb-4">
+          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-body">
+            <div class="chart-area">
+              여기 차트
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>일별 사용자 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  여기 차트
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>일별 사용자 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  여기 차트
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-body">
+            <div class="chart-area">
+              여기 차트
+            </div>
+          </div>
+        </div>
+      </div>
 
 
-        </main>
+      <!-- --------------------------- [중앙 : 컨텐츠 END]  ------------------------------------->
 
 
-
-        <!-- --------------------------- [FRAGMENT : 하단] ------------------------------------->
-        <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </main>
 
 
+    <!-- --------------------------- [FRAGMENT : 하단] ------------------------------------->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    </div>
+
+  </div>
 </div>
 
 <!-- 공통 <script> 포함 -->
