@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!-- header.html 추가 -->
+<div th:replace="~{layout/header :: header}"></div>
+
+<div class="container">
+  <form th:action="@{/student/account/update}" method="post">
+    <input type="hidden" name="memberSeq" th:value="${memberSeq}"/>
+
+    <div class="form-group">
+      <label for="nickname">Nickname:</label>
+      <input type="text" id="nickname" name="nickname" th:value="${nickname}" required/>
+    </div>
+
+    <div class="form-group">
+      <label for="grade">Grade:</label>
+      <input type="text" id="grade" name="grade" th:value="${grade}" required/>
+    </div>
+
+    <div class="form-group">
+      <button type="submit">Update</button>
+    </div>
+  </form>
+
+</div>
+
+<!-- footer.html 추가 -->
+<div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>
