@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.general.controller.page;
 
 import com.beelinkers.englebee.auth.annotation.LoginMember;
+import com.beelinkers.englebee.auth.domain.entity.Role;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.general.domain.entity.ExamStatus;
 import com.beelinkers.englebee.general.dto.response.ExamDetailPageDTO;
@@ -25,18 +26,17 @@ public class ExamDetailPageController {
   @GetMapping("/exam/detail/{examSeq}")
   public String getExamDetailPage(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq, Model model) {
-//    ExamStatus examStatus = generalExamService.getExamStatus(examSeq);
-//    Role role = sessionMember.getRole();
-//
-//    if (role.isStudent()) {
-//      return handleExamDetailPageForRole(examStatus, examSeq, model, true);
-//    } else if (role.isTeacher()) {
-//      return handleExamDetailPageForRole(examStatus, examSeq, model, false);
-//    } else {
-//      log.error("지원하지 않는 Role입니다. role = {}", role);
-//      return "error/forbidden";
-//    }
-    return "general/exam-detail";
+    ExamStatus examStatus = generalExamService.getExamStatus(examSeq);
+    Role role = sessionMember.getRole();
+
+    if (role.isStudent()) {
+      return handleExamDetailPageForRole(examStatus, examSeq, model, true);
+    } else if (role.isTeacher()) {
+      return handleExamDetailPageForRole(examStatus, examSeq, model, false);
+    } else {
+      log.error("지원하지 않는 Role입니다. role = {}", role);
+      return "error/forbidden";
+    }
   }
 
   private String handleExamDetailPageForRole(ExamStatus examStatus, Long examSeq, Model model,

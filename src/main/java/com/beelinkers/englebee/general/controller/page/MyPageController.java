@@ -17,7 +17,7 @@ public class MyPageController {
   private final MyPageService myPageService;
 
   @GetMapping("/info")
-  public String getMyInfoPage(/*@AuthenticationPrincipal UserDetails,*/Model model) {
+  public String getMyInfoPage(/*@LoginMember SessionMember sessionMember,*/Model model) {
      /*
       TODO : Session 확인 이후, ROLE에 따라
        /my/info 에 들어온 요청을 각각 다른 페이지로 렌더링
@@ -27,7 +27,7 @@ public class MyPageController {
   }
 
   @GetMapping("/account")
-  public String getMyAccountPage(/*@AuthenticationPrincipal UserDetails,*/ Model model) {
+  public String getMyAccountPage(/*@LoginMember SessionMember sessionMember,*/Model model) {
      /*
       TODO : Session 확인 이후, ROLE에 따라
        /my/info 에 들어온 요청을 각각 다른 페이지로 렌더링

@@ -51,7 +51,7 @@
                         <!-- Thymeleaf 반복문 시작 -->
                         <tr th:each="qa : ${MY_QA_LIST}">
                           <td>1</td>
-                          <td><a href="/qna_detail">[[${qa.name}]]</a></td>
+                          <td><a th:href="@{/qna/detail/1}">[[${qa.name}]]</a></td>
                           <td>[[${qa.regdate}]]</td>
                           <td>2024-01-01</td>
                           <td>

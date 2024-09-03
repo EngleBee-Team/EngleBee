@@ -20,7 +20,6 @@ public class MainPageController {
   @GetMapping("/main")
   public String getMainPage(@LoginMember SessionMember sessionMember, Model model) {
 
-    log.info("sessionMember = {}", sessionMember);
     if (sessionMember == null) {
       return "index";
     }

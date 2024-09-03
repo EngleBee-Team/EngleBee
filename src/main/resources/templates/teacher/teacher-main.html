@@ -80,7 +80,7 @@
                         </tr>
                         </tbody>
                       </table>
-                      <a class="btn btn-primary btn-sm justify-content-center" href="/chat"
+                      <a class="btn btn-primary btn-sm justify-content-center" th:href="@{/chat}"
                          target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -169,7 +169,8 @@
 
                       <div class="d-flex justify-content-between align-items-center">
                         <h1 class="text-google"><b>출제해야 할 시험<br><br></b></h1>
-                        <a class="text-arrow-icon small text-danger fw-bold ms-auto" href="/my">더보기...</a>
+                        <a class="text-arrow-icon small text-danger fw-bold ms-auto"
+                           th:href="@{/my/info}">더보기...</a>
                       </div>
                       <table class="datatable-table">
                         <tr>
@@ -178,27 +179,27 @@
                           <th>등록일</th>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/1">lec01.스프링 AOP</a></td>
+                          <td><a th:href="@{/exam/detail/1}">lec01.스프링 AOP</a></td>
                           <td>아무개</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/2">lec02.스프링 MVC</a></td>
+                          <td><a th:href="@{/exam/detail/2}">lec02.스프링 MVC</a></td>
                           <td>아무개</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/3">lec03.BOOT</a></td>
+                          <td><a th:href="@{/exam/detail/3}">lec03.BOOT</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/4">lec04.oracle</a></td>
+                          <td><a th:href="@{/exam/detail/4}">lec04.oracle</a></td>
                           <td>아무개</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/5">lec05.oauth</a></td>
+                          <td><a th:href="@{/exam/detail/5}">lec05.oauth</a></td>
                           <td>아무개</td>
                           <td>2024-01-01</td>
                         </tr>
@@ -221,7 +222,8 @@
 
                       <div class="d-flex justify-content-between align-items-center">
                         <h1 class="text-google"><b>출제 완료된 시험<br><br></b></h1>
-                        <a class="text-arrow-icon small text-danger fw-bold ms-auto" href="/my">더보기...</a>
+                        <a class="text-arrow-icon small text-danger fw-bold ms-auto"
+                           th:href="@{/my/info}">더보기...</a>
                       </div>
                       <table class="datatable-table">
                         <tr>
@@ -230,27 +232,27 @@
                           <th>등록일</th>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/1">lec01.할수있다 자바</a></td>
+                          <td><a th:href="@{/exam/detail/1}">lec01.할수있다 자바</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/2">lec02.할수있다 자바</a></td>
+                          <td><a th:href="@{/exam/detail/2}">lec02.할수있다 자바</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/3">lec03.할수있다 자바</a></td>
+                          <td><a th:href="@{/exam/detail/3}">lec03.할수있다 자바</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/4">lec04.할수있다 자바</a></td>
+                          <td><a th:href="@{/exam/detail/4}">lec04.할수있다 자바</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
                         <tr>
-                          <td><a href="/eaxm/solve/5">lec05.할수있다 자바</a></td>
+                          <td><a th:href="@{/exam/detail/5}">lec05.할수있다 자바</a></td>
                           <td>홍길동</td>
                           <td>2024-01-01</td>
                         </tr>
