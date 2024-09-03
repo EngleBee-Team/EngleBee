@@ -1,6 +1,8 @@
 package com.beelinkers.englebee.teacher.controller.api;
 
 
+import com.beelinkers.englebee.auth.annotation.LoginMember;
+import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.general.service.LectureService;
 import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,9 @@ public class TeacherLectureApiController {
   private final LectureService lectureService;
 
   @PostMapping("/register")
-  public void registerLecture(@RequestBody TeacherRegisterLectureRequestDTO teacherRegisterLectureRequestDTO) {
+  public void registerLecture(@RequestBody TeacherRegisterLectureRequestDTO teacherRegisterLectureRequestDTO,@LoginMember SessionMember sessionMember) {
     //시큐리티 적용 필요
-    Long teacherSeq = 1L;
+    Long teacherSeq = sessionMember.getSeq();
     lectureService.createLecture(teacherSeq,teacherRegisterLectureRequestDTO);
   }
 
