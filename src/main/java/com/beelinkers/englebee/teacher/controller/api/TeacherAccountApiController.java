@@ -54,6 +54,7 @@ public class TeacherAccountApiController {
   @PutMapping("/deactivate")
   public ResponseEntity<Void> deleteTeacherAccount(@RequestParam("memberSeq") Long memberSeq) {
     teacherAccountService.deleteTeacherAccountInfo(memberSeq);
+    // httpSession.invalidate();
     return ResponseEntity.noContent().build();
   }
 
