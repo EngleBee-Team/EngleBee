@@ -33,7 +33,7 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public boolean checkNicknameDuplicate(String nickname) {
     return generalMemberService.checkNicknameDuplicated(nickname);
   }
@@ -45,7 +45,6 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
     Member member = memberRepository.findById(memberSeq)
         .orElseThrow(() -> new RuntimeException("수정에 실패하였습니다."));
     member.updateNickname(teacherAccountRequestDTO.getNickname());
-    memberRepository.save(member);
     return new TeacherAccountUpdateDTO(memberSeq, teacherAccountRequestDTO.getNickname());
   }
 
