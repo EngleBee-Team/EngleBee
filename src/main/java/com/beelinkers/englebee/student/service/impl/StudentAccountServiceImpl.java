@@ -42,7 +42,7 @@ public class StudentAccountServiceImpl implements StudentAccountService {
   public Member updateStudentInfo(Long memberSeq,
       StudentAccountPageRequestDTO updateStudentRequest) {
     Member member = memberRepository.findById(memberSeq)
-        .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+        .orElseThrow(() -> new RuntimeException("수정에 실패 하였습니다."));
 
     member.updateNickname(updateStudentRequest.getNickname());
     member.updateStudentGrade(StudentGrade.fromKoreanGrade(updateStudentRequest.getGrade()));
