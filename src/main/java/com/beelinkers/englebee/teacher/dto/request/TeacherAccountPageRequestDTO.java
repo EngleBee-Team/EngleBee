@@ -15,7 +15,4 @@ public class TeacherAccountPageRequestDTO {
   @Length(min = 1, max = 20, message = "닉네임 길이는 1글자 ~ 20글자 사이여야 합니다.")
   private String nickname;
 
-  public void updateTeacherInfo(String nickname) {
-    this.nickname = nickname;
-  }
 }
