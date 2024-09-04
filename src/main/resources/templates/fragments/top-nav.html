@@ -18,7 +18,7 @@
     <ul class="navbar-nav align-items-center ms-auto">
       <li th:if="${session['SESSION_MEMBER'] != null}"
           class="nav-item dropdown no-caret d-none d-md-block me-3"><b><a
-          th:href="@{/exam/detail/1}">수업</a></b></li>
+          th:href="@{/main}">수업</a></b></li>
       <li th:if="${session['SESSION_MEMBER'] != null}"
           class="nav-item dropdown no-caret d-none d-md-block me-3"><b> | </b></li>
       <li th:if="${session['SESSION_MEMBER'] != null}"
@@ -91,7 +91,7 @@
             </div>
           </h6>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#!">
+          <a class="dropdown-item" th:href="@{/my/account}">
             <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
             회원정보
           </a>
