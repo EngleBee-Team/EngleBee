@@ -35,15 +35,13 @@ public class AuthApiController {
   private final GeneralMemberService generalMemberService;
 
   @PostMapping("/nickname-duplicated")
-  public ResponseEntity<Boolean> checkNicknameIsDuplicated(
+  public ResponseEntity<Void> checkNicknameIsDuplicated(
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
       @RequestParam String nickname) {
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
-    if (nickname.length() > 20 || nickname.isEmpty()) {
-      throw new MemberNicknameLengthException("닉네임의 길이는 1글자 ~ 20글자 사이여야 합니다.");
-    }
-    return ResponseEntity.ok()
-        .body(generalMemberService.checkNicknameDuplicated(nickname));
+    checkNicknameLength(nickname);
+    generalMemberService.checkNicknameDuplicated(nickname);
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/signup/student")
@@ -72,6 +70,12 @@ public class AuthApiController {
       SignupProgressSessionMember signupProgressSessionMember) {
     if (signupProgressSessionMember == null) {
       throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
+    }
+  }
+
+  private void checkNicknameLength(String nickname) {
+    if (nickname.length() > 20 || nickname.isEmpty()) {
+      throw new MemberNicknameLengthException("닉네임의 길이는 1글자 ~ 20글자 사이여야 합니다.");
     }
   }
 
