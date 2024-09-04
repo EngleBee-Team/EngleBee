@@ -43,7 +43,6 @@ public class QnaServiceImpl implements QnaService {
   private final QnaDetailPageResponseMapper qnaDetailPageResponseMapper;
 
   @Override
-  @Transactional
   public void registerQnaInfo(QnaPageRequestDTO qnaRequestDTO, Long memberSeq) {
     Member member = memberRepository.findById(memberSeq)
         .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
@@ -59,7 +58,7 @@ public class QnaServiceImpl implements QnaService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public QnaDetailPageResponseDTO getQnaDetailInfo(Long questionSeq) {
     Question question = questionRepository.findById(questionSeq)
         .orElseThrow(() -> new ExamNotFoundException("해당 질문을 찾을 수 없습니다."));
