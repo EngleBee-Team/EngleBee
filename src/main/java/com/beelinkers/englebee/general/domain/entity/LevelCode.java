@@ -24,9 +24,5 @@ public enum LevelCode {
     }
     throw new InvalidLevelCodeException("유효하지 않은 레벨 입력입니다: " + koreanCode);
   }
-
-  public String getKoreanCode() {
-    return koreanCode;
-  }
   
 }

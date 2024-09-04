@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.auth.oauth2.exception.handler;
 
 import com.beelinkers.englebee.auth.oauth2.exception.AlreadySignedUpEmailException;
+import com.beelinkers.englebee.auth.oauth2.exception.DeactivatedMemberException;
 import com.beelinkers.englebee.auth.oauth2.exception.SignupRequiredException;
 import com.beelinkers.englebee.auth.oauth2.exception.UnsupportedSocialLoginTypeException;
 import jakarta.servlet.ServletException;
@@ -28,6 +29,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     } else if (exception instanceof AlreadySignedUpEmailException) {
       // 이미 다른 소셜 로그인 타입으로 회원가입 완료된 경우
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      response.getWriter().write(exception.getMessage());
+    } else if (exception instanceof DeactivatedMemberException) {
+      // 회원탈퇴 처리된 계정인 경우
+      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       response.getWriter().write(exception.getMessage());
     } else {
       // 그 밖 예외 처리

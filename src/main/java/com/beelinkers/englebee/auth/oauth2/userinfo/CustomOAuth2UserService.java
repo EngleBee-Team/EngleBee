@@ -7,6 +7,7 @@ import com.beelinkers.englebee.auth.domain.entity.LoginType;
 import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.auth.oauth2.exception.AlreadySignedUpEmailException;
+import com.beelinkers.englebee.auth.oauth2.exception.DeactivatedMemberException;
 import com.beelinkers.englebee.auth.oauth2.exception.SignupRequiredException;
 import com.beelinkers.englebee.auth.oauth2.exception.UnsupportedSocialLoginTypeException;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
@@ -59,6 +60,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       if (!member.getLoginType().equals(loginAttemptedType)) {
         throw new AlreadySignedUpEmailException(
             "이미 다른 소셜로그인 계정으로 가입된 이메일입니다. 해당 소셜 로그인 계정으로 로그인해주세요.");
+      }
+
+      if (member.isDeactivated()) {
+        throw new DeactivatedMemberException("회원 탈퇴 처리된 계정입니다.");
       }
 
       httpSession.invalidate();
