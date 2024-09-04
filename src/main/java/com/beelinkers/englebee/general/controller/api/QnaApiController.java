@@ -1,5 +1,6 @@
 package com.beelinkers.englebee.general.controller.api;
 
+import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +39,22 @@ public class QnaApiController {
     );
 
     return ResponseEntity.ok(resultQna);
+  }
+
+  @PostMapping("/register")
+  public ResponseEntity<String> registerQuestion(@RequestBody QnaPageRequestDTO qnaRequestDTO) {
+    if (qnaRequestDTO.getTitle() == null || qnaRequestDTO.getTitle().isEmpty()) {
+      return ResponseEntity.badRequest().body("제목을 입력해주세요.");
+    } else if (qnaRequestDTO.getContent() == null || qnaRequestDTO.getContent().isEmpty()) {
+      return ResponseEntity.badRequest().body("내용을 입력해주세요.");
+    }
+    try {
+      Long memberSeq = qnaRequestDTO.getMemberSeq();
+      qnaService.registerQuestionInfo(qnaRequestDTO, memberSeq);
+      return ResponseEntity.ok("게시물이 등록되었습니다.");
+    } catch (Exception e) {
+      log.error("게시글 등록 중 오류 발생 : {} ", e.getMessage());
+      return ResponseEntity.badRequest().body("게시글 등록 중 오류가 발생했습니다.");
+    }
   }
 }
