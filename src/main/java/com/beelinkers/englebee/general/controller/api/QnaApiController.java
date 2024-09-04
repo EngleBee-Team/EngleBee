@@ -1,13 +1,12 @@
 package com.beelinkers.englebee.general.controller.api;
 
-import com.beelinkers.englebee.general.domain.repository.ReplyRepository;
 import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
 import com.beelinkers.englebee.general.dto.request.ReplyRequestDTO;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
+import com.beelinkers.englebee.general.dto.response.QnaDetailPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
-import com.beelinkers.englebee.general.dto.response.mapper.ReplyResponseMapper;
 import com.beelinkers.englebee.general.service.QnaService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -32,8 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class QnaApiController {
 
   private final QnaService qnaService;
-  private final ReplyRepository replyRepository;
-  private final ReplyResponseMapper replyResponseMapper;
 
   @GetMapping("/list")
   public ResponseEntity<GeneralPagedResponseDTO<QnaPageResponseDTO>> getQnaList(
@@ -65,6 +62,21 @@ public class QnaApiController {
     } catch (Exception e) {
       log.error("게시글 등록 중 오류 발생 : {} ", e.getMessage());
       return ResponseEntity.badRequest().body("게시글 등록 중 오류가 발생했습니다.");
+    }
+  }
+
+  @GetMapping("/detail")
+  public ResponseEntity<QnaDetailPageResponseDTO> getQnaDetail(
+      @RequestParam("questionSeq") Long questionSeq) {
+    try {
+      QnaDetailPageResponseDTO qnaDetailList = qnaService.getQnaDetailInfo(questionSeq);
+      return ResponseEntity.ok(qnaDetailList);
+    } catch (EntityNotFoundException e) {
+      log.error("해당하는 질문을 찾을 수 없습니다. : {}", e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    } catch (Exception e) {
+      log.error("해당 게시글 조회 중 문제 발생 : {}", e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
 
