@@ -1,6 +1,5 @@
 package com.beelinkers.englebee.auth.controller.api;
 
-import static com.beelinkers.englebee.auth.constant.AuthConstant.SESSION_MEMBER_KEY;
 import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS_SESSION_MEMBER_KEY;
 
 import com.beelinkers.englebee.auth.annotation.SignupProgressMember;
@@ -9,7 +8,6 @@ import com.beelinkers.englebee.auth.dto.request.NicknameCheckRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.exception.SignupProgressSessionNotFoundException;
-import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
@@ -53,7 +51,7 @@ public class AuthApiController {
     log.info("하이 회원가입 로그인타입 " + signupProgressSessionMember.getLoginType());
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     Member member = authService.signupStudent(signupProgressSessionMember, studentSignupRequestDTO);
-    makeMemberSession(httpSession, member);
+    deleteSignupProgressMemberSession(httpSession, member);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
@@ -64,7 +62,7 @@ public class AuthApiController {
       HttpSession httpSession) {
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     Member member = authService.signupTeacher(signupProgressSessionMember, teacherSignupRequestDTO);
-    makeMemberSession(httpSession, member);
+    deleteSignupProgressMemberSession(httpSession, member);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
@@ -75,10 +73,9 @@ public class AuthApiController {
     }
   }
 
-  private void makeMemberSession(HttpSession httpSession, Member member) {
+  private void deleteSignupProgressMemberSession(HttpSession httpSession, Member member) {
     httpSession.removeAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
-    httpSession.setAttribute(SESSION_MEMBER_KEY,
-        new SessionMember(member.getSeq(), member.getRole()));
+
   }
 
 }

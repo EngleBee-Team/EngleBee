@@ -19,10 +19,11 @@ public class MainPageController {
 
   @GetMapping("/main")
   public String getMainPage(@LoginMember SessionMember sessionMember, Model model) {
-
     if (sessionMember == null) {
       return "index";
     }
+
+    log.info("LoginMember = {}", sessionMember.getRole());
 
     Long memberSeq = sessionMember.getSeq();
     model.addAttribute("nickname", mainPageService.getNickname(memberSeq));

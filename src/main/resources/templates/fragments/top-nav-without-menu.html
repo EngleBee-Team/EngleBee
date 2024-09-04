@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="top-nav-without-menu">
+
+  <!-- [상단] 네이게이션 바 -->
+  <nav
+      class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+      id="sidenavAccordion">
+
+    <!-- 로고 -->
+    <img
+        src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2023/04/urban-20230406152426179707.jpg"
+        width=55>
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" th:href="@{/main}"><h2><b>EngleBee</b></h2></a>
+
+    <!-- 메뉴 -->
+    <ul class="navbar-nav align-items-center ms-auto">
+    </ul>
+  </nav>
+
+</div>
+</body>
+</html>

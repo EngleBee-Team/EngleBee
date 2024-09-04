@@ -63,6 +63,8 @@ public class SecurityConfig {
             .requestMatchers("/api/student/**").hasRole(Role.STUDENT.name())
             .requestMatchers("/api/auth/account/deactivate")
             .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
+            .requestMatchers("/my/**", "/qna/**", "/exam/**")
+            .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
             .requestMatchers("/static/**", "/assets/**", "/css/**", "/js/**", "/images/**")
             .permitAll() // 정적 자원 허용
             .anyRequest().authenticated());

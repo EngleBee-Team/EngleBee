@@ -6,7 +6,7 @@
 <body  class="bg-white">
     
     	<!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
-        <div th:replace="~{fragments/top-nav :: top-nav}"></div>
+        <div th:replace="~{fragments/top-nav-without-menu:: top-nav-without-menu}"></div>
 
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -307,7 +307,7 @@
               contentType: 'application/json',
               data: JSON.stringify(data),
               success: function (response) {
-                alert('회원가입이 성공적으로 완료되었습니다!');
+                alert('회원가입이 성공적으로 완료되었습니다. 다시 로그인 해주세요!');
                 window.location.href = '/main';
               },
               error: function (xhr) {
