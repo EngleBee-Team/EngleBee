@@ -50,7 +50,7 @@
 <body>
 <div class="container text-center">
   <h1 class="display-4 mb-4">화상 과외
-    <span id="role" th:text="${sessionMember.role}"></span>
+    <span id="role" th:text="${member.role}"></span>
   </h1>
   <div class="controls mb-4">
       <button id="offerButton" class="btn btn-primary btn-lg mx-2 mb-2" onclick="createOffer();">수업시작</button>
@@ -78,7 +78,7 @@
     </div>
   </div>
   <div class="controls mb-4">
-    <input type="hidden" id="lectureSeq-input" th:value="${lectureseq}"/>
+    <input type="hidden" id="lectureSeq-input" th:value="${lectureSeq}"/>
     <button id="exitButton" class="btn btn-primary btn-lg mx-2 mb-2" style="background: red">수업종료</button>
   </div>
 </div>
