@@ -55,7 +55,7 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/oauth2/**", "/login/**", "/h2-console/**", "/api/auth/**",
-                "/main", "/signup", "/api/auth/signup/**").permitAll()
+                "/main", "/signup").permitAll()
             .requestMatchers("/chat", "/socket")
             .hasAnyRole(Role.TEACHER.name(), Role.STUDENT.name())
             .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())

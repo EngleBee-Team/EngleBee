@@ -14,7 +14,7 @@ public class SignupProgressPageController {
   public String getSignupProgressPage(
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember) {
     if (signupProgressSessionMember == null) {
-      return "index";
+      return "redirect:/index";
     }
     return "auth/signup-progress";
   }

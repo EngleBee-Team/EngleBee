@@ -61,7 +61,7 @@
                                                             <label class="middle mb-1"><b>닉네임을 입력하세요 (최대 20자)</b></label>
                                                             <div class="mb-3 d-flex align-items-center">
                                                                 <input class="form-control me-2" style="width: 300px;" id="student-nickname" type="text" placeholder="닉네임">
-                                                                <button class="btn btn-primary" style="width: auto;" id="nickname-duplicated-check-btn">중복확인</button>
+                                                                <button class="btn btn-primary" style="width: auto;" id="student-nickname-duplicated-check-btn">중복확인</button>
                                                             </div>
                                                         </div>
 
@@ -69,13 +69,13 @@
                                                         <div class="mb-3 col-md-6">
                                                             <label class="middle mb-1"><b>학년을 입력하세요.</b></label>
                                                             <div class="mb-3 col-md-12">
-                                                                <select name="mh" class="form-control">
-                                                                    <option value="m1" selected="">중1</option>
-                                                                    <option value="m2">중2</option>
-                                                                    <option value="m3">중3</option>
-                                                                    <option value="h1">고1</option>
-                                                                    <option value="h2">고2</option>
-                                                                    <option value="h3">고3</option>
+                                                                <select id="student-grade-select" class="form-control">
+                                                                    <option value="중1" selected>중1</option>
+                                                                    <option value="중2">중2</option>
+                                                                    <option value="중3">중3</option>
+                                                                    <option value="고1">고1</option>
+                                                                    <option value="고2">고2</option>
+                                                                    <option value="고3">고3</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -84,21 +84,69 @@
                                                     <div class="mb-3 col-md-12">
                                                         <label class="middle mb-1"><b>개인정보 수집동의 약관</b></label>
                                                            <div class="mb-3 col-md-12">
-<textarea class="form-control" rows="20">개인정보 수집동의
+<textarea class="form-control" rows="20">
+  [ 개인정보 수집동의 ]
 
-개인정보는 ㅇㅇㅇㅇㅇㅇ 합니다.
-개인정보는 ㅇㅇㅇㅇㅇㅇ 합니다.
-개인정보는 ㅇㅇㅇㅇㅇㅇ 합니다.
-</textarea>
-                                                            </div>
+  EngleBee는 학생의 학습 경험을 향상시키기 위해 아래와 같은 개인정보를 수집하고 이용합니다.
+  학생 계정으로 가입하시면 다음과 같은 내용에 동의하게 됩니다.
+
+  [ 수집하는 개인정보 항목 ]
+
+  필수 정보: 학년 정보, 과목별 성취도
+  선택 정보: 학습 목표, 선호 학습 스타일, 관심 분야
+
+  [ 개인정보의 수집 및 이용 목적 ]
+
+  - 학습 성과 분석 및 맞춤형 학습 컨텐츠 제공
+
+  - 서비스 개선을 위한 데이터 분석 및 통계 작성
+
+  - 신규 서비스 개발 및 개인 맞춤형 서비스 제공
+
+  [ 개인정보의 보유 및 이용 기간 ]
+
+  - 필수 정보 : 학년 정보, 과목별 성취도
+  해당 정보는 회원 탈퇴 시에도 유지됩니다.
+
+  - 선택 정보 :학습 목표, 선호 학습 스타일, 관심 분야
+  해당 정보는 회원 탈퇴 시 폐기됩니다.
+
+  [ 개인정보 제공 및 공유 ]
+
+  EngleBee는 원칙적으로 수집된 개인정보를 외부에 제공하지 않습니다.
+  다만, 법령의 규정에 의거하거나 수사 목적으로 법령에 정해진 절차와 방법에 따라
+  수사기관의 요구가 있는 경우에는 예외로 합니다.
+
+  [ 개인정보 처리의 위탁 ]
+
+  EngleBee는 서비스 운영에 필요한 경우 개인정보 처리 업무를 외부 전문 업체에 위탁할 수 있으며,
+  이 경우 철저한 관리·감독을 통해 개인정보 보호를 위해 노력합니다.
+
+  [ 이용자의 권리와 그 행사 방법 ]
+
+  이용자는 언제든지 자신의 개인정보를 조회하거나 수정할 수 있으며,
+  개인정보의 수집 및 이용에 대한 동의를 철회할 수 있습니다.
+  관련 문의는 고객센터를 통해 가능합니다.
+
+  [ 개인정보 보호를 위한 조치 ]
+
+  EngleBee는 개인정보 보호를 위해 기술적, 관리적 보호 조치를 시행하고 있으며,
+  개인정보 유출 방지를 위해 최선을 다하고 있습니다.
+
+  [ 동의 거부 권리 및 동의 거부 시 불이익 안내 ]
+
+  이용자는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.
+  다만, 동의를 거부할 경우 EngleBee 맞춤형 학습 서비스 이용에 제한이 있을 수 있습니다.
+
+</textarea></div>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input"  type="checkbox" value="" checked>
+                                                        <input class="form-check-input"  id="student-term-agree-check" type="checkbox" value="" checked>
                                                         <label class="form-check-label" ><b>동의합니다.</b></label>
                                                     </div>
                                                     <hr class="my-4">
                                                     <div class="d-flex justify-content-center">
-                                                        <button class="btn btn-primary" type="button">회원가입</button>
+                                                        <button class="btn btn-primary" type="button" id="student-signup-btn">회원가입</button>
                                                     </div>
                                                     
                                                 </form>
@@ -176,13 +224,16 @@
       <div th:replace="~{fragments/scripts :: scripts}" ></div>
       <script>
         $(document).ready(function () {
-          const $nicknameInput = $('#student-nickname');
-          const $checkButton = $('#nickname-duplicated-check-btn');
+          const $studentNicknameInput = $('#student-nickname');
+          const $studentNicknameCheckButton = $('#student-nickname-duplicated-check-btn');
+          const $studentAgreeCheckbox = $('#student-term-agree-check');
+          const $studentSignupButton = $('#student-signup-btn');
 
-          $checkButton.on('click', function (event) {
+          $studentSignupButton.prop('disabled', true);
+
+          $studentNicknameCheckButton.on('click', function (event) {
             event.preventDefault();
-
-            const nickname = $nicknameInput.val().trim();
+            const nickname = $studentNicknameInput.val().trim();
 
             if (nickname === '') {
               alert('닉네임을 입력하세요.');
@@ -196,10 +247,11 @@
               data: JSON.stringify({ 'nickname': nickname }),
               success: function (response) {
                 alert('사용 가능한 닉네임 입니다.');
-                $checkButton.removeClass('btn-primary')
+                $studentNicknameCheckButton.removeClass('btn-primary')
                 .addClass('btn-success')
                 .text('사용가능')
                 .prop('disabled', true); // 버튼 비활성화
+                checkFormValidity(); // 폼 유효성 체크
               },
               error: function (xhr) {
                 if (xhr.status >= 400 && xhr.status < 500) {
@@ -212,15 +264,63 @@
             });
           });
 
-          // 닉네임 입력값이 변경될 때 버튼을 활성화하고 텍스트를 "중복확인"으로 변경
-          $nicknameInput.on('input', function () {
-            $checkButton.removeClass('btn-success')
+          $studentNicknameInput.on('input', function () {
+            $studentNicknameCheckButton.removeClass('btn-success')
             .addClass('btn-primary')
             .text('중복확인')
-            .prop('disabled', false); // 버튼 활성화
+            .prop('disabled', false);
+            checkFormValidity();
+          });
+
+          // 개인정보 수집 동의 체크박스 변경 시 폼 유효성 체크
+          $studentAgreeCheckbox.on('change', function () {
+            checkFormValidity();
+          });
+
+          function checkFormValidity() {
+            const isNicknameChecked = $studentNicknameCheckButton.hasClass('btn-success');
+            const isAgreeChecked = $studentAgreeCheckbox.is(':checked');
+
+            if (isNicknameChecked && isAgreeChecked) {
+              $studentSignupButton.prop('disabled', false);
+            } else {
+              $studentSignupButton.prop('disabled', true);
+            }
+          }
+
+          // 회원가입 버튼 클릭 시 이벤트
+          $studentSignupButton.on('click', function (event) {
+            event.preventDefault();
+            const nickname = $studentNicknameInput.val().trim();
+            const grade = $('#student-grade-select').val();
+            const personalInfoCollectionAgreed = $studentAgreeCheckbox.is(':checked');
+
+            const data = {
+              'nickname': nickname,
+              'grade': grade,
+              'personalInfoCollectionAgreed': personalInfoCollectionAgreed
+            };
+
+            $.ajax({
+              url: '/api/auth/signup/student',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify(data),
+              success: function (response) {
+                alert('회원가입이 성공적으로 완료되었습니다!');
+                window.location.href = '/main';
+              },
+              error: function (xhr) {
+                if (xhr.status >= 400 && xhr.status < 500) {
+                  const errorMessage = xhr.responseText || '클라이언트 오류가 발생했습니다.';
+                  alert(errorMessage);
+                } else {
+                  alert('서버 오류가 발생했습니다.');
+                }
+              }
+            });
           });
         });
-
       </script>
 
 
