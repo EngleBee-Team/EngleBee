@@ -1,15 +1,19 @@
 package com.beelinkers.englebee.general.controller.api;
 
 import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
+import com.beelinkers.englebee.general.dto.request.ReplyRequestDTO;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
+import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
 import com.beelinkers.englebee.general.service.QnaService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,4 +61,23 @@ public class QnaApiController {
       return ResponseEntity.badRequest().body("게시글 등록 중 오류가 발생했습니다.");
     }
   }
+
+  @PostMapping("/reply")
+  public ResponseEntity<ReplyResponseDTO> registerReply(
+      @RequestBody ReplyRequestDTO replyRequestDTO) {
+    try {
+      ReplyResponseDTO registeredReply = qnaService.registerReplyInfo(replyRequestDTO);
+      return ResponseEntity.ok(registeredReply);
+    } catch (IllegalAccessError e) {
+      log.error("잘못된 입력입니다 : {} ", e.getMessage());
+      return ResponseEntity.badRequest().body(null);
+    } catch (EntityNotFoundException e) {
+      log.error("엔티티를 찾을 수 없습니다. : {} ", e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    } catch (Exception e) {
+      log.error("댓글 등록 중 오류 발생 : {}", e.getMessage());
+      return ResponseEntity.badRequest().body(null);
+    }
+  }
+
 }
