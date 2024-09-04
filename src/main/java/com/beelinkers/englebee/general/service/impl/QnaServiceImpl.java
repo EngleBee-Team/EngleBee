@@ -73,7 +73,7 @@ public class QnaServiceImpl implements QnaService {
         .orElseThrow(() -> new IllegalArgumentException("질문을 찾을 수 없습니다."));
     Member member = memberRepository.findById(replyRequestDTO.getMemberSeq())
         .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-    Reply reply = replyRequestMapper.registerReply(replyRequestDTO, question, member);
+    Reply reply = replyRequestMapper.toReply(replyRequestDTO, question, member);
     Reply saveReply = replyRepository.save(reply);
 
     return replyResponseMapper.replyResponseDTO(saveReply);

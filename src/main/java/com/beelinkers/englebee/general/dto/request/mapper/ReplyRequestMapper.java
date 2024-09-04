@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReplyRequestMapper {
 
-  public Reply registerReply(ReplyRequestDTO replyRequestDTO, Question qna, Member member) {
+  public Reply toReply(ReplyRequestDTO replyRequestDTO, Question qna, Member member) {
     return Reply.builder()
         .question(qna)
         .author(member)
