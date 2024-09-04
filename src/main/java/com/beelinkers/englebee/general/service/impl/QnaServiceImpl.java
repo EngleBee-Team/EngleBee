@@ -10,10 +10,13 @@ import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
 import com.beelinkers.englebee.general.dto.request.ReplyRequestDTO;
 import com.beelinkers.englebee.general.dto.request.mapper.QnaPageRequestMapper;
 import com.beelinkers.englebee.general.dto.request.mapper.ReplyRequestMapper;
+import com.beelinkers.englebee.general.dto.response.QnaDetailPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
+import com.beelinkers.englebee.general.dto.response.mapper.QnaDetailPageResponseMapper;
 import com.beelinkers.englebee.general.dto.response.mapper.QnaPageResponseMapper;
 import com.beelinkers.englebee.general.dto.response.mapper.ReplyResponseMapper;
+import com.beelinkers.englebee.general.exception.ExamNotFoundException;
 import com.beelinkers.englebee.general.service.QnaService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ public class QnaServiceImpl implements QnaService {
   private final QnaPageRequestMapper qnaPageRequestMapper;
   private final ReplyRequestMapper replyRequestMapper;
   private final ReplyResponseMapper replyResponseMapper;
+  private final QnaDetailPageResponseMapper qnaDetailPageResponseMapper;
 
   @Override
   @Transactional
@@ -52,6 +56,14 @@ public class QnaServiceImpl implements QnaService {
   public Page<QnaPageResponseDTO> getQnaListInfo(Pageable pageable) {
     return questionRepository.findAllByOrderByCreatedAtDesc(pageable)
         .map(qnaPageMapper::qnaPageResponseDTO);
+  }
+
+  @Override
+  @Transactional
+  public QnaDetailPageResponseDTO getQnaDetailInfo(Long questionSeq) {
+    Question question = questionRepository.findById(questionSeq)
+        .orElseThrow(() -> new ExamNotFoundException("해당 질문을 찾을 수 없습니다."));
+    return qnaDetailPageResponseMapper.qnaDetailResponseDTO(question);
   }
 
   @Override
