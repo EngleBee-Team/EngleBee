@@ -5,7 +5,7 @@ import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QnaPageMapper {
+public class QnaPageResponseMapper {
 
   public QnaPageResponseDTO qnaPageResponseDTO(Question question) {
     return new QnaPageResponseDTO(
@@ -15,5 +15,5 @@ public class QnaPageMapper {
         question.getCreatedAt()
     );
   }
-  
+
 }
