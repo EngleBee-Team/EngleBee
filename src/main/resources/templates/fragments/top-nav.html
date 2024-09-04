@@ -1,0 +1,103 @@
+<!-- **************************  레이아웃 공통 ********************* -->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="top-nav">
+
+  <!-- [상단] 네이게이션 바 -->
+  <nav
+      class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+      id="sidenavAccordion">
+
+    <!-- 로고 -->
+    <img
+        src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2023/04/urban-20230406152426179707.jpg"
+        width=55>
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" th:href="@{/main}"><h2><b>EngleBee</b></h2></a>
+
+    <!-- 메뉴 -->
+    <ul class="navbar-nav align-items-center ms-auto">
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b><a
+          th:href="@{/exam/detail/1}">수업</a></b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b> | </b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b><a
+          th:href="@{/qna/list}">Q&A</a></b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b> | </b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b><a
+          th:href="@{/my/info}">마이페이지</a></b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b> | </b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b><a
+          th:href="@{/my/account}">계정</a></b></li>
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3"><b> | </b></li>
+
+
+      <!-- 구글/네이버 로그인 드롭다운 -->
+      <li class="nav-item dropdown no-caret d-none d-md-block me-3">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" href="javascript:void(0);"
+           role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <b>로그인</b>
+          <i class="fas fa-chevron-right dropdown-arrow"></i>
+        </a>
+        <div
+            class="dropdown-menu dropdown-menu-end py-0 me-sm-n15 me-lg-0 o-hidden animated--fade-in-up"
+            aria-labelledby="navbarDropdownDocs">
+          <a class="dropdown-item py-3" th:href="@{/oauth2/authorization/google}">
+            <div class="icon-stack bg-primary-soft text-primary me-4">
+              <img src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
+                   width=50></div>
+            <div>
+              <div class="small text-gray-500">Google Login</div>
+              구글로 로그인
+            </div>
+          </a>
+          <div class="dropdown-divider m-0"></div>
+          <a class="dropdown-item py-3"
+             th:href="@{/oauth2/authorization/naver}">
+            <div class="icon-stack bg-primary-soft text-primary me-4">
+              <img
+                  src="https://clova-phinf.pstatic.net/MjAxODAzMjlfOTIg/MDAxNTIyMjg3MzM3OTAy.WkiZikYhauL1hnpLWmCUBJvKjr6xnkmzP99rZPFXVwgg.mNH66A47eL0Mf8G34mPlwBFKP0nZBf2ZJn5D4Rvs8Vwg.PNG/image.png"
+                  width=50>
+            </div>
+            <div>
+              <div class="small text-gray-500">Naver Login</div>
+              네이버로 로그인
+            </div>
+          </a>
+        </div>
+      </li>
+
+      <!-- 아바타 아이콘 드롭다운 -->
+      <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+        <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+           href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false"><img class="img-fluid"
+                                      th:src="@{/assets/img/illustrations/profiles/profile-1.png}"></a>
+        <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+             aria-labelledby="navbarDropdownUserImage">
+          <h6 class="dropdown-header d-flex align-items-center">
+            <img class="dropdown-user-img"
+                 th:src="@{/assets/img/illustrations/profiles/profile-1.png}">
+            <div class="dropdown-user-details">
+              <div class="dropdown-user-details-name">아무개 회원님</div>
+              <div class="dropdown-user-details-email">kosta@naver.com</div>
+            </div>
+          </h6>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#!">
+            <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+            회원정보
+          </a>
+          <a class="dropdown-item" th:href="@{/logout}">
+            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+            로그아웃
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+</body>
+</html>

@@ -44,7 +44,7 @@ public class AccountPageController {
       model.addAttribute("isTeacher", true);
       return "teacher/teacher-account";
     }
-    return "/common-main";
+    return "index";
   }
 
   // 수정된 학생 정보 계정 페이지

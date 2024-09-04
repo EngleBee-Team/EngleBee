@@ -1,199 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title th:text="'Components / Accordion - ' + ${pageTitle}">Components / Accordion - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link th:href="@{/assets/img/favicon.png}" rel="icon">
-  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+<head th:replace="~{fragments/header :: head}"></head>
 
 
-  <!-- Template Main CSS File -->
-  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
-  <link th:href="@{/assets/css/hr.css}" rel="stylesheet">
-  <style>
-    /* Custom CSS to make all table rows white */
-    table tbody tr {
-      background-color: white !important;
-    }
-     .member-level-chart{
-       width: 400px;
-       height: 400px;
-     }
-    .chart-wrap2, .chart-wrap4, .chart-wrap{
-      display: flex;
-      justify-content: space-around;
-      height: 400px;
-    }
-    canvas{
-      display: block;
-      width: 400px;
-      height: 100%;
-    }
-    .none{
-      display: none;
-    }
-    #no-lecture, #no-llm{
-      text-align: center;
-      font-size: xx-large;
-    }
-  </style>
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-  <link th:href="@{/asset/css/hr.css}" rel="">
-  <!-- JQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <!--chart-->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="text/javascript" th:src="@{../assets/js/admin-chart.js}"></script>
-</head>
+<body class="bg-white">
 
-<body>
+<!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
+<div th:replace="~{fragments/top-nav :: top-nav}"></div>
 
-<!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center header-hr">
-
-  <div class="d-flex align-items-center justify-content-between header-hr-left">
-    <a href="#" class="logo d-flex align-items-center">
-      <img th:src="@{/assets/img/logo/logo-vertical.png}" alt="" style="width: 50px; margin-top: 20px;">
-      <span class="d-none d-lg-block">EngleBee</span>
-    </a>
-  </div><!-- End Logo -->
-  <div class="header-hr-right">
-    <a href="#" style="margin-right: 20px">로그인</a>
-    <a href="#">회원가입</a>
+<div id="layoutSidenav">
+  <div id="layoutSidenav_nav">
   </div>
-</header><!-- End Header -->
+  <div id="layoutSidenav_content">
+    <main>
 
-<main id="main_wrap" class="main">
-  <div id="main" style="margin:auto; margin-top:80px">
-    <div class="pagetitle">
-      <h1>DashBoard</h1>
-    </div><!-- End Page Title -->
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>학생 과목별 수준 분표</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        <div class = "chart-wrap">
-          <canvas id="grammer-count" class="member-level-chart"></canvas>
-          <canvas id="sentence-count" class="member-level-chart"></canvas>
-          <canvas id="word-count" class="member-level-chart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>LLM API 호출 수</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        <div class = "chart-wrap-2">
-          <div class = "select-wrap">
-            <label for="row2year">Year:</label>
-            <select id="row2year" name="year">
-              <option value="">Select Year</option>
-              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
-              <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
-                <option th:value="${year}" th:text="${year}"></option>
-              </th:block>
-            </select>
-            <label for="row2month">Month:</label>
-            <select id="row2month" name="month">
-              <option value="">Select Month</option>
-              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
-              <th:block th:each="month : ${#numbers.sequence(1, 12)}">
-                <option th:value="${month}" th:text="${month}"></option>
-              </th:block>
-            </select>
-          </div>
-          <div id="no-lecture">There are no llm that called.</div>
-          <div class="chart-wrap2">
-            <canvas id="llmChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>나이대별 학생 분포</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        <div class = "chart-wrap">
-          <canvas id="age-group-count" class="member-level-chart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header card-header-hr">
-        <h5>일일 수업 개설 수</h5>
-      </div>
-      <div class="card-body card-body-hr">
-        <div class = "chart-wrap-2">
-          <div class = "select-wrap">
-            <label for="row4year">Year:</label>
-            <select id="row4year" name="year">
-              <option value="">Select Year</option>
-              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
-              <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
-                <option th:value="${year}" th:text="${year}"></option>
-              </th:block>
-            </select>
-            <label for="row4month">Month:</label>
-            <select id="row4month" name="month">
-              <option value="">Select Month</option>
-              <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
-              <th:block th:each="month : ${#numbers.sequence(1, 12)}">
-                <option th:value="${month}" th:text="${month}"></option>
-              </th:block>
-            </select>
-          </div>
-          <div id="no-llm">There are no lecture that created.</div>
-            <div class="chart-wrap4">
-              <canvas id="lectureChart"></canvas>
+
+      <!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
+      <div th:replace="~{fragments/top-banner :: top-banner}"></div>
+
+
+      <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
+
+
+      <div class="container-xl px-4 mt-n10">
+        <div class="card mb-4">
+          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-body">
+            <div class="chart-area">
+              여기 차트
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>일별 사용자 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  여기 차트
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>일별 사용자 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  여기 차트
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-body">
+            <div class="chart-area">
+              여기 차트
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</main><!-- End #main -->
 
-<!-- ======= Footer ======= -->
-<footer id="footer" class="footer" style="margin-left: 0">
-  <div class="copyright">
-    &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+
+      <!-- --------------------------- [중앙 : 컨텐츠 END]  ------------------------------------->
+
+
+    </main>
+
+
+    <!-- --------------------------- [FRAGMENT : 하단] ------------------------------------->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+
   </div>
-  <div class="credits">
-    <!-- All the links in the footer should remain intact. -->
-    <!-- You can delete the links only if you purchased the pro version. -—>
-    <!— Licensing information: https://bootstrapmade.com/license/ —>
-    <!— Purchase the pro version with-->
-  </div>
-</footer>
+</div>
+
+<!-- 공통 <script> 포함 -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>
-
