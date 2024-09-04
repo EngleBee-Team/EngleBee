@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface QnaService {
 
-  Question registerQuestionInfo(QnaPageRequestDTO qnaRequestDTO, Long memberSeq);
+  Question registerQuestionInfos(QnaPageRequestDTO qnaRequestDTO, Long memberSeq);
 
   Page<QnaPageResponseDTO> getQnaListInfo(Pageable pageable);
+
+
 }

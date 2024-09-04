@@ -50,7 +50,7 @@ public class QnaApiController {
     }
     try {
       Long memberSeq = qnaRequestDTO.getMemberSeq();
-      qnaService.registerQuestionInfo(qnaRequestDTO, memberSeq);
+      qnaService.registerQuestionInfos(qnaRequestDTO, memberSeq);
       return ResponseEntity.ok("게시물이 등록되었습니다.");
     } catch (Exception e) {
       log.error("게시글 등록 중 오류 발생 : {} ", e.getMessage());

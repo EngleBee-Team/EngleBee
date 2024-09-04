@@ -29,7 +29,7 @@ public class QnaServiceImpl implements QnaService {
 
   @Override
   @Transactional
-  public Question registerQuestionInfo(QnaPageRequestDTO qnaRequestDTO, Long memberSeq) {
+  public Question registerQuestionInfos(QnaPageRequestDTO qnaRequestDTO, Long memberSeq) {
     Member member = memberRepository.findById(memberSeq)
         .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
     Question questionRegister = qnaPageRequestMapper.registerQnaDTO(qnaRequestDTO, member);
