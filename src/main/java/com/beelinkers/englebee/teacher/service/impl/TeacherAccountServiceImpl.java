@@ -34,8 +34,8 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean checkNicknameDuplicate(String nickname) {
-    return generalMemberService.checkNicknameDuplicated(nickname);
+  public void checkNicknameDuplicate(String nickname) {
+    generalMemberService.checkNicknameDuplicated(nickname);
   }
 
   @Override

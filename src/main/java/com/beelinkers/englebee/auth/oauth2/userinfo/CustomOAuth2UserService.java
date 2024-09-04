@@ -51,8 +51,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
     if (optionalMember.isEmpty()) {
-      httpSession.setAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY,
-          new SignupProgressSessionMember(email, loginAttemptedType));
+      if (httpSession.getAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY) == null) {
+        httpSession.setAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY,
+            new SignupProgressSessionMember(email, loginAttemptedType));
+      }
       throw new SignupRequiredException("회원가입 미완료 : 추가 회원가입 페이지로 이동");
     } else {
       Member member = optionalMember.get();

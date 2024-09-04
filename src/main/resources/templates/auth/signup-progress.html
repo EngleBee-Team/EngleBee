@@ -13,12 +13,8 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                
-                
                 	<!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
                     <div th:replace="~{fragments/top-banner :: top-banner}"></div>
-
-
 
 
                     <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
@@ -64,8 +60,8 @@
                                                         <div class="mb-3 col-md-6">
                                                             <label class="middle mb-1"><b>닉네임을 입력하세요 (최대 20자)</b></label>
                                                             <div class="mb-3 d-flex align-items-center">
-                                                                <input class="form-control me-2" style="width: 300px;" name="nickname" type="text" placeholder="닉네임">
-                                                                <button class="btn btn-primary" style="width: auto;">중복확인</button>
+                                                                <input class="form-control me-2" style="width: 300px;" id="student-nickname" type="text" placeholder="닉네임">
+                                                                <button class="btn btn-primary" style="width: auto;" id="nickname-duplicated-check-btn">중복확인</button>
                                                             </div>
                                                         </div>
 
@@ -120,7 +116,7 @@
                                                         <div class="mb-3 col-md-6">
                                                             <label class="middle mb-1"><b>닉네임을 입력하세요 (최대 20자)</b></label>
                                                             <div class="mb-3 d-flex align-items-center">
-                                                                <input class="form-control me-2" style="width: 300px;" name="nickname" type="text" placeholder="닉네임">
+                                                                <input class="form-control me-2" style="width: 300px;" id="teacher-nickname" type="text" placeholder="닉네임">
                                                                 <button class="btn btn-primary" style="width: auto;">중복확인</button>
                                                             </div>
                                                         </div>
@@ -175,9 +171,57 @@
 
 
 
-
-
         <!-- 공통 <script> 포함 -->
-        <div th:replace="~{fragments/scripts :: scripts}" ></div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <div th:replace="~{fragments/scripts :: scripts}" ></div>
+      <script>
+        $(document).ready(function () {
+          const $nicknameInput = $('#student-nickname');
+          const $checkButton = $('#nickname-duplicated-check-btn');
+
+          $checkButton.on('click', function (event) {
+            event.preventDefault();
+
+            const nickname = $nicknameInput.val().trim();
+
+            if (nickname === '') {
+              alert('닉네임을 입력하세요.');
+              return;
+            }
+
+            $.ajax({
+              url: '/api/auth/nickname-duplicated',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ 'nickname': nickname }),
+              success: function (response) {
+                alert('사용 가능한 닉네임 입니다.');
+                $checkButton.removeClass('btn-primary')
+                .addClass('btn-success')
+                .text('사용가능')
+                .prop('disabled', true); // 버튼 비활성화
+              },
+              error: function (xhr) {
+                if (xhr.status >= 400 && xhr.status < 500) {
+                  const errorMessage = xhr.responseText || '클라이언트 오류가 발생했습니다.';
+                  alert(errorMessage);
+                } else {
+                  alert('서버 오류가 발생했습니다.');
+                }
+              }
+            });
+          });
+
+          // 닉네임 입력값이 변경될 때 버튼을 활성화하고 텍스트를 "중복확인"으로 변경
+          $nicknameInput.on('input', function () {
+            $checkButton.removeClass('btn-success')
+            .addClass('btn-primary')
+            .text('중복확인')
+            .prop('disabled', false); // 버튼 활성화
+          });
+        });
+
+      </script>
+
 
 </body></html>

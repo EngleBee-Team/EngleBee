@@ -37,8 +37,8 @@ public class StudentAccountApiController {
   // nickname 중복 검사(general)
   @PostMapping("/check-nickname")
   public ResponseEntity<Boolean> checkNicknameDuplicated(@RequestParam String nickname) {
-    boolean isDuplicated = studentAccountService.checkNicknameDuplicated(nickname);
-    return ResponseEntity.ok(isDuplicated);
+    studentAccountService.checkNicknameDuplicated(nickname);
+    return ResponseEntity.ok().build();
   }
 
   // 학생 계정 정보 수정

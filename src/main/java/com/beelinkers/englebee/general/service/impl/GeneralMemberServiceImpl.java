@@ -19,6 +19,7 @@ public class GeneralMemberServiceImpl implements GeneralMemberService {
   @Override
   @Transactional(readOnly = true)
   public void checkNicknameDuplicated(String nickname) {
+    log.info("given nickname = {}", nickname);
     boolean present = memberRepository.findByNickname(nickname).isPresent();
     if (present) {
       throw new MemberNicknameDuplicatedException("중복된 닉네임입니다.");

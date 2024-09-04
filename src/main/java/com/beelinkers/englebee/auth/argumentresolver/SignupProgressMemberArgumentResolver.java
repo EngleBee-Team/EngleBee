@@ -29,6 +29,8 @@ public class SignupProgressMemberArgumentResolver implements HandlerMethodArgume
   public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
       NativeWebRequest webRequest,
       WebDataBinderFactory binderFactory) {
+    SignupProgressSessionMember value = (SignupProgressSessionMember) httpSession.getAttribute(
+        SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
     return httpSession.getAttribute(SIGNUP_PROGRESS_SESSION_MEMBER_KEY);
   }
 }

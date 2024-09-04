@@ -5,13 +5,13 @@ import static com.beelinkers.englebee.auth.constant.AuthConstant.SIGNUP_PROGRESS
 
 import com.beelinkers.englebee.auth.annotation.SignupProgressMember;
 import com.beelinkers.englebee.auth.domain.entity.Member;
+import com.beelinkers.englebee.auth.dto.request.NicknameCheckRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.exception.SignupProgressSessionNotFoundException;
 import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
-import com.beelinkers.englebee.general.exception.MemberNicknameLengthException;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -37,10 +36,9 @@ public class AuthApiController {
   @PostMapping("/nickname-duplicated")
   public ResponseEntity<Void> checkNicknameIsDuplicated(
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
-      @RequestParam String nickname) {
+      @RequestBody @Valid NicknameCheckRequestDTO nicknameCheckRequestDTO) {
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
-    checkNicknameLength(nickname);
-    generalMemberService.checkNicknameDuplicated(nickname);
+    generalMemberService.checkNicknameDuplicated(nicknameCheckRequestDTO.getNickname());
     return ResponseEntity.ok().build();
   }
 
@@ -70,12 +68,6 @@ public class AuthApiController {
       SignupProgressSessionMember signupProgressSessionMember) {
     if (signupProgressSessionMember == null) {
       throw new SignupProgressSessionNotFoundException("잘못된 회원가입 요청입니다.");
-    }
-  }
-
-  private void checkNicknameLength(String nickname) {
-    if (nickname.length() > 20 || nickname.isEmpty()) {
-      throw new MemberNicknameLengthException("닉네임의 길이는 1글자 ~ 20글자 사이여야 합니다.");
     }
   }
 

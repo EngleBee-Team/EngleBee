@@ -10,7 +10,7 @@ public interface StudentAccountService {
 
   void deleteStudentAccountInfo(Long memberSeq);
 
-  boolean checkNicknameDuplicated(String nickname);
+  void checkNicknameDuplicated(String nickname);
 
   Member getMemberInfo(Long memberSeq);
 }

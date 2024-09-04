@@ -26,9 +26,8 @@ public class MemberApiController {
     if (nickname.length() > 20 || nickname.isEmpty()) {
       throw new MemberNicknameLengthException("닉네임의 길이는 1글자 ~ 20글자 사이여야 합니다.");
     }
-
-    return ResponseEntity.ok()
-        .body(generalMemberService.checkNicknameDuplicated(nickname));
+    generalMemberService.checkNicknameDuplicated(nickname);
+    return ResponseEntity.ok().build();
   }
 
 
