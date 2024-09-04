@@ -7,6 +7,7 @@ import com.beelinkers.englebee.auth.oauth2.userinfo.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -51,13 +52,16 @@ public class SecurityConfig {
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true));
 
+    http
+        .cors(Customizer.withDefaults());
+
     // 접근 권한 설정
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/oauth2/**", "/login/**", "/h2-console/**", "/api/auth/**",
                 "/main", "/signup").permitAll()
-            .requestMatchers("/chat/**", "/socket/**", "/api/chat/**")
-            .hasAnyRole(Role.TEACHER.name(), Role.STUDENT.name())
+            .requestMatchers("/chat/**", "/socket/**", "/ws/**", "/wss/**", "/api/chat/**")
+            .permitAll()
             .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
             .requestMatchers("/api/teacher/**").hasRole(Role.TEACHER.name())
             .requestMatchers("/api/student/**").hasRole(Role.STUDENT.name())
