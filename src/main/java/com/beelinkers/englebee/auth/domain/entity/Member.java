@@ -79,6 +79,14 @@ public class Member extends BaseEntity {
     this.status = MemberStatus.DEACTIVATED;
   }
 
+  public void updateNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
+  public void updateStudentGrade(StudentGrade grade) {
+    this.grade = grade;
+  }
+
   public boolean isAdmin() {
     return role.isAdmin();
   }
