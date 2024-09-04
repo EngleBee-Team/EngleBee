@@ -1,13 +1,16 @@
 package com.beelinkers.englebee.general.controller.api;
 
+import com.beelinkers.englebee.general.domain.repository.ReplyRepository;
 import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
 import com.beelinkers.englebee.general.dto.request.ReplyRequestDTO;
 import com.beelinkers.englebee.general.dto.response.GeneralPagedResponseDTO;
 import com.beelinkers.englebee.general.dto.response.PaginationResponseDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
+import com.beelinkers.englebee.general.dto.response.mapper.ReplyResponseMapper;
 import com.beelinkers.englebee.general.service.QnaService;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -28,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class QnaApiController {
 
   private final QnaService qnaService;
+  private final ReplyRepository replyRepository;
+  private final ReplyResponseMapper replyResponseMapper;
 
   @GetMapping("/list")
   public ResponseEntity<GeneralPagedResponseDTO<QnaPageResponseDTO>> getQnaList(
@@ -80,4 +86,19 @@ public class QnaApiController {
     }
   }
 
+  @GetMapping("/replies")
+  public ResponseEntity<List<ReplyResponseDTO>> getReplyList(
+      @RequestParam("questionSeq") Long questionSeq) {
+    try {
+      List<ReplyResponseDTO> replyList = qnaService.getReplyListInfo(questionSeq);
+      log.info("결과 = replies data : {} ", replyList);
+      return ResponseEntity.ok(replyList);
+    } catch (EntityNotFoundException e) {
+      log.error("질문에 대한 댓글을 찾을 수 없습니다. : {} ", e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    } catch (Exception e) {
+      log.error("댓글 리스트를 불러오는 중 오류가 발생했습니다. : {}", e.getMessage());
+      return ResponseEntity.badRequest().body(null);
+    }
+  }
 }
