@@ -4,6 +4,7 @@ import com.beelinkers.englebee.general.dto.request.QnaPageRequestDTO;
 import com.beelinkers.englebee.general.dto.request.ReplyRequestDTO;
 import com.beelinkers.englebee.general.dto.response.QnaPageResponseDTO;
 import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +16,5 @@ public interface QnaService {
 
   ReplyResponseDTO registerReplyInfo(ReplyRequestDTO replyRequestDTO);
 
+  List<ReplyResponseDTO> getReplyListInfo(Long questionSeq);
 }

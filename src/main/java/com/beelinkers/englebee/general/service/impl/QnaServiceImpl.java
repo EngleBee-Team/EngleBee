@@ -15,6 +15,8 @@ import com.beelinkers.englebee.general.dto.response.ReplyResponseDTO;
 import com.beelinkers.englebee.general.dto.response.mapper.QnaPageResponseMapper;
 import com.beelinkers.englebee.general.dto.response.mapper.ReplyResponseMapper;
 import com.beelinkers.englebee.general.service.QnaService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -63,6 +65,14 @@ public class QnaServiceImpl implements QnaService {
     Reply saveReply = replyRepository.save(reply);
 
     return replyResponseMapper.replyResponseDTO(saveReply);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<ReplyResponseDTO> getReplyListInfo(Long questionSeq) {
+    List<Reply> replies = replyRepository.findByQuestionSeqOrderByCreatedAtDesc(questionSeq);
+    return replies.stream().map(replyResponseMapper::replyResponseDTO)
+        .collect(Collectors.toList());
   }
 
 }
