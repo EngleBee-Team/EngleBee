@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.general.service.impl;
 
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
+import com.beelinkers.englebee.general.exception.MemberNicknameDuplicatedException;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,10 @@ public class GeneralMemberServiceImpl implements GeneralMemberService {
 
   @Override
   @Transactional(readOnly = true)
-  public Boolean checkNicknameDuplicated(String nickname) {
-    return memberRepository.findByNickname(nickname).isPresent();
+  public void checkNicknameDuplicated(String nickname) {
+    boolean present = memberRepository.findByNickname(nickname).isPresent();
+    if (present) {
+      throw new MemberNicknameDuplicatedException("중복된 닉네임입니다.");
+    }
   }
 }

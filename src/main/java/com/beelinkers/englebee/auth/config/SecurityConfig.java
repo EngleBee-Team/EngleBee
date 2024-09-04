@@ -26,8 +26,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http
-        .csrf(csrf -> csrf
-            .ignoringRequestMatchers("/h2-console/**"))
+        .csrf(AbstractHttpConfigurer::disable)
         .headers(headers -> headers
             .frameOptions(FrameOptionsConfig::sameOrigin));
 
@@ -56,13 +55,15 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/oauth2/**", "/login/**", "/h2-console/**", "/api/auth/**",
-                "/main", "/signup", "/api/auth/signup/**").permitAll()
+                "/main", "/signup").permitAll()
             .requestMatchers("/chat", "/socket")
             .hasAnyRole(Role.TEACHER.name(), Role.STUDENT.name())
             .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
             .requestMatchers("/api/teacher/**").hasRole(Role.TEACHER.name())
             .requestMatchers("/api/student/**").hasRole(Role.STUDENT.name())
             .requestMatchers("/api/auth/account/deactivate")
+            .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
+            .requestMatchers("/my/**", "/qna/**", "/exam/**")
             .hasAnyRole(Role.STUDENT.name(), Role.TEACHER.name())
             .requestMatchers("/static/**", "/assets/**", "/css/**", "/js/**", "/images/**")
             .permitAll() // 정적 자원 허용
