@@ -35,8 +35,6 @@ public class AuthApiController {
   public ResponseEntity<Void> checkNicknameIsDuplicated(
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
       @RequestBody @Valid NicknameCheckRequestDTO nicknameCheckRequestDTO) {
-    log.info("하이 닉네임 " + signupProgressSessionMember.getEmail());
-    log.info("하이 로그인타입 " + signupProgressSessionMember.getLoginType());
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     generalMemberService.checkNicknameDuplicated(nicknameCheckRequestDTO.getNickname());
     return ResponseEntity.ok().build();
@@ -47,8 +45,6 @@ public class AuthApiController {
       @SignupProgressMember SignupProgressSessionMember signupProgressSessionMember,
       @RequestBody @Valid StudentSignupRequestDTO studentSignupRequestDTO,
       HttpSession httpSession) {
-    log.info("하이 회원가입 닉네임 " + signupProgressSessionMember.getEmail());
-    log.info("하이 회원가입 로그인타입 " + signupProgressSessionMember.getLoginType());
     checkSignupProgressMemberSessionExist(signupProgressSessionMember);
     Member member = authService.signupStudent(signupProgressSessionMember, studentSignupRequestDTO);
     deleteSignupProgressMemberSession(httpSession, member);

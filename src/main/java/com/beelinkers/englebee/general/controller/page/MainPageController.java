@@ -23,8 +23,6 @@ public class MainPageController {
       return "index";
     }
 
-    log.info("LoginMember = {}", sessionMember.getRole());
-
     Long memberSeq = sessionMember.getSeq();
     model.addAttribute("nickname", mainPageService.getNickname(memberSeq));
     model.addAttribute("memberSeq", memberSeq);
