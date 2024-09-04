@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 @Controller
 public class ChatController {
-  @GetMapping("/chat/{lectureseq}")
-  public String goToSocketPage(@PathVariable("lectureseq") Long lectureSeq,@LoginMember SessionMember sessionMember ,Model model) {
+  @GetMapping("/chat/{lectureSeq}")
+  public String goToSocketPage(@PathVariable("lectureSeq") Long lectureSeq,@LoginMember SessionMember sessionMember ,Model model) {
     model.addAttribute("member", sessionMember);
-    model.addAttribute("lectureseq", lectureSeq);
+    model.addAttribute("lectureSeq", lectureSeq);
     return "general/webrtc";
   }
 }
