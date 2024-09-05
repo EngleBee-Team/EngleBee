@@ -1,6 +1,10 @@
-package com.beelinkers.englebee.teacher.service;
+package com.beelinkers.englebee.teacher.llm;
 
 
-public interface TeacherGPTService {
+import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
 
+public interface TeacherGptService {
+
+  GptChatCompletionRequest createUserPromptForTeacherQuestionRecommendation(
+      TeacherExamRegisterPageDTO teacherExamRegisterPageDTO);
 }
