@@ -51,8 +51,8 @@
                         <!-- Thymeleaf 반복문 시작 -->
                         <tr th:each="qna : ${qnaList}">
                           <td th:text="${qna.seq}"></td>
-                          <!--                          <td>[[${qna.seq}]]</td>-->
-                          <td><a th:href="@{/qna/detail/1}" th:text="${qna.memberNickname}"></a>
+                          <td><a th:href="@{/qna/detail/{seq}(seq=${qna.seq})}"
+                                 th:text="${qna.memberNickname}"></a>
                           </td>
                           <td th:text="${qna.title}"></td>
                           <td><span
