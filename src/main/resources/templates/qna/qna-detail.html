@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: head}"></head>
+<head th:replace="~{fragments/header :: head}">
+</head>
 
 <body class="bg-white">
 
@@ -98,12 +99,25 @@
                                        th:text="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></div>
                                 </div>
                                 <div class="timeline-item-content pt-0">
-                                  <form th:action="@{/reply}" method="post" th:object="${newReply}">
-
-                                    <textarea class="form-control" rows="5" th:field="*{content}"
+                                  <form id="replyPostInsert">
+                                    <!--                                    <input type="hidden" name="questionSeq"-->
+                                    <!--                                           th:value="${qnaDetail.questionSeq}"/>-->
+                                    <!--                                    <textarea class="form-control" rows="5" th:field="*{content}"-->
+                                    <!--                                              placeholder="댓글"></textarea>-->
+                                    <!--                                    <div class="col-12 mt-4 d-flex justify-content-center">-->
+                                    <!--                                      <button class="btn btn-primary mx-2 px-3"-->
+                                    <!--                                              role="button" th:id="replyIns">댓글등록-->
+                                    <!--                                      </button>-->
+                                    <!--                                    </div>-->
+                                    <input type="hidden" name="questionSeq" id="questionSeq"
+                                           th:value="${qnaDetail.questionSeq}"/>
+                                    <input type="hidden" id="memberSeq"
+                                           th:value="${memberSeq}"/>
+                                    <textarea class="form-control" rows="5" id="content"
                                               placeholder="댓글"></textarea>
                                     <div class="col-12 mt-4 d-flex justify-content-center">
-                                      <button class="btn btn-primary mx-2 px-3" role="button">댓글등록
+                                      <button class="btn btn-primary mx-2 px-3" type="button"
+                                              id="submitReply">댓글등록
                                       </button>
                                     </div>
                                   </form>
@@ -151,7 +165,42 @@
 
 <!-- 공통 <script> 포함 -->
 <div th:replace="~{fragments/scripts :: scripts}"></div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#submitReply').click(function () {
+      console.log("클릭됨.");
+      const memberSeq = $('#memberSeq').val();
+      const questionSeq = $('#questionSeq').val();
+      const content = $('#content').val();
+      console.log("memberSeq: " + memberSeq);
+      console.log("questionSeq : " + questionSeq);
+      console.log("content : " + content);
+      $.ajax({
+        url: '/api/general/qna/reply',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          memberSeq: memberSeq,
+          questionSeq: questionSeq,
+          content: content
+        }),
+        success: function (response) {
+          if (response) {
+            alert('댓글이 성공적으로 등록되었습니다.');
+            window.location.href = "/qna/detail/" + questionSeq;
+          } else {
+            alert('댓글 등록에 실패했습니다.');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error:', error);
+          alert('댓글 등록 중 오류가 발생했습니다.');
+        }
+      });
+    });
+  });
+</script>
 
 </body>
 
