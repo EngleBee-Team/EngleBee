@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: head}"></head>
+<head th:replace="~{fragments/header :: head}">
+  <style>
+    .datatable-active {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+  </style>
+</head>
 
 <body class="bg-white">
 
@@ -101,11 +108,11 @@
 
                           <!-- 페이지 번호 리스트 (10개씩 표시) -->
                           <li th:each="i : ${#numbers.sequence(((qnaList.number / 10) * 10) + 1, ((qnaList.number / 10) * 10) + 10)}"
-                              th:class="'datatable-pagination-list-item ' + (${qnaList.number + 1} == i ? 'datatable-active' : '')">
+                              th:class="'datatable-pagination-list-item ' + (${qnaList.number == i - 1} ? 'datatable-active' : '')">
                             <a th:href="@{/qna/list(page=${i - 1})}"
                                class="datatable-pagination-list-item-link" th:text="${i}">1</a>
                           </li>
-
+                          
                           <!-- 다음 페이지 버튼 -->
                           <li th:class="'datatable-pagination-list-item ' + (${qnaList.hasNext()} ? '' : 'datatable-disabled datatable-hidden')">
                             <a th:href="@{/qna/list(page=${qnaList.number + 1})}"
