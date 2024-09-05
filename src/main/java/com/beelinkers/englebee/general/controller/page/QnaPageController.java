@@ -64,39 +64,10 @@ public class QnaPageController {
     }
   }
 
-  // reply insert
-//  @PostMapping("/reply")
-//  public String registerReply(@LoginMember SessionMember sessionMember,
-//      @ModelAttribute("newReply") ReplyRequestDTO replyRequestDTO,
-//      @RequestParam("questionSeq") Long questionSeq, RedirectAttributes redirectAttributes) {
-//    if (sessionMember == null) {
-//      redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
-//      return "redirect:/index";
-//    }
-//
-//    log.info("댓글 내용: {}", replyRequestDTO.getContent());
-//    log.info("등록할 질문 번호: {}", questionSeq);
-//    try {
-//      qnaService.registerReplyInfo(replyRequestDTO);
-//
-//      // 댓글 등록 후 성공 메시지 전달
-//      redirectAttributes.addFlashAttribute("successMessage", "댓글이 성공적으로 등록되었습니다.");
-//
-//      // 다시 상세 페이지로 리다이렉트
-//      return "redirect:/qna/detail/" + questionSeq;
-//    } catch (Exception e) {
-//      // 에러 발생 시 에러 메시지 전달
-//      redirectAttributes.addFlashAttribute("errorMessage", "댓글 등록 중 오류가 발생했습니다.");
-//      return "redirect:/qna/detail/" + questionSeq;
-//    }
-//  }
-
   @GetMapping("/register")
-  public String getQnaRegisterPage(/*@AuthenticationPrincipal UserDetails,*/Model model) {
-     /*
-      TODO : Session 확인 이후, ROLE에 따라
-       /my/info 에 들어온 요청을 각각 다른 페이지로 렌더링
-    */
+  public String getQnaRegisterPage(@LoginMember SessionMember sessionMember, Model model) {
+    Long memberSeq = sessionMember.getSeq();
+    model.addAttribute("memberSeq", memberSeq);
     return "qna/qna-register";
   }
 }
