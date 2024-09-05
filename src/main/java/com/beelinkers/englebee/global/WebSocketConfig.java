@@ -12,6 +12,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    registry.addHandler(new MyWebSocketHandler(), "/socket").withSockJS();
+    registry.addHandler(new MyWebSocketHandler(), "/socket")
+        .setAllowedOrigins("https://englebee.site")
+        .withSockJS();
   }
 }

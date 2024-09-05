@@ -32,8 +32,8 @@ public class StudentAccountServiceImpl implements StudentAccountService {
   // 닉네임 중복 검사
   @Override
   @Transactional
-  public boolean checkNicknameDuplicated(String nickname) {
-    return generalMemberService.checkNicknameDuplicated(nickname);
+  public void checkNicknameDuplicated(String nickname) {
+    generalMemberService.checkNicknameDuplicated(nickname);
   }
 
   // 회원 정보 수정

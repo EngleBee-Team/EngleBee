@@ -8,7 +8,7 @@ import org.springframework.lang.NonNull;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-  Page<Question> findAll(@NonNull Pageable pageable);
-
+  Page<Question> findAllByOrderByCreatedAtDesc(@NonNull Pageable pageable);
+  
   Page<Question> findByMemberSeqOrderByCreatedAtDesc(Long memberSeq, Pageable pageable);
 }

@@ -8,8 +8,6 @@ import com.beelinkers.englebee.auth.dto.request.StudentSignupRequestDTO;
 import com.beelinkers.englebee.auth.dto.request.TeacherSignupRequestDTO;
 import com.beelinkers.englebee.auth.oauth2.session.SignupProgressSessionMember;
 import com.beelinkers.englebee.auth.service.AuthService;
-import com.beelinkers.englebee.general.exception.MemberNicknameDuplicatedException;
-import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,18 +56,7 @@ public class AuthServiceImpl implements AuthService {
     return memberRepository.save(teacher);
   }
 
-  @Override
-  public void deactivateAccount(Long memberSeq) {
-    Member member = memberRepository.findById(memberSeq)
-        .orElseThrow(() -> new MemberNotFoundException("해당 유저가 존재하지 않습니다."));
-    if (!member.isDeactivated()) {
-      member.deactivate();
-    }
-  }
-
   private void checkNicknameDuplicated(String nickname) {
-    if (generalMemberService.checkNicknameDuplicated(nickname)) {
-      throw new MemberNicknameDuplicatedException("중복된 닉네임입니다.");
-    }
+    generalMemberService.checkNicknameDuplicated(nickname);
   }
 }
