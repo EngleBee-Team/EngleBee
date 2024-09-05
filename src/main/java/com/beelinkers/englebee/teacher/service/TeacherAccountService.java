@@ -11,7 +11,7 @@ public interface TeacherAccountService {
   TeacherAccountUpdateDTO updateTeacherInfo(Long memberSeq,
       TeacherAccountPageRequestDTO teacherAccountRequestDTO);
 
-  boolean checkNicknameDuplicate(String nickname);
+  void checkNicknameDuplicate(String nickname);
 
   void deleteTeacherAccountInfo(Long memberSeq);
 

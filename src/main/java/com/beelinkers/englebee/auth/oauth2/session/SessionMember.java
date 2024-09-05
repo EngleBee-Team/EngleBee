@@ -5,11 +5,13 @@ import com.beelinkers.englebee.auth.domain.entity.Role;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class SessionMember implements Serializable {
 
-  private final Long seq;
-  private final Role role;
+  private Long seq;
+  private Role role;
 }

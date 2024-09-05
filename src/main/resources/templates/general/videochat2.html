@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body class="bg-white">
+
+<!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
+<div th:replace="~{fragments/top-nav :: top-nav}"></div>
+
+<div id="layoutSidenav">
+  <div id="layoutSidenav_nav">
+  </div>
+  <div id="layoutSidenav_content">
+    <main>
+
+
+      <!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
+      <div th:replace="~{fragments/top-banner :: top-banner}"></div>
+
+
+      <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
+
+      <div class="container-xl px-4 mt-n10" style="max-width: 1940px">
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- 계정정보  -->
+            <div id="fadeIn">
+              <div class="card mb-4">
+                <div class="card-header"><h1 class="text-google"><b>1대1 과외</b></h1></div>
+                <div class="card-body">
+                  <div class="row" style="justify-content: center; margin-bottom: 10px">
+                    <div style="width: 500px; text-align: center">
+                      <button id="offerButton" class="btn btn-primary" style="width: auto; font-size: larger" onclick="createOffer();">수업 시작</button>
+                      <button id="videoButton" class="btn btn-primary" style="width: auto; font-size: larger" onclick="toggleVideo();"></button>
+                      <button id="audioButton" class="btn btn-primary" style="width: auto; font-size: larger" onclick="toggleAudio();"></button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-4" style="width: 38.33%">
+                      <!-- Profile 이미지-->
+                      <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">내 영상</div>
+                        <div class="card-body text-center" style="height: 600px">
+                          <video id="myFace" playsinline autoplay width="500" height="500"></video>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4" style="width: 38.33%">
+                      <!-- Profile 이미지-->
+                      <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">상대방 영상</div>
+                        <div class="card-body text-center" style="height: 600px">
+                          <video id="peerFace" playsinline autoplay width="500" height="500"></video>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4" style="width: 23.33%">
+                      <!-- Profile 이미지-->
+                      <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">채팅</div>
+                        <div id = "messageArea" class="card-body text-center" style="height: 555px">
+
+                        </div>
+                        <div id="message-section">
+                          <input type="text" id="message"/>
+                          <button id="sendBtn" class="btn btn-primary" style="width: auto;">확인</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="justify-content: center; margin-top: 20px">
+                    <div style="width: 500px; text-align: center">
+                      <button id="exitButton" class="btn btn-primary" style="width: auto; font-size: larger; background: red" onclick="createOffer();">수업 종료</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 게시판 목록   -->
+
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
+
+    </main>
+
+
+    <!-- --------------------------- [FRAGMENT : 하단] ------------------------------------->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+
+  </div>
+</div>
+
+
+<!-- 공통 <script> 포함 -->
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+
+<script>
+  // Socket Connection
+  const sock = new SockJS("https://englebee.site/socket/"); // 본인의 소켓서버
+  // RTC STUN Server Object
+  const configuration = {
+  "iceServers": [{
+  "url": "stun:stun.l.google.com:19302"
+  }]
+  }
+  let myPeerConnection;
+  let offerInProgress = false;
+  let isConnected = false;
+  let isVideoEnabled = true;
+  let isAudioEnabled = true;
+
+  // Icons
+  const videoIcon = document.getElementById("videoIcon");
+  const audioIcon = document.getElementById("audioIcon");
+
+  //button
+  const videoButton = document.getElementById("videoButton");
+  const audioButton = document.getElementById("audioButton");
+
+  // 초기화 함수
+  function initializePeerConnection() {
+  console.log("initializePeerConnection");
+  if (myPeerConnection) {
+  myPeerConnection.close();
+  }
+  myPeerConnection = new RTCPeerConnection(configuration);
+  myPeerConnection.onicecandidate = function(event) {
+  if (event.candidate) {
+  console.log("initializePeerConnection : candidate");
+  send({
+  event: "candidate",
+  data: event.candidate
+  });
+  }
+  };
+  console.log("Signaling state After onicecandidate:", myPeerConnection.signalingState);
+  myPeerConnection.addEventListener("track", handleAddStream);
+  console.log("Signaling state After addEventListener:", myPeerConnection.signalingState);
+  }
+
+  function handleAddStream(event) {
+  console.log("Receive Streaming Data");
+  const peerFace = document.getElementById("peerFace");
+  peerFace.srcObject = event.streams[0];
+  }
+
+  sock.onopen = function() {
+  console.log("Web Socket Connect Success");
+  isConnected = true;
+  };
+
+  sock.onclose = function() {
+  console.log("Web Socket Closed");
+  isConnected = false;
+  };
+
+  sock.onmessage = async function(msg) {
+  const content = JSON.parse(msg.data);
+  if (content.event === "offer") {
+  console.log("Come Offer");
+
+  initializePeerConnection();
+
+  const offer = content.data;
+  console.log("Signaling state After comeoffer:", myPeerConnection.signalingState);
+  if (myPeerConnection.signalingState !== "stable") {
+  await Promise.all([
+  myPeerConnection.setLocalDescription({ type: "rollback" }),
+  myPeerConnection.setRemoteDescription(offer)
+  ]);
+  } else {
+  await myPeerConnection.setRemoteDescription(offer);
+  }
+
+  await getMediaIfNeeded();
+  myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
+
+  const answer = await myPeerConnection.createAnswer();
+  await myPeerConnection.setLocalDescription(answer);
+  console.log("Send Answer");
+  send({
+  event: "answer",
+  data: answer
+  });
+  console.log("Signaling state After send answer:", myPeerConnection.signalingState);
+  } else if (content.event === "answer") {
+  console.log("Come Answer");
+  const answer = content.data;
+  console.log("Signaling state After come answer:", myPeerConnection.signalingState);
+  if (myPeerConnection.signalingState === "have-local-offer") {
+  await myPeerConnection.setRemoteDescription(answer);
+  } else {
+  console.error("Failed to set remote answer SDP in the wrong state:", myPeerConnection.signalingState);
+  }
+  } else if (content.event === "candidate") {
+  console.log("Come Candidate");
+  await myPeerConnection.addIceCandidate(content.data);
+  console.log("Signaling state After addIceCandidate:", myPeerConnection.signalingState);
+  } else if (content.event === "toggleVideo") {
+  console.log("Peer Video Toggle");
+  const videoTrack = peerFace.srcObject.getVideoTracks()[0];
+  videoTrack.enabled = !videoTrack.enabled;
+  isVideoEnabled = videoTrack.enabled;
+  updateVideoIcon();
+  } else if (content.event === "toggleAudio") {
+  console.log("Peer Audio Toggle");
+  const audioTrack = peerFace.srcObject.getAudioTracks()[0];
+  audioTrack.enabled = !audioTrack.enabled;
+  isAudioEnabled = audioTrack.enabled;
+  updateAudioIcon();
+  }else if(content.event==="chat"){
+  let data = content.data;
+  $("#messageArea").append(data + "<br/>");
+  }
+  }
+
+  function send(message) {
+  if (isConnected) {
+  sock.send(JSON.stringify(message));
+  }
+  }
+
+  const myFace = document.getElementById("myFace");
+  const peerFace = document.getElementById("peerFace");
+  let myStream;
+
+  async function getMediaIfNeeded() {
+  if (!myStream) {
+  try {
+  console.log("getUserMedia 요청중..");
+  myStream = await navigator.mediaDevices.getUserMedia({
+  audio: true,
+  video: true
+  });
+  console.log("getUserMedia 받기성공!")
+  myFace.srcObject = myStream;
+  // 초기 비디오 및 오디오 상태 설정
+  myStream.getVideoTracks()[0].enabled = isVideoEnabled;
+  myStream.getAudioTracks()[0].enabled = isAudioEnabled;
+  } catch (e) {
+  console.log("Media Transmission Error", e);
+  }
+  } else {
+  // 기존 스트림이 있을 경우 상태를 유지합니다.
+  myStream.getVideoTracks()[0].enabled = isVideoEnabled;
+  myStream.getAudioTracks()[0].enabled = isAudioEnabled;
+  }
+  }
+
+  async function createOffer() {
+  if (offerInProgress || !isConnected) return;
+  offerInProgress = true;
+  const offerButton = document.getElementById("offerButton");
+  offerButton.disabled = true;
+
+  initializePeerConnection();
+
+  console.log("Send Offer");
+  await getMediaIfNeeded();
+  myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
+
+  let offer = await myPeerConnection.createOffer();
+  console.log("Offer Transmission Start");
+  await myPeerConnection.setLocalDescription(offer);
+  await send({
+  event: "offer",
+  data: offer
+  });
+  console.log("Offer Transmission Success");
+  console.log("Signaling state After Offer Transmission Success:", myPeerConnection.signalingState);
+  offerInProgress = false;
+  offerButton.disabled = false;
+  }
+
+  function toggleVideo() {
+  if (myStream) {
+  const videoTrack = myStream.getVideoTracks()[0];
+  videoTrack.enabled = !videoTrack.enabled;
+  isVideoEnabled = videoTrack.enabled;
+  updateVideoIcon();
+  send({
+  event: "toggleVideo"
+  });
+  }
+  }
+
+  function toggleAudio() {
+  if (myStream) {
+  const audioTrack = myStream.getAudioTracks()[0];
+  audioTrack.enabled = !audioTrack.enabled;
+  isAudioEnabled = audioTrack.enabled;
+  updateAudioIcon();
+  send({
+  event: "toggleAudio"
+  });
+  }
+  }
+
+  function updateVideoIcon() {
+  // videoIcon. = isVideoEnabled ? "fas fa-video text-success icon" : "fas fa-video-slash text-danger icon";
+    if(!isVideoEnabled){
+      $("#videoButton").val("화면 끄기")
+    } else {
+      $("#videoButton").val("화면 켜기")
+    }
+  }
+
+  function updateAudioIcon() {
+  // audioIcon.className = isAudioEnabled ? "fas fa-volume-up text-success icon" : "fas fa-volume-mute text-danger icon";
+    if(!isAudioEnabled){
+      $("#audioButton").val("소리 끄기")
+    } else{
+      $("#audioButton").val("소리 켜기")
+    }
+  }
+
+  // 초기 아이콘 상태 업데이트
+  updateVideoIcon();
+  updateAudioIcon();
+
+
+</script>
+<script>
+  $(function(){
+    console.log($('#role').text());
+    let role = $('#role').text();
+    if(role!=='TEACHER'){
+      $('#offerButton').hide();
+    }
+
+    $("#sendBtn").click(function (){
+      sendMessage();
+      $('#message').val('')
+    });
+
+    function sendMessage(){
+      send({
+        event: "chat",
+        data: $('#message').val()
+      });
+    }
+
+    $("#message").keydown(function (ev){
+      if(ev.key === 'Enter'){
+        sendMessage();
+        $('#message').val('')
+      }
+    });
+
+    $("#exitButton").click(function(){
+      let lectureSeq = $("#lectureSeq-input").val();
+
+      $.ajax({
+        url: '/api/chat/end-lecture',
+        method: 'GET',
+        contentType: "application/json",
+        data : {"lectureSeq" : lectureSeq},
+        success: function (data) {
+          console.log("성공" + data);
+          location.replace("/main");
+        },
+
+        error: function (xhr, status, error) {
+          console.error('실패' + xhr.responseText);
+          alert(xhr.responseText);
+        }
+      });
+
+    })
+
+  })
+</script>
+
+</body>
+
+</html>

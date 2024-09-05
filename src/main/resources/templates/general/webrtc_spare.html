@@ -1,118 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{fragments/header :: head}"></head>
+<head>
   <meta charset="UTF-8">
-  <title>EngleBee 화상 과외</title>
+  <title>웹소켓 테스트</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
-      /*background-color: #f8f9fa;*/
+      background-color: #f8f9fa;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
     }
-
-    .video-container-wrap {
+    .video-container-wrap{
       display: flex;
       justify-content: center;
     }
-
     .video-container {
       display: flex;
       justify-content: space-around;
       align-items: center;
       /*flex-wrap: wrap;*/
     }
-
     video {
       border: 1px solid #dee2e6;
       border-radius: 5px;
       margin: 10px;
     }
-
     .controls {
       margin-bottom: 20px;
     }
-
     .icon {
       margin-left: 5px;
       font-size: 1.5em;
     }
-
-    #messageArea {
+    #messageArea{
       width: 400px;
-      height: 440px;
+      height: 455px;
       border: 1px solid #dee2e6;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       background: white;
       text-align: left;
       overflow: auto;
     }
-    .page-header{
-      margin-top: 35px;
-    }
   </style>
 </head>
 <body>
-<div id="layoutSidenav_content">
-  <div th:replace="~{fragments/top-banner :: top-banner}" style="margin-top: 35px"></div>
-  <div class="container-xl px-4 mt-n10" style="max-width: 1540px">
-    <div class="row">
-      <div class="col-lg-12">
-        <div id="fadeIn">
-          <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="display-4 mb-4" style="text-align: center">화상 과외
-                  <span id="role" th:text="${member.role}"></span>
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row" style="justify-content: center; margin-bottom: 10px">
-                  <div style="width: 500px; text-align: center">
-                    <button id="offerButton" class="btn btn-primary btn-lg mx-2 mb-2" onclick="createOffer();">수업시작</button>
-                    <button id="videoButton" class="btn btn-secondary btn-lg mx-2 mb-2" onclick="toggleVideo();"> <i id="videoIcon" class="icon"></i></button>
-                    <button id="audioButton" class="btn btn-secondary btn-lg mx-2 mb-2" onclick="toggleAudio();"> <i id="audioIcon" class="icon"></i></button>
-                  </div>
-                </div>
-                <div class="video-container-wrap">
-                  <div class="video-container">
-                    <div>
-                      <div class="h5 mb-2">내 영상</div>
-                      <video id="myFace" playsinline autoplay width="500" height="500"></video>
-                    </div>
-                    <div>
-                      <div class="h5 mb-2">상대방 영상</div>
-                      <video id="peerFace" playsinline autoplay width="500" height="500"></video>
-                    </div>
-                  </div>
-                  <div class="video-container">
-                    <div>
-                      <div class="h5 mb-2">채팅창</div>
-                      <div id = "messageArea"></div>
-                      <input type="text" id="message" style="width: 250px; margin-left: 38px"/>
-                      <input type="button" id="sendBtn" class="btn btn-primary btn-lg mx-2 mb-2" value="확인"/>
-                    </div>
-                  </div>
-                </div>
-                <div class="controls mb-4" style="text-align: center">
-                  <input type="hidden" id="lectureSeq-input" th:value="${lectureSeq}"/>
-                  <button id="exitButton" class="btn btn-primary btn-lg mx-2 mb-2" style="background: red">수업종료</button>
-                </div>
-            </div>
-          </div>
-        </div>
+<div class="container text-center">
+  <h1 class="display-4 mb-4">화상 과외
+    <span id="role" th:text="${member.role}"></span>
+  </h1>
+  <div class="controls mb-4">
+      <button id="offerButton" class="btn btn-primary btn-lg mx-2 mb-2" onclick="createOffer();">수업시작</button>
+    <button id="videoButton" class="btn btn-secondary btn-lg mx-2 mb-2" onclick="toggleVideo();"> <i id="videoIcon" class="icon"></i></button>
+    <button id="audioButton" class="btn btn-secondary btn-lg mx-2 mb-2" onclick="toggleAudio();"> <i id="audioIcon" class="icon"></i></button>
+  </div>
+  <div class="video-container-wrap">
+    <div class="video-container">
+      <div>
+        <div class="h5 mb-2">내 영상</div>
+        <video id="myFace" playsinline autoplay width="500" height="500"></video>
+      </div>
+      <div>
+        <div class="h5 mb-2">상대방 영상</div>
+        <video id="peerFace" playsinline autoplay width="500" height="500"></video>
+      </div>
+    </div>
+    <div class="video-container">
+      <div>
+        <div class="h5 mb-2">채팅창</div>
+        <div id = "messageArea"></div>
+        <input type="text" id="message"/>
+        <input type="button" id="sendBtn" value="확인"/>
       </div>
     </div>
   </div>
+  <div class="controls mb-4">
+    <input type="hidden" id="lectureSeq-input" th:value="${lectureSeq}"/>
+    <button id="exitButton" class="btn btn-primary btn-lg mx-2 mb-2" style="background: red">수업종료</button>
+  </div>
 </div>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script>
   // Socket Connection
-  const sock = new SockJS("https://englebee.site/socket/");
+  const sock = new SockJS("https://englebee.site/socket/"); // 본인의 소켓서버
   // RTC STUN Server Object
   const configuration = {
     "iceServers": [{
@@ -140,7 +115,7 @@
       myPeerConnection.close();
     }
     myPeerConnection = new RTCPeerConnection(configuration);
-    myPeerConnection.onicecandidate = function (event) {
+    myPeerConnection.onicecandidate = function(event) {
       if (event.candidate) {
         console.log("initializePeerConnection : candidate");
         send({
@@ -160,17 +135,17 @@
     peerFace.srcObject = event.streams[0];
   }
 
-  sock.onopen = function () {
+  sock.onopen = function() {
     console.log("Web Socket Connect Success");
     isConnected = true;
   };
 
-  sock.onclose = function () {
+  sock.onclose = function() {
     console.log("Web Socket Closed");
     isConnected = false;
   };
 
-  sock.onmessage = async function (msg) {
+  sock.onmessage = async function(msg) {
     const content = JSON.parse(msg.data);
     if (content.event === "offer") {
       console.log("Come Offer");
@@ -181,7 +156,7 @@
       console.log("Signaling state After comeoffer:", myPeerConnection.signalingState);
       if (myPeerConnection.signalingState !== "stable") {
         await Promise.all([
-          myPeerConnection.setLocalDescription({type: "rollback"}),
+          myPeerConnection.setLocalDescription({ type: "rollback" }),
           myPeerConnection.setRemoteDescription(offer)
         ]);
       } else {
@@ -206,8 +181,7 @@
       if (myPeerConnection.signalingState === "have-local-offer") {
         await myPeerConnection.setRemoteDescription(answer);
       } else {
-        console.error("Failed to set remote answer SDP in the wrong state:",
-            myPeerConnection.signalingState);
+        console.error("Failed to set remote answer SDP in the wrong state:", myPeerConnection.signalingState);
       }
     } else if (content.event === "candidate") {
       console.log("Come Candidate");
@@ -225,7 +199,7 @@
       audioTrack.enabled = !audioTrack.enabled;
       isAudioEnabled = audioTrack.enabled;
       updateAudioIcon();
-    } else if (content.event === "chat") {
+    }else if(content.event==="chat"){
       let data = content.data;
       $("#messageArea").append(data + "<br/>");
     }
@@ -265,9 +239,7 @@
   }
 
   async function createOffer() {
-    if (offerInProgress || !isConnected) {
-      return;
-    }
+    if (offerInProgress || !isConnected) return;
     offerInProgress = true;
     const offerButton = document.getElementById("offerButton");
     offerButton.disabled = true;
@@ -286,8 +258,7 @@
       data: offer
     });
     console.log("Offer Transmission Success");
-    console.log("Signaling state After Offer Transmission Success:",
-        myPeerConnection.signalingState);
+    console.log("Signaling state After Offer Transmission Success:", myPeerConnection.signalingState);
     offerInProgress = false;
     offerButton.disabled = false;
   }
@@ -317,13 +288,11 @@
   }
 
   function updateVideoIcon() {
-    videoIcon.className = isVideoEnabled ? "fas fa-video text-success icon"
-        : "fas fa-video-slash text-danger icon";
+    videoIcon.className = isVideoEnabled ? "fas fa-video text-success icon" : "fas fa-video-slash text-danger icon";
   }
 
   function updateAudioIcon() {
-    audioIcon.className = isAudioEnabled ? "fas fa-volume-up text-success icon"
-        : "fas fa-volume-mute text-danger icon";
+    audioIcon.className = isAudioEnabled ? "fas fa-volume-up text-success icon" : "fas fa-volume-mute text-danger icon";
   }
 
   // 초기 아이콘 상태 업데이트
@@ -333,40 +302,40 @@
 
 </script>
 <script>
-  $(function () {
+  $(function(){
     console.log($('#role').text());
     let role = $('#role').text();
-    if (role !== 'TEACHER') {
+    if(role!=='TEACHER'){
       $('#offerButton').hide();
     }
 
-    $("#sendBtn").click(function () {
+    $("#sendBtn").click(function (){
       sendMessage();
       $('#message').val('')
     });
 
-    function sendMessage() {
+    function sendMessage(){
       send({
         event: "chat",
         data: $('#message').val()
       });
     }
 
-    $("#message").keydown(function (ev) {
-      if (ev.key === 'Enter') {
+    $("#message").keydown(function (ev){
+      if(ev.key === 'Enter'){
         sendMessage();
         $('#message').val('')
       }
     });
 
-    $("#exitButton").click(function () {
+    $("#exitButton").click(function(){
       let lectureSeq = $("#lectureSeq-input").val();
 
       $.ajax({
         url: '/api/chat/end-lecture',
         method: 'GET',
         contentType: "application/json",
-        data: {"lectureSeq": lectureSeq},
+        data : {"lectureSeq" : lectureSeq},
         success: function (data) {
           console.log("성공" + data);
           location.replace("/main");

@@ -4,12 +4,14 @@ import com.beelinkers.englebee.auth.domain.entity.LoginType;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class SignupProgressSessionMember implements Serializable {
 
-  private final String email;
+  private String email;
 
-  private final LoginType loginType;
+  private LoginType loginType;
 }
