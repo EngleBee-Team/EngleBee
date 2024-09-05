@@ -50,10 +50,15 @@
 
                         <!-- Thymeleaf 반복문 시작 -->
                         <tr th:each="qna : ${qnaList}">
-                          <td>[[${qna.seq}]]</td>
-                          <td><a th:href="@{/qna/detail/1}">[[${qna.memberNickname}]]</a></td>
-                          <td>[[${qna.title}]]</td>
-                          <td>[[${qna.createdAt}]]</td>
+                          <td th:text="${qna.seq}"></td>
+                          <!--                          <td>[[${qna.seq}]]</td>-->
+                          <td><a th:href="@{/qna/detail/1}" th:text="${qna.memberNickname}"></a>
+                          </td>
+                          <td th:text="${qna.title}"></td>
+                          <td><span
+                              th:text="${#temporals.format(qna.createdAt, 'yyyy-MM-dd')}"></span>
+                          </td>
+                          <!--                          <td>[[${qna.createdAt}]]</td>-->
                           <td>
                             <button class="btn btn-datatable btn-icon btn-transparent-dark">
                               <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
