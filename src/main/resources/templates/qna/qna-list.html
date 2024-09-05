@@ -29,7 +29,10 @@
             <!-- 게시판 목록   -->
             <div id="fadeIn">
               <div class="card mb-4">
-                <div class="card-header"><b>Q&A 게시판</b></div>
+                <div class="card-header">
+                  <b>Q&A 게시판</b>
+                  <p class="float-end"><a th:text="'새 글 작성'" th:href="@{/qna/register}"></a></p>
+                </div>
                 <div class="card-body">
 
                   <div
