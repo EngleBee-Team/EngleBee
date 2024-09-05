@@ -23,6 +23,6 @@ public class GoogleResponse implements OAuth2Response, Serializable {
 
   @Override
   public String getName() {
-    return "google-" + attributes.get("email").toString();
+    return attributes.get("sub").toString();
   }
 }

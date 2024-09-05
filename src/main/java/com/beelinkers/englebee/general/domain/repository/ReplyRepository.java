@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.general.domain.repository;
 
 import com.beelinkers.englebee.general.domain.entity.Reply;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
       "ORDER BY r.createdAt ASC")
   Page<Reply> findRepliesByMemberSeq(@Param("memberSeq") Long memberSeq,
       Pageable pageable);
+
+  List<Reply> findByQuestionSeqOrderByCreatedAtDesc(Long questionSeq);
 
 }
