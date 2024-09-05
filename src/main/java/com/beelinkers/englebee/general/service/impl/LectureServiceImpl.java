@@ -14,6 +14,7 @@ import com.beelinkers.englebee.general.exception.InvalidSubjectLevelCodeExceptio
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.LectureService;
 import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureRequestDTO;
+import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureSubjectLevelDTO;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +37,10 @@ public class LectureServiceImpl implements LectureService {
   public void createLecture(Long teacherSeq,
       TeacherRegisterLectureRequestDTO teacherRegisterLectureRequestDTO) {
     Member teacher =  memberRepository.findById(teacherSeq)
-        .orElseThrow(()->new MemberNotFoundException("해당 유저가 존재하지 않습니다."));
+        .orElseThrow(()->new MemberNotFoundException("해당 선생님이 존재하지 않습니다."));
     Member student = memberRepository.findByNickname(
         teacherRegisterLectureRequestDTO.getStudentNickname())
-        .orElseThrow(()->new MemberNotFoundException("해당 유저가 존재하지 않습니다."));
+        .orElseThrow(()->new MemberNotFoundException("해당 학생이 존재하지 않습니다."));
 
     Lecture lecture = Lecture.builder()
         .teacher(teacher)
@@ -51,11 +52,24 @@ public class LectureServiceImpl implements LectureService {
     List<LevelCode> levels = new ArrayList<>();
     List<SubjectCode> subjects = new ArrayList<>();
 
-    for(int i=0;i<teacherRegisterLectureRequestDTO.getSubjectLevels().size();i++){
-      if(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getLevel()!=null){
-        levels.add(LevelCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getLevel()));
-        subjects.add(SubjectCode.fromKoreanCode(teacherRegisterLectureRequestDTO.getSubjectLevels().get(i).getSubject()));
+    boolean levelChecked = false;
+
+    for (TeacherRegisterLectureSubjectLevelDTO subjectLevel : teacherRegisterLectureRequestDTO.getSubjectLevels()) {
+      String level = subjectLevel.getLevel();
+      String subject = subjectLevel.getSubject();
+
+      if(level.equals(" ")){
+        log.info("null check");
+        continue;
       }
+      log.info("not null check");
+        levels.add(LevelCode.fromKoreanCode(level));
+        subjects.add(SubjectCode.fromKoreanCode(subject));
+        levelChecked = true;
+
+    }
+    if(!levelChecked){
+      throw new RuntimeException("과목 레벨을 선택해주세요");
     }
 
     List<SubjectLevel> subjectLevels = new ArrayList<>();
