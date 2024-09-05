@@ -37,9 +37,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
       for(WebSocketSession s : sessions){
         String modifiedMessage = null;
         if (s.getId().equals(session.getId())) {
-          modifiedMessage = "나: " + jsonNode.get("data").asText();
+          modifiedMessage = "나: " + jsonNode.get("data").asText()+" ";
         }else{
-          modifiedMessage = "상대방: " + jsonNode.get("data").asText();
+          modifiedMessage = "상대방: " + jsonNode.get("data").asText()+" ";
         }
 
         ObjectNode newMessage = objectMapper.createObjectNode();
