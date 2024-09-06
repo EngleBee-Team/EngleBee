@@ -12,6 +12,7 @@ import com.beelinkers.englebee.general.domain.repository.LectureSubjectLevelRepo
 import com.beelinkers.englebee.general.domain.repository.SubjectLevelRepository;
 import com.beelinkers.englebee.general.exception.InvalidSubjectLevelCodeException;
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
+import com.beelinkers.englebee.general.exception.NoSubjectLevelException;
 import com.beelinkers.englebee.general.service.LectureService;
 import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureRequestDTO;
 import com.beelinkers.englebee.teacher.dto.request.TeacherRegisterLectureSubjectLevelDTO;
@@ -59,17 +60,14 @@ public class LectureServiceImpl implements LectureService {
       String subject = subjectLevel.getSubject();
 
       if(level.equals(" ")){
-        log.info("null check");
         continue;
       }
-      log.info("not null check");
         levels.add(LevelCode.fromKoreanCode(level));
         subjects.add(SubjectCode.fromKoreanCode(subject));
         levelChecked = true;
-
     }
     if(!levelChecked){
-      throw new RuntimeException("과목 레벨을 선택해주세요");
+      throw new NoSubjectLevelException("과목 레벨을 선택해주세요");
     }
 
     List<SubjectLevel> subjectLevels = new ArrayList<>();
