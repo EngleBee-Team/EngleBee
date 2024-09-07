@@ -11,8 +11,6 @@ import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.student.service.StudentMyService;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +32,12 @@ public class MyPageController {
   private final StudentMyService studentMyService;
   private final TeacherMyService teacherMyService;
 
+  private PaginationResponseDTO paginationResponse(Page<?> page) {
+    return new PaginationResponseDTO(
+        page.getNumber(), page.getSize(), page.getTotalPages(),
+        page.getTotalElements(), page.hasPrevious(), page.hasNext());
+  }
+
   @GetMapping("/info")
   public String getMyInfoPage(@LoginMember SessionMember sessionMember, Model model,
       @PageableDefault(size = 10) Pageable pageable) {
@@ -54,44 +58,22 @@ public class MyPageController {
       Page<StudentMyPageWrittenReplyDTO> writtenReplyList = studentMyService.getStudentMyWrittenReplyInfo(
           memberSeq, pageable);
 
-      PaginationResponseDTO createdExamsPagination = new PaginationResponseDTO(
-          createdExamList.getNumber(), createdExamList.getSize(), createdExamList.getTotalPages(),
-          createdExamList.getTotalElements(), createdExamList.hasPrevious(),
-          createdExamList.hasNext());
+      // Pagination 정보 생성 및 모델에 추가
+      model.addAttribute("createdExamsPagination", paginationResponse(createdExamList));
+      model.addAttribute("completedExamsPagination", paginationResponse(completedExamList));
+      model.addAttribute("writtenQnaPagination", paginationResponse(writtenQnaList));
+      model.addAttribute("writtenReplyPagination", paginationResponse(writtenReplyList));
 
-      PaginationResponseDTO completedExamsPagination = new PaginationResponseDTO(
-          completedExamList.getNumber(), completedExamList.getSize(),
-          completedExamList.getTotalPages(),
-          completedExamList.getTotalElements(), completedExamList.hasPrevious(),
-          completedExamList.hasNext());
-
-      PaginationResponseDTO writtenQnaPagination = new PaginationResponseDTO(
-          writtenQnaList.getNumber(), writtenQnaList.getSize(), writtenQnaList.getTotalPages(),
-          writtenQnaList.getTotalElements(), writtenQnaList.hasPrevious(),
-          writtenQnaList.hasNext());
-
-      PaginationResponseDTO writtenReplyPagination = new PaginationResponseDTO(
-          writtenReplyList.getNumber(), writtenReplyList.getSize(),
-          writtenReplyList.getTotalPages(),
-          writtenReplyList.getTotalElements(), writtenReplyList.hasPrevious(),
-          writtenReplyList.hasNext());
+      // 데이터 리스트 모델에 추가
+      model.addAttribute("createdExams", createdExamList.getContent());
+      model.addAttribute("completedExams", completedExamList.getContent());
+      model.addAttribute("writtenQna", writtenQnaList.getContent());
+      model.addAttribute("writtenReply", writtenReplyList.getContent());
 
       log.info(" 풀어야할 시험 : {} ", createdExamList);
       log.info(" 제출한 시험 : {} ", completedExamList);
       log.info(" 작성한 Q&A : {} ", writtenQnaList);
       log.info(" 작성한 댓글 : {} ", writtenReplyList);
-
-      Map<String, Object> data = new HashMap<>();
-      data.put("createdExams", createdExamList.getContent());
-      data.put("completedExams", completedExamList.getContent());
-      data.put("writtenQna", writtenQnaList.getContent());
-      data.put("writtenReply", writtenReplyList.getContent());
-
-      model.addAttribute("data", data);
-      model.addAttribute("createdExamsPagination", createdExamsPagination);
-      model.addAttribute("completedExamsPagination", completedExamsPagination);
-      model.addAttribute("writtenQnaPagination", writtenQnaPagination);
-      model.addAttribute("writtenReplyPagination", writtenReplyPagination);
 
       return "student/student-info";
 
