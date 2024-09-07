@@ -65,14 +65,6 @@ public class TeacherMyServiceImpl implements TeacherMyService {
   @Transactional(readOnly = true)
   public Page<TeacherMyPageWrittenReplyDTO> getTeacherMyPageWrittenReplyInfo(Long memberSeq,
       Pageable pageable) {
-//    Member member = memberRepository.findById(memberSeq)
-//        .orElseThrow(() -> new IllegalArgumentException("해당 ID로 회원을 찾을 수 없습니다."));
-//    return replyRepository.findByQuestionMemberOrderByCreatedAt(member, pageable)
-//        .map(teacherMyPageMapper::teacherMyPageWrittenReply);
-
-//    return replyRepository.findByQuestionMemberSeqOrderByCreatedAt(memberSeq, pageable)
-//        .map(teacherMyPageMapper::teacherMyPageWrittenReply);
-
     return replyRepository.findRepliesByMemberSeq(memberSeq, pageable)
         .map(teacherMyPageMapper::teacherMyPageWrittenReply);
   }
