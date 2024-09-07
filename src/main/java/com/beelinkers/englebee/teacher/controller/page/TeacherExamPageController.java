@@ -44,15 +44,21 @@ public class TeacherExamPageController {
 
   @GetMapping("/exam/feedback/{examSeq}")
   public String getExamFeedbackPage(@LoginMember SessionMember sessionMember,
-      @PathVariable("examSeq") Long examSeq, Model model) {
+      @PathVariable("examSeq") Long examSeq, Model model) throws JsonProcessingException {
     TeacherExamFeedbackPageDTO teacherExamFeedbackPageDTO = teacherExamPageService.getTeacherExamFeedbackPageInfo(
         sessionMember.getSeq(), examSeq);
+
+    String teacherQuestionsJson = objectMapper.writeValueAsString(
+        teacherExamFeedbackPageDTO.getTeacherQuestionForTeacherToFeedbackDTOs());
+    String lectureSubjectsJson = objectMapper.writeValueAsString(
+        teacherExamFeedbackPageDTO.getLectureSubjects());
+
     model.addAttribute("examSeq", examSeq);
     model.addAttribute("studentGrade", teacherExamFeedbackPageDTO.getStudentGrade());
     model.addAttribute("examTitle", teacherExamFeedbackPageDTO.getExamTitle());
-    model.addAttribute("teacherQuestions",
-        teacherExamFeedbackPageDTO.getTeacherQuestionForTeacherToFeedbackDTOs());
-    model.addAttribute("lectureSubjects", teacherExamFeedbackPageDTO.getLectureSubjects());
+    model.addAttribute("teacherQuestions", teacherQuestionsJson);
+    model.addAttribute("lectureSubjects", lectureSubjectsJson);
+
     return "teacher/exam-feedback";
   }
 
