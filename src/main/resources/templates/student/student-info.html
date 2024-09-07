@@ -53,7 +53,7 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table id="datatablesSimple" class="datatable-table">
+                          <table id="datatablesCreatedExams" class="datatable-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
@@ -83,7 +83,7 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr th:if="${createdExams == null}">
+                            <tr th:if="${createdExams == null || createdExams.isEmpty() }">
                               <td colspan="5">등록된 시험이 없습니다.</td>
                             </tr>
                             </tbody>
@@ -92,29 +92,42 @@
                         <!--  페이징  -->
                         <div class="datatable-bottom">
                           <div class="datatable-info">총 <span
-                              th:if="${createdExamsPagination != null}"
                               th:text="${createdExamsPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination"
+                               th:attr="style=${createdExams != null || createdExams.isEmpty()}? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
+                              <!-- 이전 페이지 그룹 버튼 (10개 이전으로 이동) -->
+                              <li th:if="${createdExamsPagination.totalElements >= 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${createdExamsPagination.totalElements - 10})}"
+                                   class="datatable-pagination-list-item-link">«</a>
+                              </li>
                               <!-- 이전 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${!createdExamsPagination.hasPreviousPage == 0} ? 'datatable-hidden datatable-disabled'">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${createdExamsPagination.currentPage > 0 ? createdExamsPagination.currentPage - 1 : 0})}"
-                                   class="datatable-pagination-list-item-link"> ‹ </a>
+                              <li th:class="'datatable-pagination-list-item ' + (${createdExamsPagination.hasPreviousPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${createdExamsPagination.totalElements - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <!-- 페이지 번호 반복 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:each="i : ${#numbers.sequence(1, createdExamsPagination.totalPages)}"
-                                  th:classappend="${i == createdExamsPagination.currentPage + 1} ? 'datatable-active'">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${i - 1})}"
-                                   class="datatable-pagination-list-item-link" th:text="${i}"></a>
+
+                              <!-- 페이지 번호 리스트 (10개씩 표시) -->
+                              <li th:each="i : ${#numbers.sequence(((createdExamsPagination.totalElements / 10) * 10) + 1, ((createdExamsPagination.totalElements / 10) * 10) + 10)}"
+                                  th:class="'datatable-pagination-list-item ' + (${createdExamsPagination.totalElements + 1} == i ? 'datatable-active' : '')">
+                                <a th:href="@{/qna/list(page=${i - 1})}"
+                                   class="datatable-pagination-list-item-link"
+                                   th:text="${i}">1</a>
                               </li>
+
+
                               <!-- 다음 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${createdExamsPagination.currentPage + 1 == createdExamsPagination.totalPages} ? 'datatable-hidden datatable-disabled'">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${createdExamsPagination.currentPage + 1})}"
-                                   class="datatable-pagination-list-item-link"> › </a>
+                              <li th:class="'datatable-pagination-list-item ' + (${createdExamsPagination.hasNextPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${createdExamsPagination.totalElements + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
+                              </li>
+                              <!-- 다음 페이지 그룹 버튼 (10개 이후로 이동) -->
+                              <li th:if="${createdExamsPagination.totalPages > ((createdExamsPagination.totalElements / 10) * 10) + 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${createdExamsPagination.totalElements + 10})}"
+                                   class="datatable-pagination-list-item-link">»</a>
                               </li>
                             </ul>
                           </nav>
@@ -141,7 +154,7 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table id="datatablesSimple" class="datatable-table">
+                          <table id="datatablesCompletedExams" class="datatable-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
@@ -171,7 +184,7 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr th:if="${completedExams == null}">
+                            <tr th:if="${completedExams == null || completedExams.isEmpty() }">
                               <td colspan="5">등록된 시험이 없습니다.</td>
                             </tr>
                             </tbody>
@@ -180,31 +193,73 @@
                         <!--  페이징  -->
                         <div class="datatable-bottom">
                           <div class="datatable-info">총 <span
-                              th:if="${completedExamsPagination != null}"
                               th:text="${completedExamsPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination"
+                               th:attr="style=${completedExamsPagination != null || completedExamsPagination.isEmpty()}? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
+                              <!-- 이전 페이지 그룹 버튼 (10개 이전으로 이동) -->
+                              <li th:if="${completedExamsPagination.totalElements >= 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${completedExamsPagination.totalElements - 10})}"
+                                   class="datatable-pagination-list-item-link">«</a>
+                              </li>
                               <!-- 이전 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${completedExamsPagination.currentPage == 1 ? 'datatable-hidden datatable-disabled' : ''}">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${completedExamsPagination.currentPage > 1 ? completedExamsPagination.currentPage - 1 : 1})}"
+                              <li th:class="'datatable-pagination-list-item ' + (${completedExamsPagination.hasPreviousPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${completedExamsPagination.totalElements - 1})}"
                                    class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <!-- 페이지 번호 반복 -->
-                              <li class="datatable-pagination-list-item">
-                                <a class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 리스트 (10개씩 표시) -->
+                              <li th:each="i : ${#numbers.sequence(((completedExamsPagination.totalElements / 10) * 10) + 1, ((completedExamsPagination.totalElements / 10) * 10) + 10)}"
+                                  th:class="'datatable-pagination-list-item ' + (${completedExamsPagination.totalElements + 1} == i ? 'datatable-active' : '')">
+                                <a th:href="@{/qna/list(page=${i - 1})}"
+                                   class="datatable-pagination-list-item-link"
+                                   th:text="${i}">1</a>
                               </li>
 
+
                               <!-- 다음 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${completedExamsPagination.totalPages > 1 && completedExamsPagination.hasNextPage ? '' : 'datatable-hidden datatable-disabled'}">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${completedExamsPagination.currentPage + 1})}"
+                              <li th:class="'datatable-pagination-list-item ' + (${completedExamsPagination.hasNextPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${createdExamsPagination.totalElements + 1})}"
                                    class="datatable-pagination-list-item-link">›</a>
+                              </li>
+                              <!-- 다음 페이지 그룹 버튼 (10개 이후로 이동) -->
+                              <li th:if="${createdExamsPagination.totalPages > ((completedExamsPagination.totalElements / 10) * 10) + 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${completedExamsPagination.totalElements + 10})}"
+                                   class="datatable-pagination-list-item-link">»</a>
                               </li>
                             </ul>
                           </nav>
                         </div>
+                        <!--                        <div class="datatable-bottom">-->
+                        <!--                          <div class="datatable-info">총 <span-->
+                        <!--                              th:if="${completedExamsPagination != null}"-->
+                        <!--                              th:text="${completedExamsPagination.totalElements}"></span> 게시물-->
+                        <!--                          </div>-->
+                        <!--                          <nav class="datatable-pagination">-->
+                        <!--                            <ul class="datatable-pagination-list">-->
+                        <!--                              &lt;!&ndash; 이전 페이지 버튼 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item"-->
+                        <!--                                  th:classappend="${completedExamsPagination.currentPage == 1 ? 'datatable-hidden datatable-disabled' : ''}">-->
+                        <!--                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${completedExamsPagination.currentPage > 1 ? completedExamsPagination.currentPage - 1 : 1})}"-->
+                        <!--                                   class="datatable-pagination-list-item-link">‹</a>-->
+                        <!--                              </li>-->
+                        <!--                              &lt;!&ndash; 페이지 번호 반복 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item">-->
+                        <!--                                <a class="datatable-pagination-list-item-link">1</a>-->
+                        <!--                              </li>-->
+
+                        <!--                              &lt;!&ndash; 다음 페이지 버튼 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item"-->
+                        <!--                                  th:classappend="${completedExamsPagination.totalPages > 1 && completedExamsPagination.hasNextPage ? '' : 'datatable-hidden datatable-disabled'}">-->
+                        <!--                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${completedExamsPagination.currentPage + 1})}"-->
+                        <!--                                   class="datatable-pagination-list-item-link">›</a>-->
+                        <!--                              </li>-->
+                        <!--                            </ul>-->
+                        <!--                          </nav>-->
+                        <!--                        </div>-->
                       </div>
                     </div>
 
@@ -227,7 +282,7 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table id="datatablesSimple" class="datatable-table">
+                          <table id="datatablesWrittenQna" class="datatable-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
@@ -256,7 +311,7 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr th:if="${writtenQna == null}">
+                            <tr th:if="${writtenQna == null || writtenQna.isEmpty() }">
                               <td colspan="5">등록된 글이 없습니다.</td>
                             </tr>
                             </tbody>
@@ -265,31 +320,73 @@
                         <!--  페이징  -->
                         <div class="datatable-bottom">
                           <div class="datatable-info">총 <span
-                              th:if="${writtenQnaPagination != null}"
                               th:text="${writtenQnaPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination"
+                               th:attr="style=${writtenQnaPagination != null || writtenQnaPagination.isEmpty()}? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
+                              <!-- 이전 페이지 그룹 버튼 (10개 이전으로 이동) -->
+                              <li th:if="${writtenQnaPagination.totalElements >= 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${writtenQnaPagination.totalElements - 10})}"
+                                   class="datatable-pagination-list-item-link">«</a>
+                              </li>
                               <!-- 이전 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${writtenQnaPagination.currentPage == 1 ? 'datatable-hidden datatable-disabled' : ''}">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${writtenQnaPagination.currentPage > 1 ? completedExamsPagination.currentPage - 1 : 1})}"
+                              <li th:class="'datatable-pagination-list-item ' + (${writtenQnaPagination.hasPreviousPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${writtenQnaPagination.totalElements - 1})}"
                                    class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <!-- 페이지 번호 반복 -->
-                              <li class="datatable-pagination-list-item">
-                                <a class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 리스트 (10개씩 표시) -->
+                              <li th:each="i : ${#numbers.sequence(((writtenQnaPagination.totalElements / 10) * 10) + 1, ((writtenQnaPagination.totalElements / 10) * 10) + 10)}"
+                                  th:class="'datatable-pagination-list-item ' + (${writtenQnaPagination.totalElements + 1} == i ? 'datatable-active' : '')">
+                                <a th:href="@{/qna/list(page=${i - 1})}"
+                                   class="datatable-pagination-list-item-link"
+                                   th:text="${i}">1</a>
                               </li>
 
+
                               <!-- 다음 페이지 버튼 -->
-                              <li class="datatable-pagination-list-item"
-                                  th:classappend="${writtenQnaPagination.totalPages > 1 && writtenQnaPagination.hasNextPage ? '' : 'datatable-hidden datatable-disabled'}">
-                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${writtenQnaPagination.currentPage + 1})}"
+                              <li th:class="'datatable-pagination-list-item ' + (${writtenQnaPagination.hasNextPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${writtenQnaPagination.totalElements + 1})}"
                                    class="datatable-pagination-list-item-link">›</a>
+                              </li>
+                              <!-- 다음 페이지 그룹 버튼 (10개 이후로 이동) -->
+                              <li th:if="${writtenQnaPagination.totalPages > ((writtenQnaPagination.totalElements / 10) * 10) + 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${writtenQnaPagination.totalElements + 10})}"
+                                   class="datatable-pagination-list-item-link">»</a>
                               </li>
                             </ul>
                           </nav>
                         </div>
+                        <!--                        <div class="datatable-bottom">-->
+                        <!--                          <div class="datatable-info">총 <span-->
+                        <!--                              th:if="${writtenQnaPagination != null}"-->
+                        <!--                              th:text="${writtenQnaPagination.totalElements}"></span> 게시물-->
+                        <!--                          </div>-->
+                        <!--                          <nav class="datatable-pagination">-->
+                        <!--                            <ul class="datatable-pagination-list">-->
+                        <!--                              &lt;!&ndash; 이전 페이지 버튼 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item"-->
+                        <!--                                  th:classappend="${writtenQnaPagination.currentPage == 1 ? 'datatable-hidden datatable-disabled' : ''}">-->
+                        <!--                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${writtenQnaPagination.currentPage > 1 ? completedExamsPagination.currentPage - 1 : 1})}"-->
+                        <!--                                   class="datatable-pagination-list-item-link">‹</a>-->
+                        <!--                              </li>-->
+                        <!--                              &lt;!&ndash; 페이지 번호 반복 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item">-->
+                        <!--                                <a class="datatable-pagination-list-item-link">1</a>-->
+                        <!--                              </li>-->
+
+                        <!--                              &lt;!&ndash; 다음 페이지 버튼 &ndash;&gt;-->
+                        <!--                              <li class="datatable-pagination-list-item"-->
+                        <!--                                  th:classappend="${writtenQnaPagination.totalPages > 1 && writtenQnaPagination.hasNextPage ? '' : 'datatable-hidden datatable-disabled'}">-->
+                        <!--                                <a th:href="@{/student/my(memberSeq=${memberSeq}, page=${writtenQnaPagination.currentPage + 1})}"-->
+                        <!--                                   class="datatable-pagination-list-item-link">›</a>-->
+                        <!--                              </li>-->
+                        <!--                            </ul>-->
+                        <!--                          </nav>-->
+                        <!--                        </div>-->
                       </div>
                     </div>
 
@@ -312,7 +409,7 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table id="datatablesSimple" class="datatable-table">
+                          <table id="datatablesWrittenReply" class="datatable-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
@@ -344,7 +441,7 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr th:if="${writtenReply == null}">
+                            <tr th:if="${writtenReply == null || writtenReply.isEmpty() }">
                               <td colspan="5">등록된 글이 없습니다.</td>
                             </tr>
                             </tbody>
@@ -353,29 +450,71 @@
                         <!--  페이징  -->
                         <div class="datatable-bottom">
                           <div class="datatable-info">총 <span
-                              th:if="${writtenReplyPagination != null}"
                               th:text="${writtenReplyPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination"
+                               th:attr="style=${writtenReplyPagination != null || writtenReplyPagination.isEmpty()}? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+                              <!-- 이전 페이지 그룹 버튼 (10개 이전으로 이동) -->
+                              <li th:if="${writtenReplyPagination.totalElements >= 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${writtenReplyPagination.totalElements - 10})}"
+                                   class="datatable-pagination-list-item-link">«</a>
                               </li>
-                              <li class="datatable-pagination-list-item datatable-active">
-                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+                              <!-- 이전 페이지 버튼 -->
+                              <li th:class="'datatable-pagination-list-item ' + (${writtenReplyPagination.hasPreviousPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${writtenReplyPagination.totalElements - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>
+
+                              <!-- 페이지 번호 리스트 (10개씩 표시) -->
+                              <li th:each="i : ${#numbers.sequence(((writtenReplyPagination.totalElements / 10) * 10) + 1, ((writtenReplyPagination.totalElements / 10) * 10) + 10)}"
+                                  th:class="'datatable-pagination-list-item ' + (${writtenReplyPagination.totalElements + 1} == i ? 'datatable-active' : '')">
+                                <a th:href="@{/qna/list(page=${i - 1})}"
+                                   class="datatable-pagination-list-item-link"
+                                   th:text="${i}">1</a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>
+
+
+                              <!-- 다음 페이지 버튼 -->
+                              <li th:class="'datatable-pagination-list-item ' + (${writtenReplyPagination.hasNextPage} ? '' : 'datatable-disabled datatable-hidden')">
+                                <a th:href="@{/qna/list(page=${writtenReplyPagination.totalElements + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+                              <!-- 다음 페이지 그룹 버튼 (10개 이후로 이동) -->
+                              <li th:if="${writtenReplyPagination.totalPages > ((writtenReplyPagination.totalElements / 10) * 10) + 10}"
+                                  class="datatable-pagination-list-item">
+                                <a th:href="@{/qna/list(page=${writtenReplyPagination.totalElements + 10})}"
+                                   class="datatable-pagination-list-item-link">»</a>
                               </li>
                             </ul>
                           </nav>
                         </div>
+                        <!--                        <div class="datatable-bottom">-->
+                        <!--                          <div class="datatable-info">총 <span-->
+                        <!--                              th:if="${writtenReplyPagination != null}"-->
+                        <!--                              th:text="${writtenReplyPagination.totalElements}"></span> 게시물-->
+                        <!--                          </div>-->
+                        <!--                          <nav class="datatable-pagination">-->
+                        <!--                            <ul class="datatable-pagination-list">-->
+                        <!--                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">-->
+                        <!--                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>-->
+                        <!--                              </li>-->
+                        <!--                              <li class="datatable-pagination-list-item datatable-active">-->
+                        <!--                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>-->
+                        <!--                              </li>-->
+                        <!--                              <li class="datatable-pagination-list-item">-->
+                        <!--                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>-->
+                        <!--                              </li>-->
+                        <!--                              <li class="datatable-pagination-list-item">-->
+                        <!--                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>-->
+                        <!--                              </li>-->
+                        <!--                              <li class="datatable-pagination-list-item">-->
+                        <!--                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>-->
+                        <!--                              </li>-->
+                        <!--                            </ul>-->
+                        <!--                          </nav>-->
+                        <!--                        </div>-->
                       </div>
                     </div>
 
