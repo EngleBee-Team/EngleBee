@@ -81,24 +81,23 @@
                           <div class="datatable-info">총 <span
                               th:text="${pendingExamPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination" id="pending-exams-pagination"
+                          <nav class="datatable-pagination" id="pending-exam-pagination"
                                th:attr="style=${pendingExamPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <!-- 이전 페이지 버튼 -->
+                              <!-- 이전 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${pendingExamPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${pendingExamPagination.currentPage - 1}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${pendingExamPagination.currentPage - 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <!-- 페이지 번호 버튼 -->
+                              <!-- 페이지 번호 -->
                               <li th:each="i : ${#numbers.sequence(1, pendingExamPagination.totalPages)}"
                                   th:classappend="'datatable-pagination-list-item ' + (${i} == ${pendingExamPagination.currentPage + 1} ? 'datatable-active' : '')">
-                                <a th:href="@{/my/info(pagePending=${i - 1}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
-                                   th:text="${i}"
-                                   class="datatable-pagination-list-item-link"></a>
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${i - 1}, pageReply=${param.pageReply})}"
+                                   th:text="${i}" class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <!-- 다음 페이지 버튼 -->
+                              <!-- 다음 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${pendingExamPagination.hasNextPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${pendingExamPagination.currentPage + 1}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${pendingExamPagination.currentPage + 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
@@ -154,24 +153,23 @@
                           <div class="datatable-info">총 <span
                               th:text="${examHistoryPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination" id="created-exams-pagination"
+                          <nav class="datatable-pagination" id="exam-history-pagination"
                                th:attr="style=${examHistoryPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <!-- 이전 페이지 버튼 -->
+                              <!-- 이전 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${examHistoryPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${examHistoryPagination.currentPage - 1}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${examHistoryPagination.currentPage - 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <!-- 페이지 번호 버튼 -->
+                              <!-- 페이지 번호 -->
                               <li th:each="i : ${#numbers.sequence(1, examHistoryPagination.totalPages)}"
                                   th:classappend="'datatable-pagination-list-item ' + (${i} == ${examHistoryPagination.currentPage + 1} ? 'datatable-active' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${i - 1}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
-                                   th:text="${i}"
-                                   class="datatable-pagination-list-item-link"></a>
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${i - 1}, pageReply=${param.pageReply})}"
+                                   th:text="${i}" class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <!-- 다음 페이지 버튼 -->
+                              <!-- 다음 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${examHistoryPagination.hasNextPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${examHistoryPagination.currentPage + 1}, pageQna=${param.pageQna}, pageReply=${param.pageReply})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${examHistoryPagination.currentPage + 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
@@ -226,7 +224,8 @@
                           <div class="datatable-info">총 <span
                               th:text="${writtenQnaPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination" id="written-qna-pagination"
+                               th:attr="style=${writtenQnaPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
                               <!-- 이전 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${writtenQnaPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
@@ -300,22 +299,23 @@
                           <div class="datatable-info">총 <span
                               th:text="${writtenReplyPagination.totalElements}"></span> 게시물
                           </div>
-                          <nav class="datatable-pagination">
+                          <nav class="datatable-pagination" id="written-reply-pagination"
+                               th:attr="style=${writtenReplyPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
                               <!-- 이전 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${writtenReplyPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${writtenReplyPagination.currentPage - 1})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${writtenReplyPagination.currentPage - 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">‹</a>
                               </li>
                               <!-- 페이지 번호 -->
                               <li th:each="i : ${#numbers.sequence(1, writtenReplyPagination.totalPages)}"
                                   th:classappend="'datatable-pagination-list-item ' + (${i} == ${writtenReplyPagination.currentPage + 1} ? 'datatable-active' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${i - 1})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${i - 1}, pageReply=${param.pageReply})}"
                                    th:text="${i}" class="datatable-pagination-list-item-link"></a>
                               </li>
                               <!-- 다음 페이지 -->
                               <li th:classappend="'datatable-pagination-list-item ' + (!${writtenReplyPagination.hasNextPage} ? 'datatable-disabled' : '')">
-                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${param.pageQna}, pageReply=${writtenReplyPagination.currentPage + 1})}"
+                                <a th:href="@{/my/info(pagePending=${param.pagePending}, pageCreated=${param.pageCreated}, pageQna=${writtenReplyPagination.currentPage + 1}, pageReply=${param.pageReply})}"
                                    class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
