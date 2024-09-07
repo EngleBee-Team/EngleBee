@@ -66,6 +66,7 @@ jobs:
               -e NAVER_OAUTH_CLIENT_ID=${{ secrets.NAVER_OAUTH_CLIENT_ID }} \
               -e NAVER_OAUTH_CLIENT_SECRET=${{ secrets.NAVER_OAUTH_CLIENT_SECRET }} \
               -e NAVER_OAUTH_REDIRECT_URI=${{ secrets.NAVER_OAUTH_REDIRECT_URI }} \
+              -e OPEN_AI_SECRET_KEY=${{ secrets.OPEN_AI_SECRET_KEY }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/englebee:latest
 
             sudo docker system prune -f

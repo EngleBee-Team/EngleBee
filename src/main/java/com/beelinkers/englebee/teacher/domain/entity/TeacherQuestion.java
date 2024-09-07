@@ -40,7 +40,7 @@ public class TeacherQuestion extends BaseEntity {
   @Column(name = "direction", nullable = false, length = 2000)
   private String direction;
 
-  @Column(name = "choices", nullable = false, length = 300)
+  @Column(name = "choices", nullable = false, length = 4000)
   private String choices; // ','로 구분한다, DB에서 가져올 때 split() 필요
 
   @Column(name = "correct_answer", nullable = false)

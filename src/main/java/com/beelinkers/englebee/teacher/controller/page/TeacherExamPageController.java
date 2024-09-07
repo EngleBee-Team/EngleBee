@@ -5,6 +5,8 @@ import com.beelinkers.englebee.auth.oauth2.session.SessionMember;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamFeedbackPageDTO;
 import com.beelinkers.englebee.teacher.dto.response.TeacherExamRegisterPageDTO;
 import com.beelinkers.englebee.teacher.service.TeacherExamPageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,18 +20,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class TeacherExamPageController {
 
   private final TeacherExamPageService teacherExamPageService;
+  private final ObjectMapper objectMapper;
 
   @GetMapping("/exam/register/{examSeq}")
   public String getExamRegisterPage(@LoginMember SessionMember sessionMember,
-      @PathVariable("examSeq") Long examSeq, Model model) {
+      @PathVariable("examSeq") Long examSeq, Model model) throws JsonProcessingException {
     TeacherExamRegisterPageDTO teacherExamRegisterPageInfo = teacherExamPageService.getTeacherExamRegisterPageInfo(
         sessionMember.getSeq(), examSeq);
     model.addAttribute("examSeq", examSeq);
     model.addAttribute("studentGrade", teacherExamRegisterPageInfo.getStudentGrade());
-    model.addAttribute("studentSubjectLevels",
+
+    String studentSubjectLevelsJson = objectMapper.writeValueAsString(
         teacherExamRegisterPageInfo.getStudentSubjectLevels());
-    model.addAttribute("lecture6SubjectLevels",
+    model.addAttribute("studentSubjectLevels", studentSubjectLevelsJson);
+
+    String lectureSubjectLevelsJson = objectMapper.writeValueAsString(
         teacherExamRegisterPageInfo.getLectureSubjectLevels());
+    model.addAttribute("lectureSubjectLevels",
+        lectureSubjectLevelsJson);
+
+    log.info("studentGrade, {}", teacherExamRegisterPageInfo.getStudentGrade());
+    log.info(teacherExamRegisterPageInfo.getStudentSubjectLevels().toString());
+    log.info(teacherExamRegisterPageInfo.getLectureSubjectLevels().toString());
     return "teacher/exam-register";
   }
 
