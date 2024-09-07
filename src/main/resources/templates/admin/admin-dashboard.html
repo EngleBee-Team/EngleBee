@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: head}"></head>
+<head th:replace="~{fragments/admin-header :: head}"></head>
 
 
 <body class="bg-white">
 
 <!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
-<div th:replace="~{fragments/top-nav :: top-nav}"></div>
+<div th:replace="~{fragments/admin-top-nav :: top-nav}"></div>
 
 <div id="layoutSidenav">
   <div id="layoutSidenav_nav">
@@ -17,7 +17,7 @@
 
 
       <!-- --------------------------- [FRAGMENT : 배너]  ------------------------------------->
-      <div th:replace="~{fragments/top-banner :: top-banner}"></div>
+      <div th:replace="~{fragments/admin-top-banner :: top-banner}"></div>
 
 
       <!-- --------------------------- [중앙 : 컨텐츠 START]  ------------------------------------->
@@ -25,40 +25,104 @@
 
       <div class="container-xl px-4 mt-n10">
         <div class="card mb-4">
-          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-header"><b>과목별 학생 레벨 수</b></div>
           <div class="card-body">
             <div class="chart-area">
-              여기 차트
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card mb-4">
-              <div class="card-header"><b>일별 사용자 통계</b></div>
-              <div class="card-body">
-                <div class="chart-area">
-                  여기 차트
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="card mb-4">
-              <div class="card-header"><b>일별 사용자 통계</b></div>
-              <div class="card-body">
-                <div class="chart-area">
-                  여기 차트
+              <div class="card-body card-body-hr">
+                <div class = "chart-wrap">
+                  <canvas id="grammer-count" class="member-level-chart"></canvas>
+                  <canvas id="sentence-count" class="member-level-chart"></canvas>
+                  <canvas id="word-count" class="member-level-chart"></canvas>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="card mb-4">
-          <div class="card-header"><b>일별 사용자 통계</b></div>
+          <div class="card-header"><b>일별 LLM API 호출</b></div>
           <div class="card-body">
             <div class="chart-area">
-              여기 차트
+              <div class = "chart-wrap-2">
+                <div class = "select-wrap">
+                  <label for="row2year">Year:</label>
+                  <select id="row2year" name="year">
+                    <option value="">Select Year</option>
+                    <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+                    <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
+                      <option th:value="${year}" th:text="${year}"></option>
+                    </th:block>
+                  </select>
+                  <label for="row2month">Month:</label>
+                  <select id="row2month" name="month">
+                    <option value="">Select Month</option>
+                    <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+                    <th:block th:each="month : ${#numbers.sequence(1, 12)}">
+                      <option th:value="${month}" th:text="${month}"></option>
+                    </th:block>
+                  </select>
+                </div>
+                <div id="no-lecture">There are no llm that called.</div>
+                <div class="chart-wrap2">
+                  <canvas id="llmChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-header"><b>일별 수업 생성</b></div>
+          <div class="card-body">
+            <div class="chart-area">
+              <div class = "chart-wrap-2">
+                <div class = "select-wrap">
+                  <label for="row4year">Year:</label>
+                  <select id="row4year" name="year">
+                    <option value="">Select Year</option>
+                    <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+                    <th:block th:each="year : ${#numbers.sequence(2020, 2030)}">
+                      <option th:value="${year}" th:text="${year}"></option>
+                    </th:block>
+                  </select>
+                  <label for="row4month">Month:</label>
+                  <select id="row4month" name="month">
+                    <option value="">Select Month</option>
+                    <!-- 타임리프를 사용하여 연도를 동적으로 생성 -->
+                    <th:block th:each="month : ${#numbers.sequence(1, 12)}">
+                      <option th:value="${month}" th:text="${month}"></option>
+                    </th:block>
+                  </select>
+                </div>
+                <div id="no-llm">There are no lecture that created.</div>
+                <div class="chart-wrap4">
+                  <canvas id="lectureChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>학생 학년 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  <div class = "chart-wrap">
+                    <canvas id="age-group-count" class="member-level-chart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header"><b>사용자 타입 통계</b></div>
+              <div class="card-body">
+                <div class="chart-area">
+                  <div class = "chart-wrap">
+                    <canvas id="member-type-count" class="member-level-chart"></canvas>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
