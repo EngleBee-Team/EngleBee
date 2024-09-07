@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: head}"></head>
+<head th:replace="~{fragments/header :: head}">
+  <style>
+    .datatable-active {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+  </style>
+</head>
 
 <body class="bg-white">
 
@@ -29,7 +36,10 @@
             <!-- 게시판 목록   -->
             <div id="fadeIn">
               <div class="card mb-4">
-                <div class="card-header"><b>Q&A 게시판</b></div>
+                <div class="card-header">
+                  <b>Q&A 게시판</b>
+                  <p class="float-end"><a th:text="'새 글 작성'" th:href="@{/qna/register}"></a></p>
+                </div>
                 <div class="card-body">
 
                   <div
@@ -49,11 +59,16 @@
                         <tbody>
 
                         <!-- Thymeleaf 반복문 시작 -->
-                        <tr th:each="qa : ${MY_QA_LIST}">
-                          <td>1</td>
-                          <td><a th:href="@{/qna/detail/1}">[[${qa.name}]]</a></td>
-                          <td>[[${qa.regDate}]]</td>
-                          <td>2024-01-01</td>
+                        <tr th:each="qna : ${qnaList}">
+                          <td th:text="${qna.seq}"></td>
+                          <td><a th:href="@{/qna/detail/{seq}(seq=${qna.seq})}"
+                                 th:text="${qna.memberNickname}"></a>
+                          </td>
+                          <td th:text="${qna.title}"></td>
+                          <td><span
+                              th:text="${#temporals.format(qna.createdAt, 'yyyy-MM-dd')}"></span>
+                          </td>
+                          <!--                          <td>[[${qna.createdAt}]]</td>-->
                           <td>
                             <button class="btn btn-datatable btn-icon btn-transparent-dark">
                               <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
@@ -67,34 +82,52 @@
                           </td>
                         </tr>
                         <!-- Thymeleaf 반복문 끝 -->
-
-
                         </tbody>
                       </table>
                     </div>
 
                     <!--  페이징  -->
                     <div class="datatable-bottom">
-                      <div class="datatable-info">총 12345 게시물</div>
+                      <div class="datatable-info">총 <span
+                          th:text="${qnaList.totalElements}"></span> 게시물
+                      </div>
                       <nav class="datatable-pagination">
                         <ul class="datatable-pagination-list">
-                          <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                            <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+                          <!-- 이전 페이지 그룹 버튼 (10개 이전으로 이동) -->
+                          <li th:if="${qnaList.number >= 10}"
+                              class="datatable-pagination-list-item">
+                            <a th:href="@{/qna/list(page=${qnaList.number - 10})}"
+                               class="datatable-pagination-list-item-link">«</a>
                           </li>
-                          <li class="datatable-pagination-list-item datatable-active">
-                            <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+
+                          <!-- 이전 페이지 버튼 -->
+                          <li th:class="'datatable-pagination-list-item ' + (${qnaList.hasPrevious()} ? '' : 'datatable-disabled datatable-hidden')">
+                            <a th:href="@{/qna/list(page=${qnaList.number - 1})}"
+                               class="datatable-pagination-list-item-link">‹</a>
                           </li>
-                          <li class="datatable-pagination-list-item">
-                            <a data-page="2" class="datatable-pagination-list-item-link">2</a>
+
+                          <!-- 페이지 번호 리스트 (10개씩 표시) -->
+                          <li th:each="i : ${#numbers.sequence(((qnaList.number / 10) * 10) + 1, ((qnaList.number / 10) * 10) + 10)}"
+                              th:class="'datatable-pagination-list-item ' + (${qnaList.number == i - 1} ? 'datatable-active' : '')">
+                            <a th:href="@{/qna/list(page=${i - 1})}"
+                               class="datatable-pagination-list-item-link" th:text="${i}">1</a>
                           </li>
-                          <li class="datatable-pagination-list-item">
-                            <a data-page="3" class="datatable-pagination-list-item-link">3</a>
+                          
+                          <!-- 다음 페이지 버튼 -->
+                          <li th:class="'datatable-pagination-list-item ' + (${qnaList.hasNext()} ? '' : 'datatable-disabled datatable-hidden')">
+                            <a th:href="@{/qna/list(page=${qnaList.number + 1})}"
+                               class="datatable-pagination-list-item-link">›</a>
                           </li>
-                          <li class="datatable-pagination-list-item">
-                            <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+
+                          <!-- 다음 페이지 그룹 버튼 (10개 이후로 이동) -->
+                          <li th:if="${qnaList.totalPages > ((qnaList.number / 10) * 10) + 10}"
+                              class="datatable-pagination-list-item">
+                            <a th:href="@{/qna/list(page=${qnaList.number + 10})}"
+                               class="datatable-pagination-list-item-link">»</a>
                           </li>
                         </ul>
                       </nav>
+
                     </div>
 
 
