@@ -54,7 +54,7 @@ public class ExamDetailPageController {
       boolean isStudent) {
     return switch (examStatus) {
       case CREATED -> isStudent ? "error/forbidden" : "redirect:/exam/register/" + examSeq;
-      case PREPARED -> isStudent ? "redirect:/exam/submit/" + examSeq
+      case PREPARED -> isStudent ? "redirect:/exam/solve/" + examSeq
           : renderExamDetailPage(examSeq, model);
       case SUBMITTED -> isStudent ? renderExamDetailPage(examSeq, model)
           : "redirect:/exam/feedback/" + examSeq;
