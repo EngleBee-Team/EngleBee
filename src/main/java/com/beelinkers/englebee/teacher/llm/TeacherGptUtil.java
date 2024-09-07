@@ -9,9 +9,11 @@ import java.util.List;
 
 public class TeacherGptUtil {
 
-  public static List<ChatMessage> getSystemPromptForTeacherQuestionRecommendation() {
+  public static List<ChatMessage> getSystemPromptForTeacherQuestionRecommendation(
+      String difficulty) {
     List<ChatMessage> chatMessages = new ArrayList<>();
-    chatMessages.add(new ChatMessage(SYSTEM_ROLE, SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION));
+    chatMessages.add(new ChatMessage(SYSTEM_ROLE,
+        String.format(SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION, difficulty)));
     return chatMessages;
   }
 }

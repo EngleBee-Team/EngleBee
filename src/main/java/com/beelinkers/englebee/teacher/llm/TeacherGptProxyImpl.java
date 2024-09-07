@@ -64,7 +64,7 @@ public class TeacherGptProxyImpl implements TeacherGptProxy {
   private void sendContentAsMessage(String content, SseEmitter emitter) {
     try {
       log.info("content = {}", content);
-      String modifiedContent = content.replace(" ", "__SPACE__");
+      String modifiedContent = content.replace(" ", "ㅤ");
       emitter.send(SseEmitter.event()
           .name("message")
           .data(modifiedContent, MediaType.TEXT_EVENT_STREAM));
