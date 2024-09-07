@@ -2,7 +2,6 @@ package com.beelinkers.englebee.admin.aspect;
 
 import com.beelinkers.englebee.admin.domain.entity.CallLLMLog;
 import com.beelinkers.englebee.admin.domain.repository.CallLLMLogRepository;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
