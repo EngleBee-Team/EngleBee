@@ -1,7 +1,9 @@
 package com.beelinkers.englebee.general.service.impl;
 
+import com.beelinkers.englebee.auth.domain.entity.Member;
 import com.beelinkers.englebee.auth.domain.repository.MemberRepository;
 import com.beelinkers.englebee.general.exception.MemberNicknameDuplicatedException;
+import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.GeneralMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +25,13 @@ public class GeneralMemberServiceImpl implements GeneralMemberService {
     if (present) {
       throw new MemberNicknameDuplicatedException("중복된 닉네임입니다.");
     }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Member findMember(Long memberSeq) {
+    return memberRepository.findById(memberSeq).orElseThrow(
+        () -> new MemberNotFoundException("해당하는 멤버를 찾을 수 없습니다.")
+    );
   }
 }

@@ -1,8 +1,8 @@
 package com.beelinkers.englebee.general.service;
 
-import com.beelinkers.englebee.general.domain.entity.ExamStatus;
+import com.beelinkers.englebee.general.domain.entity.Exam;
 
 public interface GeneralExamService {
 
-  ExamStatus getExamStatus(Long examSeq);
+  Exam findExam(Long examSeq);
 }

@@ -1,6 +1,6 @@
 package com.beelinkers.englebee.general.service.impl;
 
-import com.beelinkers.englebee.general.domain.entity.ExamStatus;
+import com.beelinkers.englebee.general.domain.entity.Exam;
 import com.beelinkers.englebee.general.domain.repository.ExamRepository;
 import com.beelinkers.englebee.general.exception.ExamNotFoundException;
 import com.beelinkers.englebee.general.service.GeneralExamService;
@@ -19,9 +19,8 @@ public class GeneralExamServiceImpl implements GeneralExamService {
 
   @Override
   @Transactional(readOnly = true)
-  public ExamStatus getExamStatus(Long examSeq) {
+  public Exam findExam(Long examSeq) {
     return examRepository.findById(examSeq)
-        .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."))
-        .getStatus();
+        .orElseThrow(() -> new ExamNotFoundException("해당하는 시험이 존재하지 않습니다."));
   }
 }

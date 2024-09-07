@@ -32,7 +32,6 @@ public class TeacherExamApiController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-
   @PostMapping("/feedback/{examSeq}")
   public ResponseEntity<Void> feedbackExam(@LoginMember SessionMember sessionMember,
       @PathVariable("examSeq") Long examSeq,
