@@ -29,7 +29,7 @@
             <!-- 마이페이지  -->
             <div id="fadeIn">
               <div class="card mb-4">
-                <div class="card-header"><h1>ooo(선생님) 마이페이지</h1></div>
+                <div class="card-header"><h1 th:text="${nickname + '님 마이 페이지'}"></h1></div>
                 <div class="card-body">
 
                   <div class="sbp-preview">
@@ -53,73 +53,54 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table class="datatable-table">
+                          <table class="datatable-table" id="pending-exams-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
-                              <th data-sortable="true" style="width: 50%;">제목</th>
-                              <th data-sortable="true" style="width: 15%;">작성자</th>
+                              <th data-sortable="true" style="width: 75%;">제목</th>
                               <th data-sortable="true" style="width: 15%;">작성일</th>
-                              <th data-sortable="true" style="width: 10%;">삭제</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td><a th:href="@{/qna/detail/1}">영어 어휘 제목 제목</a></td>
-                              <td>홍길동</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${pendingExam != null}"
+                                th:each="exam : ${pendingExam}">
+                              <td th:text="${exam.seq}"></td>
+                              <td><a th:href="@{/exam/detail/{id}(id=${exam.seq})}"
+                                     th:text="${exam.title}"></a></td>
+                              <td th:text="${exam.teacherNickname}"></td>
+                              <td th:text="${#dates.format(exam.createdAt, 'yyyy-MM-dd')}"></td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td><a th:href="@{/qna/detail/2}">영어 어휘 제목 제목222</a></td>
-                              <td>아무개</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${pendingExam == null || pendingExam.isEmpty() }">
+                              <td colspan="5">등록된 시험이 없습니다.</td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
-                        <!--  페이징  -->
                         <div class="datatable-bottom">
-                          <div class="datatable-info">총 57 게시물</div>
-                          <nav class="datatable-pagination">
+                          <div class="datatable-info">총 <span
+                              th:text="${pendingExamPagination.totalElements}"></span> 게시물
+                          </div>
+                          <nav class="datatable-pagination" id="pending-exams-pagination"
+                               th:attr="style=${pendingExamPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+
+                              <!-- 이전 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${pendingExamPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${pendingExamPagination.currentPage - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <li class="datatable-pagination-list-item datatable-active">
-                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 버튼 -->
+                              <li th:each="i : ${#numbers.sequence(1, pendingExamPagination.totalPages)}"
+                                  th:classappend="'datatable-pagination-list-item ' + (${i} == ${pendingExamPagination.currentPage + 1} ? 'datatable-active' : '')">
+                                <a th:href="@{/my/info(page=${i - 1})}" th:text="${i}"
+                                   class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+
+                              <!-- 다음 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${pendingExamPagination.hasNextPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${pendingExamPagination.currentPage + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
                           </nav>
@@ -146,73 +127,54 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table class="datatable-table">
+                          <table class="datatable-table" id="created-exams-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
-                              <th data-sortable="true" style="width: 50%;">제목</th>
-                              <th data-sortable="true" style="width: 15%;">작성자</th>
+                              <th data-sortable="true" style="width: 75%;">제목</th>
                               <th data-sortable="true" style="width: 15%;">작성일</th>
-                              <th data-sortable="true" style="width: 10%;">삭제</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td><a th:href="@{/qna/detail/1}">영어 어휘 제목 제목</a></td>
-                              <td>홍길동</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${examHistory != null}"
+                                th:each="exam : ${examHistory}">
+                              <td th:text="${exam.seq}"></td>
+                              <td><a th:href="@{/exam/detail/{id}(id=${exam.seq})}"
+                                     th:text="${exam.title}"></a></td>
+                              <td th:text="${exam.teacherNickname}"></td>
+                              <td th:text="${#dates.format(exam.createdAt, 'yyyy-MM-dd')}"></td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td><a th:href="@{/qna/detail/2}">영어 어휘 제목 제목222</a></td>
-                              <td>아무개</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${examHistory == null || examHistory.isEmpty() }">
+                              <td colspan="5">등록된 시험이 없습니다.</td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
-                        <!--  페이징  -->
                         <div class="datatable-bottom">
-                          <div class="datatable-info">총 57 게시물</div>
-                          <nav class="datatable-pagination">
+                          <div class="datatable-info">총 <span
+                              th:text="${examHistoryPagination.totalElements}"></span> 게시물
+                          </div>
+                          <nav class="datatable-pagination" id="created-exams-pagination"
+                               th:attr="style=${examHistoryPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+
+                              <!-- 이전 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${examHistoryPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${examHistoryPagination.currentPage - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <li class="datatable-pagination-list-item datatable-active">
-                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 버튼 -->
+                              <li th:each="i : ${#numbers.sequence(1, examHistoryPagination.totalPages)}"
+                                  th:classappend="'datatable-pagination-list-item ' + (${i} == ${examHistoryPagination.currentPage + 1} ? 'datatable-active' : '')">
+                                <a th:href="@{/my/info(page=${i - 1})}" th:text="${i}"
+                                   class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+
+                              <!-- 다음 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${examHistoryPagination.hasNextPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${examHistoryPagination.currentPage + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
                           </nav>
@@ -239,73 +201,53 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table class="datatable-table">
+                          <table class="datatable-table" id="written-qna-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
-                              <th data-sortable="true" style="width: 50%;">제목</th>
-                              <th data-sortable="true" style="width: 15%;">작성자</th>
+                              <th data-sortable="true" style="width: 75%;">제목</th>
                               <th data-sortable="true" style="width: 15%;">작성일</th>
-                              <th data-sortable="true" style="width: 10%;">삭제</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td><a th:href="@{/qna/detail/1}">영어 어휘 제목 제목</a></td>
-                              <td>홍길동</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
+                            <tr th:if="${writtenQna != null}" th:each="qna : ${writtenQna}">
+                              <td th:text="${qna.seq}">1</td>
+                              <td><a th:href="@{/qna/detail/{questionSeq}(questionSeq=${qna.seq})}"
+                                     th:text="${qna.title}">제목</a>
                               </td>
+                              <td th:text="${qna.createdAt != null ? #temporals.format(qna.createdAt, 'yyyy-MM-dd') : ''}"></td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td><a th:href="@{/qna/detail/2}">영어 어휘 제목 제목222</a></td>
-                              <td>아무개</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${writtenQna == null || writtenQna.isEmpty() }">
+                              <td colspan="5">등록된 글이 없습니다.</td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
-                        <!--  페이징  -->
                         <div class="datatable-bottom">
-                          <div class="datatable-info">총 57 게시물</div>
-                          <nav class="datatable-pagination">
+                          <div class="datatable-info">총 <span
+                              th:text="${writtenQnaPagination.totalElements}"></span> 게시물
+                          </div>
+                          <nav class="datatable-pagination" id="written-qna-pagination"
+                               th:attr="style=${writtenQnaPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+
+                              <!-- 이전 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${writtenQnaPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${writtenQnaPagination.currentPage - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <li class="datatable-pagination-list-item datatable-active">
-                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 버튼 -->
+                              <li th:each="i : ${#numbers.sequence(1, writtenQnaPagination.totalPages)}"
+                                  th:classappend="'datatable-pagination-list-item ' + (${i} == ${writtenQnaPagination.currentPage + 1} ? 'datatable-active' : '')">
+                                <a th:href="@{/my/info(page=${i - 1})}" th:text="${i}"
+                                   class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+
+                              <!-- 다음 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${writtenQnaPagination.hasNextPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${writtenQnaPagination.currentPage + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
                           </nav>
@@ -332,73 +274,57 @@
                       <div
                           class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                         <div class="datatable-container">
-                          <table class="datatable-table">
+                          <table class="datatable-table" id="written-replies-table">
                             <thead>
                             <tr>
                               <th data-sortable="true" style="width: 10%;">번호</th>
-                              <th data-sortable="true" style="width: 50%;">제목</th>
-                              <th data-sortable="true" style="width: 15%;">작성자</th>
+                              <th data-sortable="true" style="width: 75%;">내용</th>
                               <th data-sortable="true" style="width: 15%;">작성일</th>
-                              <th data-sortable="true" style="width: 10%;">삭제</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td><a th:href="@{/qna/detail/1}">영어 어휘 제목 제목</a></td>
-                              <td>홍길동</td>
-                              <td>2024-01-01</td>
+                            <tr th:if="${writtenReply != null}" th:each="reply : ${writtenReply}">
+                              <td th:text="${reply.seq}">1</td>
                               <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                                <a th:href="@{/qna/detail/{questionSeq}(questionSeq=${reply.questionSeq})}">
+                                  <span
+                                      th:text="${#strings.length(reply.content) > 70} ? ${#strings.substring(reply.content, 0, 70)} + '...' : ${reply.content}">
+                                    제목
+                                  </span>
+                                </a>
+                              <td th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd')}"></td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td><a th:href="@{/qna/detail/2}">영어 어휘 제목 제목222</a></td>
-                              <td>아무개</td>
-                              <td>2024-01-01</td>
-                              <td>
-                                <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                                  <svg class="svg-inline--fa fa-trash-can" aria-hidden="true"
-                                       focusable="false" data-prefix="far" data-icon="trash-can"
-                                       role="img" xmlns="http://www.w3.org/2000/svg"
-                                       viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                                  </svg>
-                                </button>
-                              </td>
+                            <tr th:if="${writtenReply == null || writtenReply.isEmpty() }">
+                              <td colspan="5">등록된 글이 없습니다.</td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
-                        <!--  페이징  -->
                         <div class="datatable-bottom">
-                          <div class="datatable-info">총 57 게시물</div>
-                          <nav class="datatable-pagination">
+                          <div class="datatable-info">총 <span
+                              th:text="${writtenReplyPagination.totalElements}"></span> 게시물
+                          </div>
+                          <nav class="datatable-pagination" id="written-replies-pagination"
+                               th:attr="style=${writtenReplyPagination.totalElements <= 10} ? 'display:none;' : ''">
                             <ul class="datatable-pagination-list">
-                              <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-                                <a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+
+                              <!-- 이전 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${writtenReplyPagination.hasPreviousPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${writtenReplyPagination.currentPage - 1})}"
+                                   class="datatable-pagination-list-item-link">‹</a>
                               </li>
-                              <li class="datatable-pagination-list-item datatable-active">
-                                <a data-page="1" class="datatable-pagination-list-item-link">1</a>
+
+                              <!-- 페이지 번호 버튼 -->
+                              <li th:each="i : ${#numbers.sequence(1, writtenReplyPagination.totalPages)}"
+                                  th:classappend="'datatable-pagination-list-item ' + (${i} == ${writtenReplyPagination.currentPage + 1} ? 'datatable-active' : '')">
+                                <a th:href="@{/my/info(page=${i - 1})}" th:text="${i}"
+                                   class="datatable-pagination-list-item-link"></a>
                               </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="2" class="datatable-pagination-list-item-link">2</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="3" class="datatable-pagination-list-item-link">3</a>
-                              </li>
-                              <li class="datatable-pagination-list-item">
-                                <a data-page="4" class="datatable-pagination-list-item-link">›</a>
+
+                              <!-- 다음 페이지 버튼 -->
+                              <li th:classappend="'datatable-pagination-list-item ' + (!${writtenReplyPagination.hasNextPage} ? 'datatable-disabled' : '')">
+                                <a th:href="@{/my/info(page=${writtenReplyPagination.currentPage + 1})}"
+                                   class="datatable-pagination-list-item-link">›</a>
                               </li>
                             </ul>
                           </nav>
@@ -430,7 +356,6 @@
 
 <!-- 공통 <script> 포함 -->
 <div th:replace="~{fragments/scripts :: scripts}"></div>
-
 
 </body>
 
