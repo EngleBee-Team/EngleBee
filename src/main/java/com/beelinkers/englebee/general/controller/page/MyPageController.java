@@ -10,6 +10,10 @@ import com.beelinkers.englebee.student.dto.response.StudentMyPageCreatedExamDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenQnaDTO;
 import com.beelinkers.englebee.student.dto.response.StudentMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.student.service.StudentMyService;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageExamHistoryDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPagePendingExamDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenQnaDTO;
+import com.beelinkers.englebee.teacher.dto.response.TeacherMyPageWrittenReplyDTO;
 import com.beelinkers.englebee.teacher.service.TeacherMyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +71,30 @@ public class MyPageController {
       return "student/student-info";
 
     } else if (sessionUserRole.isTeacher()) {
+
+      Page<TeacherMyPagePendingExamDTO> pendingExamList = teacherMyService.getTeacherMyPendingExamInfo(
+          memberSeq, pageable
+      );
+      Page<TeacherMyPageExamHistoryDTO> examHistoryList = teacherMyService.getTeacherMyPageExamHistoryInfo(
+          memberSeq, pageable
+      );
+      Page<TeacherMyPageWrittenQnaDTO> writtenQnaList = teacherMyService.getTeacherMyPageWrittenQnaInfo(
+          memberSeq, pageable
+      );
+      Page<TeacherMyPageWrittenReplyDTO> writtenReplyList = teacherMyService.getTeacherMyPageWrittenReplyInfo(
+          memberSeq, pageable
+      );
+
+      model.addAttribute("pendingExamPagination", paginationResponse(pendingExamList));
+      model.addAttribute("examHistoryPagination", paginationResponse(examHistoryList));
+      model.addAttribute("writtenQnaPagination", paginationResponse(writtenQnaList));
+      model.addAttribute("writtenReplyPagination", paginationResponse(writtenReplyList));
+
+      model.addAttribute("pendingExam", pendingExamList.getContent());
+      model.addAttribute("examHistory", examHistoryList.getContent());
+      model.addAttribute("writtenQna", writtenQnaList.getContent());
+      model.addAttribute("writtenReply", writtenReplyList.getContent());
+
       return "teacher/teacher-info";
     }
     return "/index";
