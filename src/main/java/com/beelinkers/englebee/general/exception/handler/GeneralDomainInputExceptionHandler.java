@@ -6,6 +6,8 @@ import com.beelinkers.englebee.general.exception.InvalidMemberRoleException;
 import com.beelinkers.englebee.general.exception.InvalidSubjectLevelCodeException;
 import com.beelinkers.englebee.general.exception.MemberNicknameDuplicatedException;
 import com.beelinkers.englebee.general.exception.MemberNicknameLengthException;
+import com.beelinkers.englebee.general.exception.MemberNotFoundException;
+import com.beelinkers.englebee.general.exception.NoSubjectLevelException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +49,18 @@ public class GeneralDomainInputExceptionHandler {
   @ExceptionHandler(InvalidSubjectLevelCodeException.class)
   public ResponseEntity<String> handleInvalidSubjectLevelCodeException(
       InvalidSubjectLevelCodeException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(MemberNotFoundException.class)
+  public ResponseEntity<String> handleMemberNotFoundException(
+      MemberNotFoundException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NoSubjectLevelException.class)
+  public ResponseEntity<String> handleNoSubjectLevelException(
+      NoSubjectLevelException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
