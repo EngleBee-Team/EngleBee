@@ -23,17 +23,31 @@ public class TeacherGptConstant {
           "출제 의도는 한국어로 작성하시오. " +
           "다음 입력값에서 추론할 수 있는 문제 과목과 관계없이, 영어 어법, 문장, 단어 부분에 대해서 평가할 수 있는 문제만을 출제하시오.";
 
-  // 사용자 프롬프트 형식
+  public static final String SYSTEM_PROMPT_FEEDBACK_RECOMMENDATION =
+      "학생에게 줄 피드백을 작성하시오." +
+          "피드백은 한국어로만 작성하시오." +
+          "피드백에는 마크다운 문법 금지." +
+          "피드백의 내용은 %s하게 작성해야 한다." +
+          "피드백 내용에서 학생의 학년을 언급하고, 주어진 문제에 대해 그에 맞는 피드백을 진행한다." +
+          "피드백의 내용이 보통맛이라는 것은 순한맛과 매운맛의 중간 정도의 강도, 어조를 말한다." +
+          "피드백의 내용이 폭탄맛이라는 것은 매우 긴 한숨으로 시작한다."
+          + "매운맛의 피드백의 것보다 강도가 2배 높게, 크게 혼내는 어조와 말투를 사용한다." +
+          "모든 문제를 다 맞은 경우, 순한맛에서는 매우 칭찬을 해주고, 보통맛에서도 칭찬을 해주며, 매운맛과 폭탄맛에서는 자만하지 않도록 주의를 주거나, "
+          + "그와 비슷한 내용을 전달할 때의 어조와 말투를 사용한다.";
+
+
   public static final String USER_PROMPT_TEACHER_QUESTION_RECOMMENDATION_FORMAT =
       "대상: %s 학년, %s 과목, %s 수준.";
-  // 문제 예시 포맷
+
   public static final String TEACHER_QUESTION_EXAMPLE_FORMAT =
       "[문제] \n\n %s \n\n [선택지] \n\n %s \n\n [정답] (%d) %s \n\n [출제의도] %s";
-  // 선택지 포맷
+
   public static final String TEACHER_QUESTION_RECOMMENDATION_CHOICE_FORMAT = "(%d) %s \n";
-  // 예시 헤더
+
   public static final String TEACHER_QUESTION_RECOMMENDATION_EXAMPLES_HEADER = "\n예시: \n";
 
+  public static final String TEACHER_QUESTION_FOR_FEEDBACK_EXAMPLE_FORMAT =
+      "[학생의 학년] %s [문제] %s \n [선택지] \n %s \n [정답] %s [학생답] %s \n [출제의도] %s";
   public static final String SYSTEM_ROLE = "system";
   public static final String USER_ROLE = "user";
 
