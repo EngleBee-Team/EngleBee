@@ -26,8 +26,6 @@ public class TeacherGptProxyImpl implements TeacherGptProxy {
   public void processTeacherQuestionRecommendation(ChatCompletionRequest request,
       SseEmitter emitter) {
     try {
-      log.info("Processing teacher question recommendation asynchronously on thread: "
-          + Thread.currentThread().getName());
       Flowable<ChatCompletionChunk> flowable = openAiService.streamChatCompletion(request);
       flowable.blockingForEach(completion -> {
         try {
@@ -63,7 +61,6 @@ public class TeacherGptProxyImpl implements TeacherGptProxy {
 
   private void sendContentAsMessage(String content, SseEmitter emitter) {
     try {
-      log.info("content = {}", content);
       String modifiedContent = content.replace(" ", "ㅤ");
       emitter.send(SseEmitter.event()
           .name("message")
