@@ -140,7 +140,7 @@
       acc[key] = studentSubjectLevelsObj[key];
       return acc;
     }, {});
-    
+
     // 문제 세트 추가 함수
     function addQuestion() {
       if (questionCount < maxQuestions) {
@@ -284,7 +284,7 @@
       const subjectCode = randomKey;
       const levelCode = filteredStudentSubjectLevels[randomKey];
 
-      const url = `/api/teacher/gpt/teacher-question/recommendation?studentGrade=${encodeURIComponent(
+      const url = `/api/teacher/gpt/recommendation/teacher-question?studentGrade=${encodeURIComponent(
           studentGrade)}&subjectCode=${encodeURIComponent(
           subjectCode)}&levelCode=${encodeURIComponent(levelCode)}&difficulty=${encodeURIComponent(
           difficulty)}`;
