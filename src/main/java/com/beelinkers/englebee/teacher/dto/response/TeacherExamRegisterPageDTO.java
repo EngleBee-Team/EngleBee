@@ -9,7 +9,7 @@ import lombok.Getter;
 public class TeacherExamRegisterPageDTO {
 
   private String studentGrade;
-  private Map<String, String> lectureSubjectLevels;
   private Map<String, String> studentSubjectLevels;
+  private Map<String, String> lectureSubjectLevels;
 
 }

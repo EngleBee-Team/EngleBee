@@ -1,5 +1,6 @@
 package com.beelinkers.englebee.teacher.dto.request;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,8 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 public class TeacherExamRegisterRequestDTO {
 
-  @Length(max = 50, message = "시험 제목의 최대 길이는 50자입니다.")
+  @Length(min = 1, max = 50, message = "시험 제목은 1글자 ~ 50글자 사이여야 합니다.")
   private String title;
+  @Valid
   private List<TeacherQuestionCreateRequestDTO> teacherQuestionCreateRequestDTOs;
 }

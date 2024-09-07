@@ -16,12 +16,12 @@ import org.hibernate.validator.constraints.Length;
 public class TeacherQuestionCreateRequestDTO {
 
   @NotNull(message = "문제 지시사항 값은 필수 값입니다.")
-  @Length(max = 500, message = "문제 지시사항은 최대 500글자까지 입력할 수 있습니다.")
+  @Length(min = 1, max = 500, message = "문제 지시사항 최소 1글자 이상 ~ 최대 500글자 이하로 입력할 수 있습니다.")
   private String direction;
 
   @NotNull(message = "선택지 리스트 값은 필수 값입니다.")
   @Size(min = 4, max = 4)
-  private List<@NotNull(message = "선택지 값은 필수 값입니다.") @Length(max = 70, message = "각 선택지는 최대 70글자까지 입력할 수 있습니다.") String> choices;
+  private List<@NotNull(message = "선택지 값은 필수 값입니다.") @Length(min = 1, max = 1000, message = "각 선택지는 최소 1글자 ~ 1000글자까지 입력할 수 있습니다.") String> choices;
 
   @NotNull(message = "정답 값은 필수 값입니다.")
   @Min(value = 1, message = "정답 값은 1 이상이어야 합니다.")
@@ -29,7 +29,7 @@ public class TeacherQuestionCreateRequestDTO {
   private Integer correctAnswer;
 
   @NotNull(message = "출제 의도 값은 필수 값입니다.")
-  @Length(max = 2000, message = "출제 의도는 최대 2000글자까지 입력할 수 있습니다.")
+  @Length(min = 1, max = 2000, message = "출제 의도는 최소 1글자, 최대 2000글자 입력할 수 있습니다.")
   private String intent;
 
 }
