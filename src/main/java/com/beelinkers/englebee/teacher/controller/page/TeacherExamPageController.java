@@ -38,10 +38,7 @@ public class TeacherExamPageController {
         teacherExamRegisterPageInfo.getLectureSubjectLevels());
     model.addAttribute("lectureSubjectLevels",
         lectureSubjectLevelsJson);
-
-    log.info("studentGrade, {}", teacherExamRegisterPageInfo.getStudentGrade());
-    log.info(teacherExamRegisterPageInfo.getStudentSubjectLevels().toString());
-    log.info(teacherExamRegisterPageInfo.getLectureSubjectLevels().toString());
+    
     return "teacher/exam-register";
   }
 
