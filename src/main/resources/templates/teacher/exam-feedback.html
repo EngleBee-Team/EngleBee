@@ -7,15 +7,19 @@
 
 <style>
   .border-success {
-    border-width: 4px !important; /* Adjust the thickness as needed */
+    border-width: 4px !important;
   }
 
   .border-danger {
-    border-width: 4px !important; /* Adjust the thickness as needed */
+    border-width: 4px !important;
   }
 
   .bold-text {
-    font-weight: bold; /* 또는 font-weight: 700; */
+    font-weight: bold;
+  }
+
+  .auto-resize {
+    font-size: 18px;
   }
 </style>
 
@@ -104,7 +108,7 @@
                 <h2>피드백 작성</h2>
                 <!-- 피드백 작성 & GPT 추천 -->
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-8">
                     <div class="card">
                       <div class="card-header">
                         <h1>선생님 피드백</h1>
@@ -112,7 +116,7 @@
 
                       <div class="card-body mb-3 justify-content-center">
                         <form>
-<textarea class="form-control" rows="15">
+<textarea class="form-control" style="font-size:16px" rows="15">
     피드백 입니다.
 피드백 입니다.
 피드백 입니다.
@@ -123,6 +127,51 @@
                             <button class="btn btn-primary" type="button">피드백 저장</button>
                           </div>
                         </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Chat GPT 고정 네비게이션 -->
+                  <div class="col-lg-4">
+                    <div class="nav-sticky">
+                      <div class="card">
+                        <div class="card-header">
+                          <img th:src="@{/assets/img/gpt_icon.png}" height="35">
+                        </div>
+                        <div class="card-body mb-3 justify-content-center">
+                          <!-- 난이도 선택 탭 추가 -->
+                          <ul class="nav nav-tabs" id="difficultyTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <a class="nav-link active" id="easy-tab" data-bs-toggle="tab"
+                                 href="#mild" role="tab" aria-controls="mild" aria-selected="true"
+                                 style="color:yellowgreen; font-weight:bold;">순한맛</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <a class="nav-link" id="normal-tab" data-bs-toggle="tab"
+                                 href="#medium" role="tab" aria-controls="medium"
+                                 aria-selected="false" style="color:saddlebrown; font-weight:bold;">보통맛🌶</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <a class="nav-link" id="hard-tab" data-bs-toggle="tab" href="#hard"
+                                 role="tab" aria-controls="hard" aria-selected="false"
+                                 style="color:mediumvioletred; font-weight:bold;">매운맛🌶🌶</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <a class="nav-link" id="hell-tab" data-bs-toggle="tab" href="#hell"
+                                 role="tab" aria-controls="hard" aria-selected="false"
+                                 style="color:red; font-weight:bold;">폭탄맛️🌶🌶🌶</a>
+                            </li>
+                          </ul>
+
+                          <form id="gpt-form">
+                            <textarea id="gpt-response" class="form-control" rows="20"
+                                      style="font-size: 16px;" readonly></textarea>
+                            <br>
+                            <button type="button" class="btn btn-success" id="gpt-request-btn">GPT에게
+                              추천받기
+                            </button>
+                          </form>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -265,8 +314,25 @@
       // 컨테이너에 추가
       questionsContainer.insertAdjacentHTML('beforeend', questionHTML);
     });
+
+    // 새로 추가된 textarea에 대해 autoResize 설정
+    autoResize();
   });
+
+  function autoResize() {
+    $('textarea.auto-resize').each(function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    }).on('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+  }
+
+  // 초기 설정
+  autoResize();
 </script>
+
 
 </body>
 </html>
