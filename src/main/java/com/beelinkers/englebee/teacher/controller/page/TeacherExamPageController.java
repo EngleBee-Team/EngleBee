@@ -38,7 +38,7 @@ public class TeacherExamPageController {
         teacherExamRegisterPageInfo.getLectureSubjectLevels());
     model.addAttribute("lectureSubjectLevels",
         lectureSubjectLevelsJson);
-    
+
     return "teacher/exam-register";
   }
 
@@ -52,6 +52,7 @@ public class TeacherExamPageController {
     model.addAttribute("examTitle", teacherExamFeedbackPageDTO.getExamTitle());
     model.addAttribute("teacherQuestions",
         teacherExamFeedbackPageDTO.getTeacherQuestionForTeacherToFeedbackDTOs());
+    model.addAttribute("lectureSubjects", teacherExamFeedbackPageDTO.getLectureSubjects());
     return "teacher/exam-feedback";
   }
 
