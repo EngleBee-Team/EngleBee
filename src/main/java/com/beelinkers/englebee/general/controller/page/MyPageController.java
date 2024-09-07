@@ -32,12 +32,6 @@ public class MyPageController {
   private final StudentMyService studentMyService;
   private final TeacherMyService teacherMyService;
 
-  private PaginationResponseDTO paginationResponse(Page<?> page) {
-    return new PaginationResponseDTO(
-        page.getNumber(), page.getSize(), page.getTotalPages(),
-        page.getTotalElements(), page.hasPrevious(), page.hasNext());
-  }
-
   @GetMapping("/info")
   public String getMyInfoPage(@LoginMember SessionMember sessionMember, Model model,
       @PageableDefault(size = 10) Pageable pageable) {
@@ -70,11 +64,6 @@ public class MyPageController {
       model.addAttribute("writtenQna", writtenQnaList.getContent());
       model.addAttribute("writtenReply", writtenReplyList.getContent());
 
-      log.info(" 풀어야할 시험 : {} ", createdExamList);
-      log.info(" 제출한 시험 : {} ", completedExamList);
-      log.info(" 작성한 Q&A : {} ", writtenQnaList);
-      log.info(" 작성한 댓글 : {} ", writtenReplyList);
-
       return "student/student-info";
 
     } else if (sessionUserRole.isTeacher()) {
@@ -82,5 +71,12 @@ public class MyPageController {
     }
     return "/index";
   }
+
+  private PaginationResponseDTO paginationResponse(Page<?> page) {
+    return new PaginationResponseDTO(
+        page.getNumber(), page.getSize(), page.getTotalPages(),
+        page.getTotalElements(), page.hasPrevious(), page.hasNext());
+  }
+
 
 }
