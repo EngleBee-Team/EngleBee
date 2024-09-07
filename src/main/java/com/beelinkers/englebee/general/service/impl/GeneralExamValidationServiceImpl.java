@@ -10,6 +10,7 @@ import com.beelinkers.englebee.general.exception.InvalidExamStatusException;
 import com.beelinkers.englebee.general.exception.InvalidMemberRoleException;
 import com.beelinkers.englebee.general.exception.MemberNotFoundException;
 import com.beelinkers.englebee.general.service.GeneralExamValidationService;
+import com.beelinkers.englebee.student.exception.StudentIllegalAccessToExamException;
 import com.beelinkers.englebee.teacher.exception.TeacherIllegalAccessToExamException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class GeneralExamValidationServiceImpl implements GeneralExamValidationSe
   @Transactional(readOnly = true)
   public void validateStudentAccessToExam(Member student, Exam exam) {
     if (!exam.getLecture().getStudent().equals(student)) {
-      throw new TeacherIllegalAccessToExamException("해당하는 시험은 선생님이 낸 시험이 아닙니다.");
+      throw new StudentIllegalAccessToExamException("해당하는 시험은 현재 로그인한 학생이 접근할 수 있는 시험이 아닙니다.");
     }
   }
 
