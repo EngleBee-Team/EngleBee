@@ -29,6 +29,7 @@ public class TeacherMainPageMapper {
 
     return new TeacherMainPageLectureDTO(
         lecture.getSeq(),
+        lecture.getSeq(),
         lecture.getStudent().getNickname(),
         lecture.getTitle(),
         lecture.getStatus().name(),
