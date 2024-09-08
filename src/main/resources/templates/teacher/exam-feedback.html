@@ -21,6 +21,29 @@
   .auto-resize {
     font-size: 18px;
   }
+
+  .question-label {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .form-control-lg {
+    font-size: 1.1em;
+    padding: 10px;
+  }
+
+  .status-text {
+    font-size: 1.5em; /* Increase font size */
+    font-weight: bold; /* Make text bold */
+    color: #333; /* Dark color for better readability */
+    margin-bottom: 10px; /* Space between status items */
+  }
+
+  .emoji {
+    font-size: 1.5em; /* Increase emoji size */
+    vertical-align: middle; /* Align emoji vertically with text */
+  }
 </style>
 
 <!-- --------------------------- [FRAGMENT : 상단 네이게이션바]  ------------------------------------->
@@ -48,7 +71,7 @@
               <a href="#wizard1" class="nav-item nav-link active">
                 <div class="wizard-step-icon">1</div>
                 <div class="wizard-step-text">
-                  <div class="wizard-step-text-name">학생 시험 결과 확인</div>
+                  <div class="wizard-step-text-name">제출 답안 확인</div>
                   <div class="wizard-step-text-details">학생이 제출한 시험 내용을 확인합니다.</div>
                 </div>
               </a>
@@ -66,8 +89,8 @@
               <a href="#wizard3" class="nav-item nav-link">
                 <div class="wizard-step-icon">3</div>
                 <div class="wizard-step-text">
-                  <div class="wizard-step-text-name">학생 수준 평가</div>
-                  <div class="wizard-step-text-details">학생의 수준을 평가합니다.</div>
+                  <div class="wizard-step-text-name">학생 레벨 평가</div>
+                  <div class="wizard-step-text-details">강의 과목에 대한 학생 레벨을 평가합니다.</div>
                 </div>
               </a>
 
@@ -75,7 +98,7 @@
               <a href="#wizard4" class="nav-item nav-link">
                 <div class="wizard-step-icon">4</div>
                 <div class="wizard-step-text">
-                  <div class="wizard-step-text-name">제출하기</div>
+                  <div class="wizard-step-text-name">작성 완료</div>
                   <div class="wizard-step-text-details">작성한 내용을 제출합니다.</div>
                 </div>
               </a>
@@ -184,14 +207,31 @@
               <div id="wizard3" class="tab-pane py-1 fade" role="tabpanel"
                    aria-labelledby="wizard3-tab">
                 <h2>학생 수준 평가</h2>
-                <!-- 해당 섹션에 필요한 추가 내용 추가 -->
+                <div id="evaluationFormContainer"></div>
+                <button class="btn btn-primary" type="button" id="level-check-btn"
+                        onclick="handleLevelCheckButton()">
+                  평가완료
+                </button>
               </div>
 
               <!-- Wizard tab pane item 4 -->
               <div id="wizard4" class="tab-pane py-1 fade" role="tabpanel"
                    aria-labelledby="wizard4-tab">
                 <h2>제출하기</h2>
-                <!-- 내용 추가 -->
+                <div id="button-statuses" class="mb-3">
+                  <p id="check-status" class="status-text"> 제출 답안 확인: <span class="emoji">❌</span>
+                  </p>
+                  <p id="feedback-status" class="status-text">피드백 작성: <span class="emoji">❌</span>
+                  </p>
+                  <p id="level-check-status" class="status-text">학생 레벨 평가: <span
+                      class="emoji">❌</span></p>
+                </div>
+
+                <!-- Submit button, initially disabled -->
+                <button class="btn btn-primary" type="button" id="submit-btn" disabled
+                        onclick="handleSubmit()">
+                  제출하기
+                </button>
               </div>
 
             </div>
@@ -218,14 +258,34 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script th:inline="javascript">
+  let isCheckDone = false;
+  let isFeedbackDone = false;
+  let isLevelCheckDone = false;
+
+  function updateSubmitButtonState() {
+    // Update statuses display with enhanced emphasis
+    document.getElementById('check-status').innerHTML = `제출 답안 확인: <span class="emoji">${isCheckDone
+        ? '✅' : '❌'}</span>`;
+    document.getElementById(
+        'feedback-status').innerHTML = `피드백 작성: <span class="emoji">${isFeedbackDone ? '✅'
+        : '❌'}</span>`;
+    document.getElementById(
+        'level-check-status').innerHTML = `학생 레벨 평가: <span class="emoji">${isLevelCheckDone ? '✅'
+        : '❌'}</span>`;
+
+    // Enable the submit button only if all tasks are done
+    const submitButton = document.getElementById('submit-btn');
+    submitButton.disabled = !(isCheckDone && isFeedbackDone && isLevelCheckDone);
+  }
+
   function handleCheckButton() {
-    const examConfirmutton = document.getElementById('exam-check-done-btn');
-
-    examConfirmutton.innerText = '✅';
-    examConfirmutton.classList.remove('btn-primary');
-    examConfirmutton.classList.add('btn-success');
-
-    examConfirmutton.disabled = true;
+    const examConfirmButton = document.getElementById('exam-check-done-btn');
+    examConfirmButton.innerText = '✅';
+    examConfirmButton.classList.remove('btn-primary');
+    examConfirmButton.classList.add('btn-success');
+    examConfirmButton.disabled = true;
+    isCheckDone = true;
+    updateSubmitButtonState();
   }
 
   function handleFeedbackButton() {
@@ -236,12 +296,65 @@
     feedbackButton.classList.remove('btn-primary');
     feedbackButton.classList.add('btn-success');
     feedbackButton.disabled = true;
+    isFeedbackDone = true;
+    updateSubmitButtonState();
+  }
+
+  function handleLevelCheckButton() {
+    const levelCheckButton = document.getElementById('level-check-btn');
+    levelCheckButton.innerText = '✅';
+    levelCheckButton.classList.remove('btn-primary');
+    levelCheckButton.classList.add('btn-success');
+    levelCheckButton.disabled = true;
+    isLevelCheckDone = true;
+    updateSubmitButtonState();
   }
 
   // JavaScript 변수에 Thymeleaf 데이터를 할당
   const examSeq = /*[[${examSeq}]]*/ null;
   const teacherQuestions = /*[(${teacherQuestions})]*/ [];
-  const lectureSubjects = /*[(${lectureSubjects})]*/ [];
+  const lectureSubjects = /*[(${lectureSubjects})]*/ ["어법", "문장", "단어"];
+
+  // 평가 폼을 렌더링하는 함수
+  function renderEvaluationForms(subjects) {
+    const container = document.getElementById('evaluationFormContainer');
+
+    subjects.forEach((subject, index) => {
+      // 각 과목에 대한 평가 질문 생성
+      const formGroup = document.createElement('div');
+      formGroup.className = 'form-group mt-3';
+
+      const label = document.createElement('label');
+      label.className = 'question-label'; // 질문 라벨에 클래스 추가
+      label.innerText = `학생의 "${subject}" 과목 수준은 어떻게 평가하십니까?`;
+
+      // 셀렉트 박스 생성
+      const select = document.createElement('select');
+      select.className = 'form-control form-control-lg'; // 셀렉트 박스에 클래스 추가
+      select.name = `subject-evaluation-${index}`;
+
+      // 평가 옵션 생성
+      const options = ["하", "중하", "중", "중상", "상"];
+      options.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.innerText = value;
+        select.appendChild(option);
+      });
+
+      // 폼 그룹에 라벨과 셀렉트 박스 추가
+      formGroup.appendChild(label);
+      formGroup.appendChild(select);
+
+      // 컨테이너에 폼 그룹 추가
+      container.appendChild(formGroup);
+    });
+  }
+
+  // 페이지 로드 시 평가 폼 렌더링
+  document.addEventListener('DOMContentLoaded', () => {
+    renderEvaluationForms(lectureSubjects);
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     var triggerTabList = [].slice.call(document.querySelectorAll('.nav-wizard a'));
@@ -396,7 +509,6 @@
     const eventSource = new EventSource(url);
     let renderChain = $.Deferred().resolve();
 
-    // SSE 메시지 수신 처리
     eventSource.onmessage = function (event) {
       if (event.data === "[englebee-finished]") {
         eventSource.close();
@@ -410,7 +522,6 @@
       renderChain = renderChain.then(() => renderMessage(modifiedMessage));
     };
 
-    // 메시지 렌더링 함수
     function renderMessage(message) {
       const deferred = $.Deferred();
       let i = 0;
@@ -430,13 +541,49 @@
       return deferred.promise();
     }
 
-    // SSE 에러 처리
     eventSource.onerror = function (error) {
       eventSource.close();
       $button.text('GPT에게 추천받기').removeClass('btn-danger').addClass('btn-success').prop('disabled',
           false);
     };
   });
+
+  function handleSubmit() {
+    const feedback = $('#feedbackTextarea').val();
+
+    const evaluations = [];
+    $('#evaluationFormContainer .form-group').each(function () {
+      const subjectCode = $(this).find('label').text().match(/"(.*?)"/)[1];
+      const levelCode = $(this).find('select').val();
+
+      evaluations.push({
+        subjectCode: subjectCode,
+        levelCode: levelCode
+      });
+    });
+
+    const feedbackRequestDTO = {
+      feedback: feedback,
+      teacherEvaluateStudentSubjectLevelDTOs: evaluations
+    };
+
+    const examSeq = /*[[${examSeq}]]*/ null;
+
+    $.ajax({
+      url: `/api/teacher/exam/feedback/${examSeq}`, // Adjust the URL as needed
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(feedbackRequestDTO),
+      success: function () {
+        alert('피드백이 성공적으로 제출되었습니다!');
+        window.location.href = '/main';
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error('Error submitting feedback:', textStatus, errorThrown);
+        alert('피드백 제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    });
+  }
 </script>
 
 
