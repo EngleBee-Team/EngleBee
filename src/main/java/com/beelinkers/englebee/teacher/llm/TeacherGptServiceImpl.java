@@ -76,10 +76,8 @@ public class TeacherGptServiceImpl implements TeacherGptService {
   public GptChatCompletionRequest createUserPromptForFeedbackRecommendation(String studentGradeStr,
       List<Long> teacherQuestionSeqs) {
 
-    log.info(studentGradeStr);
     StudentGrade studentGrade = StudentGrade.fromKoreanGrade(studentGradeStr);
 
-    log.info("teacherSeqs = {}", teacherQuestionSeqs);
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findBySeqIn(
         teacherQuestionSeqs);
 
