@@ -117,9 +117,13 @@ public class TeacherExamPageServiceImpl implements TeacherExamPageService {
 
   private TeacherExamFeedbackPageDTO mapToTeacherExamFeedbackPageDTO(Exam exam) {
     List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findByExam(exam);
+    Lecture lecture = exam.getLecture();
+    List<String> lectureSubjects = lecture.getSubjectLevels().stream()
+        .map(lectureSubjectLevel -> lectureSubjectLevel.getSubjectLevel().getSubjectKoreanCode())
+        .toList();
     return teacherExamFeedbackPageMapper.toExamFeedbackPageDTO(
-        exam.getLecture().getStudent().getGrade().getKoreanGrade(), exam.getTitle(),
-        teacherQuestions);
+        lecture.getStudent().getGrade().getKoreanGrade(), exam.getTitle(),
+        teacherQuestions, lectureSubjects);
   }
 
 }

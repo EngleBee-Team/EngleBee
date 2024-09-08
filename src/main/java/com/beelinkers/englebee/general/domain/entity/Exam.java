@@ -49,7 +49,7 @@ public class Exam extends BaseEntity {
   @Column(name = "title", nullable = false, length = 50)
   private String title;
 
-  @Column(name = "feedback", length = 500)
+  @Column(name = "feedback", length = 1500)
   private String feedback;
 
   @OneToMany(mappedBy = "exam", fetch = FetchType.LAZY)

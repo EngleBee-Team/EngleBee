@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.teacher.llm;
 
 import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.TEACHER_QUESTION_EXAMPLE_FORMAT;
+import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.TEACHER_QUESTION_FOR_FEEDBACK_EXAMPLE_FORMAT;
 import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.TEACHER_QUESTION_RECOMMENDATION_CHOICE_FORMAT;
 import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.TEACHER_QUESTION_RECOMMENDATION_EXAMPLES_HEADER;
 import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.USER_PROMPT_TEACHER_QUESTION_RECOMMENDATION_FORMAT;
@@ -65,10 +66,50 @@ public class TeacherGptServiceImpl implements TeacherGptService {
       userPrompt += TEACHER_QUESTION_RECOMMENDATION_EXAMPLES_HEADER + examples;
     }
 
-    log.info("userPrompt = {}", userPrompt);
+    log.info("TeacherQuestion Recommendation userPrompt = {}", userPrompt);
 
     return new GptChatCompletionRequest(userPrompt);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public GptChatCompletionRequest createUserPromptForFeedbackRecommendation(String studentGradeStr,
+      List<Long> teacherQuestionSeqs) {
+
+    StudentGrade studentGrade = StudentGrade.fromKoreanGrade(studentGradeStr);
+
+    List<TeacherQuestion> teacherQuestions = teacherQuestionRepository.findBySeqIn(
+        teacherQuestionSeqs);
+
+    StringBuilder userPromptBuilder = new StringBuilder();
+
+    for (TeacherQuestion question : teacherQuestions) {
+      String[] choicesArray = question.getChoices().split(",");
+
+      StringBuilder choicesFormatted = new StringBuilder();
+      for (int i = 0; i < choicesArray.length; i++) {
+        choicesFormatted.append(String.format("%d. %s\n", i + 1, choicesArray[i]));
+      }
+
+      String formattedQuestion = String.format(
+          TEACHER_QUESTION_FOR_FEEDBACK_EXAMPLE_FORMAT,
+          studentGrade.getKoreanGrade(),
+          question.getDirection(),
+          choicesFormatted.toString(),
+          question.getCorrectAnswer(),
+          question.getStudentAnswer() != null ? question.getStudentAnswer() : "응답없음",
+          question.getIntent() != null ? question.getIntent() : "없음"
+      );
+      userPromptBuilder.append(formattedQuestion).append("\n\n");
+    }
+
+    String userPrompt = userPromptBuilder.toString();
+
+    log.info("Feedback Recommendation userPrompt = {}", userPrompt);
+
+    return new GptChatCompletionRequest(userPrompt);
+  }
+
 
   private String formatChoices(String choices) {
     String[] choiceArray = choices.split(",");

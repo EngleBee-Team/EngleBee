@@ -23,7 +23,7 @@ public class TeacherGptProxyImpl implements TeacherGptProxy {
 
   @Override
   @Async("gptThreadPoolTask")
-  public void processTeacherQuestionRecommendation(ChatCompletionRequest request,
+  public void processRecommendationRequestToGpt(ChatCompletionRequest request,
       SseEmitter emitter) {
     try {
       Flowable<ChatCompletionChunk> flowable = openAiService.streamChatCompletion(request);
