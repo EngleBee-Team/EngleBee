@@ -55,18 +55,19 @@ public class ExamDetailPageController {
     return switch (examStatus) {
       case CREATED -> isStudent ? "error/forbidden" : "redirect:/exam/register/" + examSeq;
       case PREPARED -> isStudent ? "redirect:/exam/solve/" + examSeq
-          : renderExamDetailPage(examSeq, model);
-      case SUBMITTED -> isStudent ? renderExamDetailPage(examSeq, model)
+          : renderExamDetailPage(examSeq, examStatus, model);
+      case SUBMITTED -> isStudent ? renderExamDetailPage(examSeq, examStatus, model)
           : "redirect:/exam/feedback/" + examSeq;
       case FEEDBACK_COMPLETED -> renderExamDetailPageWithFeedback(examSeq, model);
     };
   }
 
-  private String renderExamDetailPage(Long examSeq, Model model) {
+  private String renderExamDetailPage(Long examSeq, ExamStatus examStatus, Model model) {
     ExamDetailPageDTO examDetailPageDTO = examDetailPageService.getExamDetailPageDTO(examSeq);
     model.addAttribute("examSeq", examSeq);
     model.addAttribute("examTitle", examDetailPageDTO.getExamTitle());
     model.addAttribute("teacherQuestions", examDetailPageDTO.getTeacherQuestionDetailDTOs());
+    model.addAttribute("examStatus", examStatus.name());
     return "general/exam-detail";
   }
 
