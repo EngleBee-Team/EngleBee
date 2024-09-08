@@ -2,7 +2,7 @@ package com.beelinkers.englebee.teacher.llm;
 
 public class TeacherGptConstant {
 
-  public static final String SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION =
+  public static final String SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION_FORMAT =
       "영어 시험 문제를 생성하시오. " +
           "문제는 다음 형식이어야 합니다: 시험문제, 선택지 4개, 정답, 출제의도. 마크다운 문법 금지. " +
           "시험문제 부분에서 ':' 이나, '?' 문장이 나오면 무조건 한 줄을 띄우시오. " +
@@ -23,7 +23,7 @@ public class TeacherGptConstant {
           "출제 의도는 한국어로 작성하시오. " +
           "다음 입력값에서 추론할 수 있는 문제 과목과 관계없이, 영어 어법, 문장, 단어 부분에 대해서 평가할 수 있는 문제만을 출제하시오.";
 
-  public static final String SYSTEM_PROMPT_FEEDBACK_RECOMMENDATION =
+  public static final String SYSTEM_PROMPT_FEEDBACK_RECOMMENDATION_FORMAT =
       "학생에게 줄 피드백을 작성하시오." +
           "피드백은 한국어로만 작성하시오." +
           "피드백에는 마크다운 문법 금지." +
