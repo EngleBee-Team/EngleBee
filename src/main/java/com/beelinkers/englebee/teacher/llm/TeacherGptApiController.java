@@ -53,7 +53,7 @@ public class TeacherGptApiController {
       @RequestParam String studentGrade,
       @RequestParam String teacherQuestionSeqsStr,
       @RequestParam String angryIndex) {
-    
+
     // 5분 타임아웃 설정
     SseEmitter emitter = new SseEmitter((long) (5 * 60 * 1000));
     List<Long> teacherQuestionSeqs = Arrays.stream(teacherQuestionSeqsStr.split("-"))
