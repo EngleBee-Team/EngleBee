@@ -1,6 +1,7 @@
 package com.beelinkers.englebee.teacher.llm;
 
-import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION;
+import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.SYSTEM_PROMPT_FEEDBACK_RECOMMENDATION_FORMAT;
+import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION_FORMAT;
 import static com.beelinkers.englebee.teacher.llm.TeacherGptConstant.SYSTEM_ROLE;
 
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -13,7 +14,15 @@ public class TeacherGptUtil {
       String difficulty) {
     List<ChatMessage> chatMessages = new ArrayList<>();
     chatMessages.add(new ChatMessage(SYSTEM_ROLE,
-        String.format(SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION, difficulty)));
+        String.format(SYSTEM_PROMPT_TEACHER_QUESTION_RECOMMENDATION_FORMAT, difficulty)));
+    return chatMessages;
+  }
+
+  public static List<ChatMessage> getSystemPromptForFeedbackRecommendation(
+      String angryIndex) {
+    List<ChatMessage> chatMessages = new ArrayList<>();
+    chatMessages.add(new ChatMessage(SYSTEM_ROLE,
+        String.format(SYSTEM_PROMPT_FEEDBACK_RECOMMENDATION_FORMAT, angryIndex)));
     return chatMessages;
   }
 }

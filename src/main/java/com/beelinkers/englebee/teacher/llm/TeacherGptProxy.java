@@ -5,5 +5,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface TeacherGptProxy {
 
-  void processTeacherQuestionRecommendation(ChatCompletionRequest request, SseEmitter emitter);
+  void processRecommendationRequestToGpt(ChatCompletionRequest request, SseEmitter emitter);
+
 }

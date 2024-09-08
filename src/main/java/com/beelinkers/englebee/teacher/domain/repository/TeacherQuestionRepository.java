@@ -29,4 +29,6 @@ public interface TeacherQuestionRepository extends JpaRepository<TeacherQuestion
       @Param("subjectLevel") SubjectLevel subjectLevel,
       @Param("studentGrade") StudentGrade studentGrade,
       Pageable pageable);
+
+  List<TeacherQuestion> findBySeqIn(List<Long> seqs);
 }

@@ -1,5 +1,8 @@
-package com.beelinkers.englebee.teacher.llm;
+package com.beelinkers.englebee.general.llm;
 
+import static com.beelinkers.englebee.general.llm.GeneralGptUtil.getSystemPromptForTeacherQuestionRecommendation;
+
+import com.beelinkers.englebee.teacher.llm.GptChatCompletionRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.completion.chat.ChatCompletionChunk;
@@ -8,66 +11,55 @@ import com.theokanning.openai.service.OpenAiService;
 import io.reactivex.Flowable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TeacherGptProxyImpl implements TeacherGptProxy {
+public class GptQnaProxyImpl implements GptQnaProxy {
 
   private final OpenAiService openAiService;
   private final ObjectMapper objectMapper;
 
   @Override
-  @Async("gptThreadPoolTask")
-  public void processRecommendationRequestToGpt(ChatCompletionRequest request,
-      SseEmitter emitter) {
+  public String makeAutoReply(String questionContent) {
+    ChatCompletionRequest requestToGpt = GptChatCompletionRequest.of(
+        getSystemPromptForTeacherQuestionRecommendation(),
+        new GptChatCompletionRequest(questionContent));
+    StringBuilder sb = new StringBuilder();
     try {
-      Flowable<ChatCompletionChunk> flowable = openAiService.streamChatCompletion(request);
+      Flowable<ChatCompletionChunk> flowable = openAiService.streamChatCompletion(requestToGpt);
       flowable.blockingForEach(completion -> {
         try {
           String responseJson = objectMapper.writeValueAsString(completion);
           JsonNode choicesNode = objectMapper.readTree(responseJson).get("choices");
-          extractAndSendContentForTeacherQuestionRecommendation(choicesNode, emitter);
+          extractAndAppendContentForTeacherQuestionRecommendation(choicesNode, sb);
         } catch (Exception e) {
           log.error("Error processing response: ", e);
-          emitter.completeWithError(e);
         }
       });
-      sendContentAsMessage("[englebee-finished]", emitter);
-      emitter.complete();
     } catch (Exception e) {
       log.error("Error in stream completion: ", e);
-      emitter.completeWithError(e);
     }
+    return sb.toString();
   }
 
-  private void extractAndSendContentForTeacherQuestionRecommendation(JsonNode choicesNode,
-      SseEmitter emitter) {
+  private void extractAndAppendContentForTeacherQuestionRecommendation(JsonNode choicesNode,
+      StringBuilder sb) {
     choicesNode.forEach(choiceNode -> {
       JsonNode messageNode = choiceNode.get("message");
       if (messageNode != null && messageNode.has("content")) {
         JsonNode contentNode = messageNode.get("content");
         if (contentNode != null && !contentNode.isNull() && !contentNode.asText().isEmpty()) {
           String content = contentNode.asText();
-          sendContentAsMessage(content, emitter);
+          appendContent(content, sb);
         }
       }
     });
   }
 
-  private void sendContentAsMessage(String content, SseEmitter emitter) {
-    try {
-      String modifiedContent = content.replace(" ", "ㅤ");
-      emitter.send(SseEmitter.event()
-          .name("message")
-          .data(modifiedContent, MediaType.TEXT_EVENT_STREAM));
-    } catch (Exception e) {
-      log.error("Error sending message: ", e);
-      emitter.completeWithError(e);
-    }
+  private void appendContent(String content, StringBuilder sb) {
+    String modifiedContent = content.replace(" ", "ㅤ");
+    sb.append(modifiedContent);
   }
 }

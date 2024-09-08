@@ -11,5 +11,6 @@ public class TeacherExamFeedbackPageDTO {
   private String studentGrade;
   private String examTitle;
   private List<TeacherQuestionForTeacherToFeedbackDTO> teacherQuestionForTeacherToFeedbackDTOs;
+  private List<String> lectureSubjects;
 
 }
