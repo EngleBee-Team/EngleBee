@@ -3,11 +3,11 @@
 ## 1. 프로젝트 개요
 - AI 기반 학생 맞춤형 화상 영어 과외 서비스
 
-![스크린샷 2024-10-24 오전 11.01.32.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_15NTyw%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.01.32.png)
+![ReadMe-01.png](readme%2FReadMe-01.png)
 
-![스크린샷 2024-10-24 오전 11.01.48.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_JbhGM7%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.01.48.png)
+![ReadMe-02.png](readme%2FReadMe-02.png)
 
-![스크린샷 2024-10-24 오전 11.04.14.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_XMnbpS%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.04.14.png)
+![ReadMe-03.png](readme%2FReadMe-03.png)
 
 ```text
 코로나 이후 비대면 서비스가 증가하면서
@@ -48,7 +48,7 @@ EngleBee 서비스를 통해
 
 #### 3-1. 기술 스택
 
-![스크린샷 2024-10-24 오전 10.48.59.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_DQFDWR%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.48.59.png)
+![ReadMe-04.png](readme%2FReadMe-04.png)
 
 ```
 프로그래밍 언어
@@ -84,25 +84,25 @@ CI / CD
 
 #### 3-2. 프로젝트 아키텍처 구성
 
-![스크린샷 2024-10-24 오전 10.52.54.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_2NdBLM%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.52.54.png)
+![ReadMe-05.png](readme%2FReadMe-05.png)
 
 
 ### 4. 프로젝트 진행 방식
 
 #### 4-1. Git & Github
 
-![스크린샷 2024-10-24 오전 10.53.43.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_gXpFRz%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.53.43.png)
+![ReadMe-06.png](readme%2FReadMe-06.png)
 
-![스크린샷 2024-10-24 오전 10.56.23.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_jB7Zrp%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.56.23.png)
+![ReadMe-07.png](readme%2FReadMe-07.png)
 
-![스크린샷 2024-10-24 오전 10.57.07.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_OfjwY9%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.57.07.png)
+![ReadMe-08.png](readme%2FReadMe-08.png)
 
-![스크린샷 2024-10-24 오전 10.57.43.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_H5jwL6%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.57.43.png)
+![ReadMe-09.png](readme%2FReadMe-09.png)
 
-![스크린샷 2024-10-24 오전 10.58.25.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ljeR24%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2010.58.25.png)
+![ReadMe-10.png](readme%2FReadMe-10.png)
 
-![스크린샷 2024-10-24 오전 11.09.54.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_YAZg6O%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.09.54.png)
-- 
+![ReadMe-11.png](readme%2FReadMe-11.png)
+
 - Git을 통해 버전관리를 진행하고, Github을 통해 코드를 관리했습니다.
 
 - Git Flow를 따르고, Pull Request 및 코드리뷰를 통해 코드를 안정적으로 통합했습니다.
@@ -126,9 +126,9 @@ CI / CD
 
 #### 5-1. 로그인, 회원가입 ( 구글, 네이버 로그인 )
 
-![스크린샷 2024-10-24 오전 11.04.58.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_3D4xZC%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.04.58.png)
+![ReadMe-12.png](readme%2FReadMe-12.png)
 
-![스크린샷 2024-10-24 오전 11.09.31.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_8SuvRn%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.09.31.png)
+![ReadMe-13.png](readme%2FReadMe-13.png)
 
 
 - 구글 로그인, 네이버 로그인이 가능합니다.
@@ -137,7 +137,7 @@ CI / CD
 
 #### 5-2. 메인 페이지
 
-![스크린샷 2024-10-24 오전 11.06.56.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_e7UfDb%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.06.56.png)
+![ReadMe-14.png](readme%2FReadMe-14.png)
 
 - (선생님 유저) 메인 페이지를 통해 자신의 수업, 출제할 시험, 출제 완료된 시험을 확인할 수 있씁니다.
 
@@ -146,56 +146,56 @@ CI / CD
 
 #### 5-3. 수업 생성하기
 
-![스크린샷 2024-10-24 오전 11.08.17.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ADLXFq%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.08.17.png)
+![ReadMe-15.png](readme%2FReadMe-15.png)
 
 - (선생님) 수업을 생성할 수 있습니다.
 
 #### 5-4. 화상 과외 수업이 가능합니다.
 
-![스크린샷 2024-10-24 오전 11.08.47.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_80r19c%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.08.47.png)
+![ReadMe-16.png](readme%2FReadMe-16.png)
 
 - 1대1로 학생과 선생님이 화상 채팅을 진행할 수 있습니다.
 
 #### 5-5-1. LLM 활용 문제를 추천받을 수 있습니다. ( 난이도 : 쉽게, 보통, 어렵게 )
 
-![스크린샷 2024-10-24 오전 11.11.34.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_pcfXTL%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.11.34.png)
+![ReadMe-17.png](readme%2FReadMe-17.png)
 
 - 학생의 학년, 수준에 맞게 이미 구축되어있는 기출문제 DB의 문제와 유사한 문제를 출제자 선생님에게 추천해줍니다.
 
 - 원리
-![스크린샷 2024-10-24 오전 11.12.25.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_MjwhNt%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.12.25.png)
+![ReadMe-18.png](readme%2FReadMe-18.png)
 
 #### 5-5-2. LLM 활용 질문에 대한 답변을 받을 수 있습니다. ( EngleBee 인턴 )
 
-![스크린샷 2024-10-24 오전 11.12.05.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_xiPhqC%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.12.05.png)
+![ReadMe-19.png](readme%2FReadMe-19.png)
 
 - 원리
-![스크린샷 2024-10-24 오전 11.12.36.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_Gk70pI%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.12.36.png)
+![ReadMe-20.png](readme%2FReadMe-20.png)
 
   
 #### 6. 시험 등록 페이지
 
-![스크린샷 2024-10-24 오전 11.13.08.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_tjgEhc%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.13.08.png)
+![ReadMe-21.png](readme%2FReadMe-21.png)
 
 
 #### 7. Q&A 게시판
 
-![스크린샷 2024-10-24 오전 11.13.29.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_8L6fpo%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.13.29.png)
+![ReadMe-22.png](readme%2FReadMe-22.png)![ReadMe-22.png](readme%2FReadMe-22.png)
 
 - 질문 내용, 작성자, 작성일이 표시됩니다.
 - 페이지네이션이 구현되어 있습니다.
 
 #### 8. MY 페이지
 
-![스크린샷 2024-10-24 오전 11.14.04.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ii3Xs8%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.14.04.png)
+![ReadMe-23.png](readme%2FReadMe-23.png)
 
 #### 9. 계정 페이지
 
-![스크린샷 2024-10-24 오전 11.14.18.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_JlnAwu%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.14.18.png)
+![ReadMe-24.png](readme%2FReadMe-24.png)
 
 #### 10. 관리자 페이지
 
-![스크린샷 2024-10-24 오전 11.14.30.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fk0%2Frhlbzq2d4m5d_2_9rqsgw9400000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_gLG1aM%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-10-24%20%EC%98%A4%EC%A0%84%2011.14.30.png)
+![ReadMe-25.png](readme%2FReadMe-25.png)
 
 - 유저 종류별 방문 빈도 / 연령대별 방문 빈도 / 시간대별 방문 빈도 / LLM API 호출 기록 (과금용)을 추적 관리할 수 있는 관리자 페이지입니다.
 
